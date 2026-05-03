@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setup Guide — PulsePanel</title>
+<meta name="description" content="Step-by-step setup guide for PulsePanel and PulseConnect. Install the plugin, configure the secret, forward your port, and connect the iOS app.">
+
+<meta property="og:title" content="Setup Guide — PulsePanel">
+<meta property="og:description" content="Step-by-step setup guide for PulsePanel and PulseConnect.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pulsepanelapp.com/setup.html">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a0e'/%3E%3Cg fill='%234ade80'%3E%3Crect x='8' y='14' width='3' height='4' rx='1'/%3E%3Crect x='13' y='10' width='3' height='12' rx='1'/%3E%3Crect x='18' y='12' width='3' height='8' rx='1'/%3E%3Crect x='23' y='8' width='3' height='16' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg-elev: #0a1117;
+    --bg-deep: #02060a;
+    --line: #1a2530;
+    --text: #e6f1ff;
+    --text-dim: #8896a8;
+    --text-faint: #4a5868;
+    --green: #4ade80;
+    --green-glow: rgba(74, 222, 128, 0.15);
+    --blue: #38bdf8;
+    --blue-glow: rgba(56, 189, 248, 0.15);
+    --amber: #fbbf24;
+    --red: #f87171;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 1200px 600px at 50% -10%, var(--green-glow), transparent),
+      radial-gradient(ellipse 800px 400px at 80% 40%, var(--blue-glow), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  /* === NAV === */
+  nav {
+    position: sticky; top: 16px;
+    z-index: 100;
+    margin: 0 32px;
+  }
+  .nav-inner {
+    max-width: 1216px; margin: 0 auto;
+    background: rgba(10, 17, 23, 0.8);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 16px; letter-spacing: -0.01em;
+    color: var(--text); text-decoration: none;
+  }
+  .logo-bars {
+    width: 22px; height: 22px;
+    display: flex; flex-direction: column; gap: 2px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-bars span {
+    height: 2px; background: var(--green);
+    border-radius: 2px;
+    box-shadow: 0 0 6px var(--green);
+    animation: barPulse 2s ease-in-out infinite;
+  }
+  .logo-bars span:nth-child(1) { width: 60%; animation-delay: 0s; }
+  .logo-bars span:nth-child(2) { width: 100%; animation-delay: 0.2s; }
+  .logo-bars span:nth-child(3) { width: 75%; animation-delay: 0.4s; }
+  .logo-bars span:nth-child(4) { width: 90%; animation-delay: 0.6s; }
+  @keyframes barPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: var(--bg-deep) !important;
+    padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+
+  /* === DOC HEADER === */
+  .doc-header {
+    text-align: center;
+    padding: 80px 32px 48px;
+  }
+  .doc-eyebrow {
+    display: inline-block;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 18px;
+  }
+  .doc-header h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05; font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .doc-header h1 .glow {
+    color: var(--green);
+    text-shadow: 0 0 30px var(--green-glow);
+  }
+  .doc-header p.lede {
+    font-size: 18px; color: var(--text-dim);
+    max-width: 56ch; margin: 0 auto;
+    line-height: 1.55;
+  }
+  .doc-meta {
+    margin-top: 24px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    display: inline-flex; align-items: center; gap: 16px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .doc-meta .sep { opacity: 0.5; }
+
+  /* === LAYOUT: TOC + content === */
+  .doc-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 32px 96px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .toc {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+  }
+  .toc-label {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .toc ul { list-style: none; padding: 0; }
+  .toc li { margin-bottom: 10px; }
+  .toc a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 4px 0;
+    border-left: 2px solid transparent;
+    padding-left: 12px;
+    margin-left: -14px;
+    transition: all 0.15s;
+  }
+  .toc a:hover { color: var(--text); border-left-color: var(--text-faint); }
+  .toc a .num {
+    font-family: var(--mono);
+    color: var(--green);
+    margin-right: 8px;
+    font-size: 12px;
+  }
+
+  .doc-content {
+    min-width: 0;
+  }
+
+  /* === STEP BLOCKS === */
+  .step {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 36px;
+    margin-bottom: 32px;
+    scroll-margin-top: 120px;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .step-number {
+    width: 36px; height: 36px;
+    background: var(--green-glow);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+  .step h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0;
+  }
+  .step .step-est {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 24px;
+  }
+  .step h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0 12px;
+  }
+  .step p {
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+  .step ul, .step ol {
+    color: var(--text-dim);
+    padding-left: 24px;
+    margin-bottom: 20px;
+  }
+  .step li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+  }
+  .step li::marker { color: var(--green); }
+  .step strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .step a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74, 222, 128, 0.3);
+  }
+  .step a:hover { border-bottom-color: var(--green); }
+  .step code {
+    font-family: var(--mono);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 13px;
+    color: var(--green);
+  }
+
+  /* Code block */
+  pre {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text);
+    overflow-x: auto;
+  }
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+  pre .comment { color: var(--text-faint); }
+  pre .key { color: var(--blue); }
+  pre .val { color: var(--green); }
+  pre .num { color: var(--amber); }
+  pre .str { color: var(--green); }
+
+  /* Callout */
+  .callout {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--green);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 24px 0;
+  }
+  .callout.warn { border-left-color: var(--amber); }
+  .callout.warn .callout-label { color: var(--amber); }
+  .callout-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .callout p { margin-bottom: 0 !important; color: var(--text-dim); font-size: 14px; }
+  .callout p + p { margin-top: 12px !important; }
+
+  /* === Troubleshooting accordion === */
+  .trouble {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .trouble summary {
+    padding: 18px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  .trouble summary::-webkit-details-marker { display: none; }
+  .trouble summary::before {
+    content: '+';
+    font-family: var(--mono);
+    color: var(--green);
+    font-size: 18px;
+    font-weight: 600;
+    transition: transform 0.2s;
+  }
+  .trouble[open] summary::before {
+    content: '\2212';
+  }
+  .trouble-body {
+    padding: 0 24px 20px 52px;
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .trouble-body p { margin-bottom: 12px; }
+  .trouble-body p:last-child { margin-bottom: 0; }
+  .trouble-body code {
+    font-family: var(--mono);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 13px;
+    color: var(--green);
+  }
+
+  /* CTA at end */
+  .doc-cta {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 48px 36px;
+    text-align: center;
+    margin-top: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .doc-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, var(--green-glow), transparent 70%);
+    pointer-events: none;
+  }
+  .doc-cta-content { position: relative; }
+  .doc-cta h2 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .doc-cta p {
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.15s;
+    border: none !important;
+  }
+  .btn-primary {
+    background: var(--green); color: var(--bg-deep) !important;
+    box-shadow: 0 0 30px var(--green-glow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 40px var(--green-glow);
+  }
+  .btn-ghost {
+    color: var(--text) !important;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line) !important;
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 64px 0 32px;
+    color: var(--text-faint); font-size: 13px;
+    margin-top: 40px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+  }
+  .foot-col h4 {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .foot-col ul { list-style: none; padding: 0; }
+  .foot-col li { margin-bottom: 10px; }
+  .foot-col a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+    border: none;
+  }
+  .foot-col a:hover { color: var(--green); }
+  .foot-brand .logo { margin-bottom: 16px; }
+  .foot-brand p {
+    color: var(--text-dim); font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+  .foot-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .foot-status::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .foot-bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap;
+    gap: 16px; align-items: center;
+    padding-top: 32px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+  .foot-bottom-links { display: flex; gap: 24px; }
+  .foot-bottom-links a { color: var(--text-faint); text-decoration: none; border: none; }
+  .foot-bottom-links a:hover { color: var(--text-dim); }
+
+  @media (max-width: 940px) {
+    .doc-layout { grid-template-columns: 1fr; gap: 32px; }
+    .toc { position: static; }
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .step { padding: 28px 24px; }
+    .doc-header { padding: 60px 24px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-bars">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      PulsePanel
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#screens">Screens</a>
+      <a href="setup.html" class="active">Setup</a>
+      <a href="resources.html">Resources</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#download" class="nav-cta">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header class="doc-header">
+  <div class="doc-eyebrow">// setup guide</div>
+  <h1>Get up and running <span class="glow">in five minutes.</span></h1>
+  <p class="lede">Install the plugin, set your secret, forward a port, connect the app. Detailed walkthrough below — every step, every option, every common gotcha.</p>
+  <div class="doc-meta">
+    <span>~ 5 min</span>
+    <span class="sep">·</span>
+    <span>Paper · Spigot · Purpur</span>
+    <span class="sep">·</span>
+    <span>1.20+</span>
+  </div>
+</header>
+
+<div class="doc-layout">
+
+  <aside class="toc">
+    <div class="toc-label">// on this page</div>
+    <ul>
+      <li><a href="#requirements"><span class="num">00</span>Requirements</a></li>
+      <li><a href="#step-1"><span class="num">01</span>Install plugin</a></li>
+      <li><a href="#step-2"><span class="num">02</span>Configure</a></li>
+      <li><a href="#step-3"><span class="num">03</span>Forward port</a></li>
+      <li><a href="#step-4"><span class="num">04</span>Connect app</a></li>
+      <li><a href="#troubleshooting"><span class="num">??</span>Troubleshooting</a></li>
+    </ul>
+  </aside>
+
+  <div class="doc-content">
+
+    <!-- REQUIREMENTS -->
+    <div class="step" id="requirements">
+      <div class="step-header">
+        <div class="step-number">00</div>
+        <h2>Before you start</h2>
+      </div>
+      <div class="step-est">Read first</div>
+
+      <p>You'll need:</p>
+      <ul>
+        <li>A Minecraft server running <strong>Paper, Spigot, or Purpur</strong> on Minecraft <strong>1.20 or newer</strong></li>
+        <li>Access to your server's <code>plugins/</code> folder and the ability to restart the server</li>
+        <li>Access to your router's admin panel (for port forwarding, if your server is behind NAT)</li>
+        <li>An iPhone or iPad running iOS 17 or later</li>
+        <li>The <strong>PulsePanel</strong> app installed from the App Store</li>
+      </ul>
+
+      <div class="callout">
+        <div class="callout-label">tip</div>
+        <p>If you've used <strong>Adminium</strong>, <strong>ServerTap</strong>, or any similar plugin-and-app combo, the setup pattern here will look familiar. Drop a JAR, edit a config, sign in.</p>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step" id="step-1">
+      <div class="step-header">
+        <div class="step-number">01</div>
+        <h2>Install the PulseConnect plugin</h2>
+      </div>
+      <div class="step-est">~ 1 min</div>
+
+      <p>PulseConnect is the free server-side companion to the PulsePanel app. It's what listens on your server, exposes the data the app needs, and accepts your authenticated commands.</p>
+
+      <h3>Download</h3>
+      <p>Grab the latest <code>PulseConnect.jar</code> from the <a href="resources.html">Resources page</a>.</p>
+
+      <h3>Drop it in</h3>
+      <p>Move the JAR into your server's <code>plugins/</code> folder, then restart the server (a full stop/start, not <code>/reload</code>).</p>
+
+      <pre><span class="comment"># From your server directory:</span>
+mv ~/Downloads/PulseConnect.jar ./plugins/
+systemctl restart minecraft
+
+<span class="comment"># Or if you run the server manually:</span>
+./start.sh</pre>
+
+      <p>On first run, PulseConnect creates a default config at <code>plugins/PulseConnect/config.yml</code> and logs that it's been generated:</p>
+
+      <pre>[INFO] [PulseConnect] Default config generated at plugins/PulseConnect/config.yml
+[INFO] [PulseConnect] Edit your config and restart to enable the plugin.</pre>
+
+      <div class="callout warn">
+        <div class="callout-label">heads up</div>
+        <p>The plugin won't accept connections until you've set a secret in <code>config.yml</code> (next step). This is intentional — it prevents an unconfigured plugin from being reachable with default credentials.</p>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step" id="step-2">
+      <div class="step-header">
+        <div class="step-number">02</div>
+        <h2>Configure the plugin</h2>
+      </div>
+      <div class="step-est">~ 2 min</div>
+
+      <p>Open <code>plugins/PulseConnect/config.yml</code> in your editor of choice. The file is commented and most defaults are sensible — the only fields you <em>must</em> set are the <code>secret</code> and the <code>port</code>.</p>
+
+      <h3>Minimal working config</h3>
+      <pre><span class="key">port:</span> <span class="num">7070</span>
+<span class="key">secret:</span> <span class="str">"replace-this-with-a-strong-secret"</span>
+<span class="key">tls:</span> <span class="val">true</span>
+<span class="key">bind-address:</span> <span class="str">"0.0.0.0"</span></pre>
+
+      <h3>What each field does</h3>
+      <ul>
+        <li><strong><code>port</code></strong> — the TCP port PulseConnect listens on. Default <code>7070</code>. Pick anything you like, just make sure it's not already in use and not blocked by your hosting provider.</li>
+        <li><strong><code>secret</code></strong> — a server-internal value that the plugin uses to sign things. Treat it like a password. Use a long random string. <strong>You won't enter this in the app</strong> — the app uses regular account credentials (next steps).</li>
+        <li><strong><code>tls</code></strong> — enable TLS encryption between the app and plugin. Recommended <code>true</code> for any setup that's reachable from the internet.</li>
+        <li><strong><code>bind-address</code></strong> — what IP the plugin binds to. <code>0.0.0.0</code> means "listen on all interfaces." Use <code>127.0.0.1</code> if you only want local access.</li>
+      </ul>
+
+      <div class="callout">
+        <div class="callout-label">tip</div>
+        <p>Generate a strong secret quickly with <code>openssl rand -hex 32</code> in your terminal. Anything 32+ random characters is fine.</p>
+      </div>
+
+      <h3>Restart the server</h3>
+      <p>Once you've saved <code>config.yml</code>, restart the server again. You should see PulseConnect come online:</p>
+
+      <pre>[INFO] [PulseConnect] Loading config...
+[INFO] [PulseConnect] Listening on 0.0.0.0:7070 (TLS enabled)
+[INFO] [PulseConnect] Ready for connections.</pre>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step" id="step-3">
+      <div class="step-header">
+        <div class="step-number">03</div>
+        <h2>Forward the port</h2>
+      </div>
+      <div class="step-est">~ 1 min</div>
+
+      <p>If your server is hosted on a cloud provider (DigitalOcean, OVH, BisectHosting, etc.) with a public IP, <strong>you can probably skip this step</strong> — your server is already reachable. Confirm by trying to connect from the app first.</p>
+
+      <p>If your server runs at home or behind NAT, you need to forward your chosen port (<code>7070</code> by default) on your router so the app can reach it from outside your network.</p>
+
+      <h3>The general pattern</h3>
+      <ol>
+        <li>Log into your router's admin panel — typically <code>192.168.1.1</code> or <code>192.168.0.1</code> in your browser</li>
+        <li>Find the section called <strong>Port Forwarding</strong>, <strong>Virtual Servers</strong>, or <strong>NAT</strong></li>
+        <li>Add a rule: external port <code>7070</code> → internal IP of your server, internal port <code>7070</code>, protocol TCP</li>
+        <li>Save and apply</li>
+      </ol>
+
+      <div class="callout">
+        <div class="callout-label">tip</div>
+        <p>Your server's internal IP is typically something like <code>192.168.1.x</code>. On the server itself, run <code>ip a</code> (Linux) or check System Settings → Network (macOS).</p>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step" id="step-4">
+      <div class="step-header">
+        <div class="step-number">04</div>
+        <h2>Connect the app</h2>
+      </div>
+      <div class="step-est">~ 1 min</div>
+
+      <p>Open PulsePanel on your iPhone or iPad. You'll be taken to the sign-in screen.</p>
+
+      <h3>Fill in the connection details</h3>
+      <ul>
+        <li><strong>Server address</strong> — your server's public IP or hostname (e.g. <code>1.2.3.4</code>)</li>
+        <li><strong>Port</strong> — whatever you set in <code>config.yml</code> (default <code>7070</code>)</li>
+        <li><strong>Username</strong> — the account you created when you set up the plugin</li>
+        <li><strong>Password</strong> — the password for that account</li>
+      </ul>
+
+      <div class="callout">
+        <div class="callout-label">heads up</div>
+        <p>Account credentials are managed on the server side by the plugin, not by us. PulsePanel doesn't have its own user accounts — your credentials live on your server, and that's the only place you'll ever sign in.</p>
+      </div>
+
+      <p>Tap <strong>Sign in</strong>. The status indicator should turn green within a second or two:</p>
+
+      <pre>● Survival · connected · 28 ms</pre>
+
+      <p>From here, the dashboard, console, chat, players, worlds, files, and tickets are all live. You're done.</p>
+
+      <div class="callout">
+        <div class="callout-label">first time?</div>
+        <p>Take a minute to walk through each tab. Tap a player to see their inventory. Open the console to send a command. Edit a plugin's <code>config.yml</code> from the file manager. The app's faster than it looks.</p>
+      </div>
+    </div>
+
+    <!-- TROUBLESHOOTING -->
+    <div class="step" id="troubleshooting" style="background: transparent; border: none; padding: 24px 0;">
+      <div class="step-header">
+        <div class="step-number">??</div>
+        <h2>Troubleshooting</h2>
+      </div>
+      <div class="step-est">If something's not working</div>
+
+      <details class="trouble">
+        <summary>The app says "connection refused"</summary>
+        <div class="trouble-body">
+          <p>The plugin isn't running, or it's not reachable on the address/port you gave the app.</p>
+          <p>Check the server console — look for <code>[PulseConnect] Listening on...</code> after server start. If you don't see it, the plugin didn't load. Verify the JAR is in <code>plugins/</code> and the server fully restarted.</p>
+          <p>If the plugin is running, your port forward isn't working. Use a tool like <a href="https://canyouseeme.org">canyouseeme.org</a> to test whether port 7070 (or whatever you set) is reachable from outside your network.</p>
+        </div>
+      </details>
+
+      <details class="trouble">
+        <summary>The app says "authentication failed"</summary>
+        <div class="trouble-body">
+          <p>Your username or password is wrong. Try again carefully — watch for caps lock and trailing spaces if you copy-pasted.</p>
+          <p>If you forgot the credentials, you can reset them in <code>config.yml</code> on the server side and restart.</p>
+        </div>
+      </details>
+
+      <details class="trouble">
+        <summary>The app connects but the dashboard is empty</summary>
+        <div class="trouble-body">
+          <p>This usually means the plugin is on but the server is still starting. Wait 10–20 seconds and pull-to-refresh.</p>
+          <p>If it's still empty after a minute, check the server console for any <code>[PulseConnect]</code> error lines — there might be a config issue or a conflict with another plugin.</p>
+        </div>
+      </details>
+
+      <details class="trouble">
+        <summary>It works on my phone but not on my friend's phone</summary>
+        <div class="trouble-body">
+          <p>PulsePanel is designed for the server owner only — there's no support for handing app access to other staff at the moment. If your friend can't connect with your address and credentials, that's expected.</p>
+          <p>Multi-staff support may come in a future release.</p>
+        </div>
+      </details>
+
+      <details class="trouble">
+        <summary>Push notifications aren't arriving</summary>
+        <div class="trouble-body">
+          <p>First, make sure notifications are enabled for PulsePanel in iOS Settings → Notifications.</p>
+          <p>Inside the app, check Settings → Notifications and confirm the categories you care about are toggled on.</p>
+          <p>Push delivery can take a few seconds — Apple's normal range is sub-second to about 30 seconds. If nothing's arriving after several minutes, try toggling notifications off and on, then send a test event from the server (e.g. join the server yourself).</p>
+        </div>
+      </details>
+
+      <details class="trouble">
+        <summary>I'm still stuck</summary>
+        <div class="trouble-body">
+          <p>Email <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a> with what you tried and any error messages — server logs are especially helpful. We read every email.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- CTA -->
+    <div class="doc-cta">
+      <div class="doc-cta-content">
+        <h2>That's it — you're running the panel.</h2>
+        <p>Console, chat, players, worlds, files. All from your phone.</p>
+        <a href="index.html#download" class="btn btn-primary">Download on the App Store →</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-bars"><span></span><span></span><span></span><span></span></div>
+          PulsePanel
+        </a>
+        <p>A full Minecraft server admin app for iOS. Console, players, files, push — all from your phone.</p>
+        <div class="foot-status">All systems operational</div>
+      </div>
+
+      <div class="foot-col">
+        <h4>// product</h4>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#screens">Screens</a></li>
+          <li><a href="setup.html">Setup</a></li>
+          <li><a href="index.html#download">Download</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// resources</h4>
+        <ul>
+          <li><a href="resources.html">Documentation</a></li>
+          <li><a href="resources.html">Plugin download</a></li>
+          <li><a href="resources.html">Changelog</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// support</h4>
+        <ul>
+          <li><a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>© 2026 PulsePanel · All rights reserved</div>
+      <div class="foot-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="mailto:support@pulsepanelapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — PulsePanel</title>
+<meta name="description" content="PulsePanel's privacy policy: what we collect, what we don't, and how the system is designed to retain as little as possible.">
+
+<meta property="og:title" content="Privacy Policy — PulsePanel">
+<meta property="og:description" content="What we collect, what we don't, and how the system is designed to retain as little as possible.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pulsepanelapp.com/privacy.html">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a0e'/%3E%3Cg fill='%234ade80'%3E%3Crect x='8' y='14' width='3' height='4' rx='1'/%3E%3Crect x='13' y='10' width='3' height='12' rx='1'/%3E%3Crect x='18' y='12' width='3' height='8' rx='1'/%3E%3Crect x='23' y='8' width='3' height='16' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg-elev: #0a1117;
+    --bg-deep: #02060a;
+    --line: #1a2530;
+    --text: #e6f1ff;
+    --text-dim: #8896a8;
+    --text-faint: #4a5868;
+    --green: #4ade80;
+    --green-glow: rgba(74, 222, 128, 0.15);
+    --blue: #38bdf8;
+    --blue-glow: rgba(56, 189, 248, 0.15);
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Aurora glow */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 1200px 600px at 50% -10%, var(--green-glow), transparent),
+      radial-gradient(ellipse 800px 400px at 80% 40%, var(--blue-glow), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  /* === NAV === */
+  nav {
+    position: sticky; top: 16px;
+    z-index: 100;
+    margin: 0 32px;
+  }
+  .nav-inner {
+    max-width: 1216px; margin: 0 auto;
+    background: rgba(10, 17, 23, 0.8);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 16px; letter-spacing: -0.01em;
+    color: var(--text); text-decoration: none;
+  }
+  .logo-bars {
+    width: 22px; height: 22px;
+    display: flex; flex-direction: column; gap: 2px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-bars span {
+    height: 2px; background: var(--green);
+    border-radius: 2px;
+    box-shadow: 0 0 6px var(--green);
+    animation: barPulse 2s ease-in-out infinite;
+  }
+  .logo-bars span:nth-child(1) { width: 60%; animation-delay: 0s; }
+  .logo-bars span:nth-child(2) { width: 100%; animation-delay: 0.2s; }
+  .logo-bars span:nth-child(3) { width: 75%; animation-delay: 0.4s; }
+  .logo-bars span:nth-child(4) { width: 90%; animation-delay: 0.6s; }
+  @keyframes barPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: var(--bg-deep) !important;
+    padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+
+  /* === DOC HEADER === */
+  .doc-header {
+    text-align: center;
+    padding: 100px 32px 64px;
+  }
+  .doc-eyebrow {
+    display: inline-block;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 18px;
+  }
+  .doc-header h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05; font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .doc-meta {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    display: inline-flex; align-items: center; gap: 24px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .doc-meta span strong {
+    color: var(--text-dim);
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  .doc-meta .sep { color: var(--text-faint); opacity: 0.5; }
+
+  /* === DOC CONTENT === */
+  .doc-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px 96px;
+    position: relative;
+    z-index: 1;
+  }
+  .doc-wrap > p,
+  .doc-wrap > ul,
+  .doc-wrap > ol {
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .doc-wrap > p:first-of-type {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text);
+    padding: 24px 28px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--green);
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+  .doc-wrap p {
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+  .doc-wrap h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 64px 0 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  .doc-wrap h2::before {
+    content: '//';
+    position: absolute;
+    top: 24px;
+    left: -32px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .doc-wrap h3 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 36px 0 14px;
+  }
+  .doc-wrap ul, .doc-wrap ol {
+    padding-left: 24px;
+    margin-bottom: 20px;
+  }
+  .doc-wrap li {
+    margin-bottom: 10px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .doc-wrap li::marker { color: var(--green); }
+  .doc-wrap a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74, 222, 128, 0.3);
+    transition: border-color 0.15s;
+  }
+  .doc-wrap a:hover {
+    border-bottom-color: var(--green);
+  }
+  .doc-wrap strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .doc-wrap code {
+    font-family: var(--mono);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 13px;
+    color: var(--green);
+  }
+
+  .callout {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 32px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .callout::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+  .callout-label {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .callout-label::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .callout ul {
+    padding-left: 20px;
+    margin: 0;
+  }
+  .callout li {
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .callout li:last-child { margin-bottom: 0; }
+  .callout li::marker { color: var(--green); }
+
+  .doc-divider {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 56px 0;
+  }
+
+  .contact-block {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    margin: 48px 0;
+  }
+  .contact-block a {
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--green);
+    border: none;
+    display: inline-block;
+    padding: 12px 24px;
+    background: var(--green-glow);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  .contact-block a:hover {
+    background: rgba(74, 222, 128, 0.2);
+  }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 64px 0 32px;
+    color: var(--text-faint); font-size: 13px;
+    margin-top: 40px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+  }
+  .foot-col h4 {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .foot-col ul { list-style: none; padding: 0; }
+  .foot-col li { margin-bottom: 10px; }
+  .foot-col a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+    border: none;
+  }
+  .foot-col a:hover { color: var(--green); }
+  .foot-brand .logo { margin-bottom: 16px; }
+  .foot-brand p {
+    color: var(--text-dim); font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+  .foot-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .foot-status::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .foot-bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap;
+    gap: 16px; align-items: center;
+    padding-top: 32px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+  .foot-bottom-links { display: flex; gap: 24px; }
+  .foot-bottom-links a { color: var(--text-faint); text-decoration: none; border: none; }
+  .foot-bottom-links a:hover { color: var(--text-dim); }
+
+  @media (max-width: 940px) {
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .doc-wrap h2::before { display: none; }
+    .doc-header { padding: 60px 24px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-bars">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      PulsePanel
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#screens">Screens</a>
+      <a href="setup.html">Setup</a>
+      <a href="resources.html">Resources</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#download" class="nav-cta">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header class="doc-header">
+  <div class="doc-eyebrow">// legal · policy</div>
+  <h1>Privacy Policy</h1>
+  <p class="doc-meta">
+    <span><strong>Last updated:</strong>May 3, 2026</span>
+    <span class="sep">·</span>
+    <span><strong>Effective:</strong>May 3, 2026</span>
+  </p>
+</header>
+
+<div class="doc-wrap">
+
+<p>This Privacy Policy explains what information PulsePanel collects, how it is used, and the choices you have. It is written in plain English on purpose &mdash; privacy policies should be readable, not legalese.</p>
+
+<p>If you have questions about anything below, email <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a>.</p>
+
+<h2>Who this policy covers</h2>
+
+<p>This policy applies to:</p>
+
+<ul>
+<li>The <strong>PulsePanel</strong> iOS application, distributed through the Apple App Store.</li>
+<li>The <strong>PulseConnect</strong> plugin, distributed for free for use on Minecraft servers operated by you or your team.</li>
+<li>The <strong>PulseRelay</strong> notification service operated at <code>push.pulsepanelapp.com</code>.</li>
+</ul>
+
+<p>In this policy, &ldquo;we,&rdquo; &ldquo;us,&rdquo; and &ldquo;our&rdquo; refer to the operators of PulsePanel. &ldquo;You&rdquo; refers to the person using the app.</p>
+
+<h2>The short version</h2>
+
+<div class="callout">
+<div class="callout-label">summary</div>
+<ul>
+<li>We do not sell your data. We do not share your data with advertisers. There are no advertisements or tracking SDKs in PulsePanel.</li>
+<li>The app talks directly to <strong>your</strong> Minecraft server. We never see your server&rsquo;s data, your players&rsquo; data, or your administrative actions.</li>
+<li>We operate one piece of shared infrastructure &mdash; a notification relay &mdash; and it is designed to retain as little as possible. It does not store your device token, the contents of your notifications, your IP address, or any user identifiers in any database or log file.</li>
+<li>Your account credentials, server connection details, and authentication tokens live on your device. They are not transmitted to us.</li>
+</ul>
+</div>
+
+<h2>What information is involved, and where it lives</h2>
+
+<p>PulsePanel has three components, and each handles data differently. The clearest way to explain it is to walk through each one.</p>
+
+<h3>1. The PulsePanel iOS app (on your device)</h3>
+
+<p>The app stores the following on your iPhone or iPad. None of this is transmitted to us:</p>
+
+<ul>
+<li><strong>Server connection details</strong> &mdash; hostname, port, and TLS preference for each Minecraft server you connect to. Stored in the app&rsquo;s local preferences.</li>
+<li><strong>Authentication tokens</strong> (JWTs) &mdash; issued by your Minecraft server&rsquo;s PulseConnect plugin when you log in. Stored in the iOS Keychain, which is encrypted by the operating system.</li>
+<li><strong>App preferences</strong> &mdash; UI settings, notification preferences, recently viewed items, and similar interface state.</li>
+<li><strong>Cached data from your server</strong> &mdash; recently viewed players, ticket lists, console output, and other operational data fetched from your Minecraft server while the app is in use. This is held in memory and on disk to make the app responsive, and is associated only with the server it came from.</li>
+</ul>
+
+<p>You can erase all of this at any time by signing out, deleting individual server connections, or uninstalling the app.</p>
+
+<h3>2. The PulseConnect plugin (on your Minecraft server)</h3>
+
+<p>The PulseConnect plugin runs on a Minecraft server that <strong>you</strong> operate. It is not hosted by us. The plugin stores its data in a local SQLite database and configuration files on your server. This data includes:</p>
+
+<ul>
+<li>Administrative user accounts you create</li>
+<li>Authentication tokens issued to those accounts</li>
+<li>Tickets, audit logs, and session history</li>
+<li>Device tokens for any devices that have registered to receive push notifications from your server</li>
+</ul>
+
+<p>Because the plugin runs on your hardware, <strong>we have no access to this data</strong>. It is governed by your own server&rsquo;s operational practices, not by this policy. If you operate a server that other people use, you are the controller of their data on that server.</p>
+
+<h3>3. The PulseRelay notification service (operated by us)</h3>
+
+<p>When your Minecraft server needs to deliver a push notification to a phone, it sends an HTTPS request to our notification relay at <code>push.pulsepanelapp.com</code>. The relay&rsquo;s only job is to forward that notification to Apple&rsquo;s Push Notification service, which then delivers it to the device.</p>
+
+<p>Here is exactly what happens:</p>
+
+<ol>
+<li>The plugin sends a request containing a device token and the notification contents (title, body, and metadata such as the relevant ticket or player name).</li>
+<li>The relay verifies the request, signs it with our Apple authentication key, and forwards it to Apple over HTTP/2.</li>
+<li>Apple delivers the notification to the device.</li>
+<li>The relay receives Apple&rsquo;s success or failure response and passes it back to the plugin.</li>
+</ol>
+
+<p>The relay does not write any of this to a database. It does not write the device token, the notification contents, the source server, or your IP address to any log file we maintain. The data exists in the relay&rsquo;s memory only for the milliseconds required to forward it, then is discarded.</p>
+
+<p>The only persistent items on the relay server are:</p>
+
+<ul>
+<li>Our Apple Push Notification authentication key, which is our own credential and contains no user data.</li>
+<li>Standard operating system service logs (e.g., service start and stop times). These do not contain user data.</li>
+</ul>
+
+<h3>What our hosting and delivery providers may see</h3>
+
+<p>We use third-party infrastructure to operate the relay and deliver notifications. These providers operate their own services under their own privacy policies, and we cannot control their internal logging:</p>
+
+<ul>
+<li><strong>DigitalOcean</strong> hosts the relay server. As is standard for any internet host, network metadata associated with connections to our relay (such as source IP addresses) may be processed by their infrastructure.</li>
+<li><strong>Cloudflare</strong> provides DNS for our domain, and may process DNS query metadata.</li>
+<li><strong>Apple Push Notification service</strong> delivers notifications. Apple processes the device token and notification payload as part of delivery. See Apple&rsquo;s privacy policy for details.</li>
+</ul>
+
+<p>We do not enrich, retain, or correlate any of this metadata ourselves.</p>
+
+<h2>What we do not collect</h2>
+
+<p>To be unambiguous about what is <strong>not</strong> happening:</p>
+
+<ul>
+<li>We do not have analytics SDKs, advertising SDKs, crash reporting services, or any other third-party data collection tools embedded in the PulsePanel app.</li>
+<li>We do not track your usage of the app.</li>
+<li>We do not have user accounts on our infrastructure. There is no &ldquo;PulsePanel account.&rdquo; Your account exists only on your own Minecraft server.</li>
+<li>We do not receive copies of your players&rsquo; chat messages, server console output, file contents, ticket contents, or any other operational data from your server. That data is exchanged directly between the app and your server, with no intermediary.</li>
+<li>We do not collect device identifiers, advertising identifiers, location data, contacts, photos, or any other device-level data.</li>
+</ul>
+
+<h2>Children&rsquo;s privacy</h2>
+
+<p>PulsePanel is a server administration tool intended for adults who operate Minecraft servers. It is not directed at children under 13, and we do not knowingly collect any information from children. If you believe a child has somehow used the app in a way that resulted in data being sent to us, contact us and we will investigate.</p>
+
+<h2>Security</h2>
+
+<ul>
+<li>All network traffic to our relay is encrypted in transit using TLS, with certificates issued by Let&rsquo;s Encrypt and renewed automatically.</li>
+<li>The Apple authentication key on the relay is stored with restrictive file system permissions and is readable only by the service account that operates the relay.</li>
+<li>The relay process runs as a non-administrative user.</li>
+<li>Authentication between the plugin and the relay uses a shared secret that you control.</li>
+</ul>
+
+<p>No system is perfectly secure, but the relay is designed to minimize what could be exposed even in a worst-case scenario: there is no user database to breach, no stored tokens to leak, and no archived notifications to compromise.</p>
+
+<h2>Your rights and choices</h2>
+
+<p>Because the data that exists about you lives almost entirely on your own device and your own server, the controls are also there:</p>
+
+<ul>
+<li><strong>Stop using the app</strong>: deleting PulsePanel removes all locally stored data, including authentication tokens and cached server data.</li>
+<li><strong>Disable push notifications</strong>: turn them off in iOS Settings, or remove your device&rsquo;s registration from your Minecraft server&rsquo;s PulseConnect dashboard.</li>
+<li><strong>Remove a server connection</strong>: delete it from the app to clear its credentials and cached data from your device.</li>
+<li><strong>Erase server-side data</strong>: contact the operator of the Minecraft server you use, since they control that data.</li>
+</ul>
+
+<p>If you are in a jurisdiction that grants additional privacy rights (such as the EU&rsquo;s GDPR, the UK GDPR, or California&rsquo;s CCPA), those rights apply where applicable. Because we do not maintain user accounts or databases that contain your information, requests to access or delete data from our infrastructure will generally have nothing to act on, but we will respond honestly and direct you to the appropriate party (typically the operator of your Minecraft server) if data exists elsewhere.</p>
+
+<h2>Changes to this policy</h2>
+
+<p>If we make material changes to this policy, we will update the &ldquo;Last updated&rdquo; date at the top and, where appropriate, surface the change in the app. Routine clarifications and editorial improvements may be made without notice.</p>
+
+<h2>Contact</h2>
+
+<p>Questions, concerns, or requests can be sent to:</p>
+
+<div class="contact-block">
+  <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a>
+</div>
+
+<p>We read every email, and we will respond within a reasonable time.</p>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-bars"><span></span><span></span><span></span><span></span></div>
+          PulsePanel
+        </a>
+        <p>A full Minecraft server admin app for iOS. Console, players, files, push — all from your phone.</p>
+        <div class="foot-status">All systems operational</div>
+      </div>
+
+      <div class="foot-col">
+        <h4>// product</h4>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#screens">Screens</a></li>
+          <li><a href="setup.html">Setup</a></li>
+          <li><a href="index.html#download">Download</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// resources</h4>
+        <ul>
+          <li><a href="resources.html">Documentation</a></li>
+          <li><a href="resources.html">Plugin download</a></li>
+          <li><a href="resources.html">Changelog</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// support</h4>
+        <ul>
+          <li><a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>© 2026 PulsePanel · All rights reserved</div>
+      <div class="foot-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="mailto:support@pulsepanelapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

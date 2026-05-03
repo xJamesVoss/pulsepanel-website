@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PulsePanel — A Minecraft server admin app for iOS</title>
+<meta name="description" content="PulsePanel is a full Minecraft server admin app for iOS. Live console, chat, players, worlds, file manager, push notifications — all from your phone.">
+
+<meta property="og:title" content="PulsePanel — A Minecraft server admin app for iOS">
+<meta property="og:description" content="Live console, chat, players, worlds, file manager, push notifications — all from your phone.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pulsepanelapp.com/">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a0e'/%3E%3Cg fill='%234ade80'%3E%3Crect x='8' y='14' width='3' height='4' rx='1'/%3E%3Crect x='13' y='10' width='3' height='12' rx='1'/%3E%3Crect x='18' y='12' width='3' height='8' rx='1'/%3E%3Crect x='23' y='8' width='3' height='16' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg-elev: #0a1117;
+    --bg-deep: #02060a;
+    --line: #1a2530;
+    --text: #e6f1ff;
+    --text-dim: #8896a8;
+    --text-faint: #4a5868;
+    --green: #4ade80;
+    --green-deep: #22c55e;
+    --green-glow: rgba(74, 222, 128, 0.15);
+    --blue: #38bdf8;
+    --blue-glow: rgba(56, 189, 248, 0.15);
+    --amber: #fbbf24;
+    --red: #f87171;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 1200px 600px at 50% -10%, var(--green-glow), transparent),
+      radial-gradient(ellipse 800px 400px at 80% 40%, var(--blue-glow), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  /* === NAV === */
+  nav {
+    position: sticky; top: 16px;
+    z-index: 100;
+    margin: 0 32px;
+  }
+  .nav-inner {
+    max-width: 1216px; margin: 0 auto;
+    background: rgba(10, 17, 23, 0.8);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 16px; letter-spacing: -0.01em;
+    color: var(--text); text-decoration: none;
+  }
+  .logo-bars {
+    width: 22px; height: 22px;
+    display: flex; flex-direction: column; gap: 2px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-bars span {
+    height: 2px; background: var(--green);
+    border-radius: 2px;
+    box-shadow: 0 0 6px var(--green);
+    animation: barPulse 2s ease-in-out infinite;
+  }
+  .logo-bars span:nth-child(1) { width: 60%; animation-delay: 0s; }
+  .logo-bars span:nth-child(2) { width: 100%; animation-delay: 0.2s; }
+  .logo-bars span:nth-child(3) { width: 75%; animation-delay: 0.4s; }
+  .logo-bars span:nth-child(4) { width: 90%; animation-delay: 0.6s; }
+  @keyframes barPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: var(--bg-deep) !important;
+    padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+
+  /* === HERO === */
+  .hero { padding: 100px 0 80px; text-align: center; }
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-glow);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    color: var(--green);
+    padding: 6px 14px; border-radius: 100px;
+    font-family: var(--mono); font-size: 12px;
+    margin-bottom: 32px;
+  }
+  .hero-pill::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 10px var(--green);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .hero h1 {
+    font-size: clamp(48px, 7.5vw, 88px);
+    line-height: 1; font-weight: 700;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    max-width: 900px; margin-left: auto; margin-right: auto;
+  }
+  .hero h1 .glow {
+    color: var(--green);
+    text-shadow: 0 0 30px var(--green-glow);
+  }
+  .hero-sub {
+    font-size: 19px; color: var(--text-dim);
+    max-width: 580px; margin: 0 auto 40px;
+    line-height: 1.55;
+  }
+  .hero-ctas {
+    display: flex; gap: 12px; justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 24px; border-radius: 10px;
+    text-decoration: none; font-weight: 600; font-size: 15px;
+    transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--green); color: var(--bg-deep);
+    box-shadow: 0 0 30px var(--green-glow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 40px var(--green-glow);
+  }
+  .btn-ghost {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+  /* === MONITORING DASHBOARD === */
+  .monitor {
+    margin-top: 80px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 50px 100px rgba(0,0,0,0.4), 0 0 60px var(--green-glow);
+    text-align: left;
+  }
+  .monitor-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 20px;
+  }
+  .monitor-title { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .monitor-status {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    background: var(--green-glow);
+    padding: 4px 10px; border-radius: 100px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .monitor-status::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .monitor-meta { font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
+
+  .monitor-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .chart-card {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    grid-row: span 2;
+  }
+  .chart-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+  }
+  .chart-label {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .chart-value {
+    font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+    color: var(--green);
+  }
+  .chart-delta {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--green);
+    margin-left: 6px;
+  }
+  .chart-svg { width: 100%; height: 110px; }
+
+  .stat-card {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .stat-card-label {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .stat-card-value { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+  .stat-card-value.green { color: var(--green); }
+  .stat-card-value.blue { color: var(--blue); }
+  .stat-card-value.amber { color: var(--amber); }
+  .stat-card-bar {
+    margin-top: 8px;
+    height: 4px; background: var(--bg-elev); border-radius: 2px;
+    overflow: hidden;
+  }
+  .stat-card-bar div { height: 100%; border-radius: 2px; }
+
+  .event-log {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .event-log-head {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .event-row {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 80px 100px 1fr auto;
+    gap: 16px; align-items: center;
+    font-family: var(--mono); font-size: 12px;
+  }
+  .event-row:last-child { border-bottom: none; }
+  .event-time { color: var(--text-faint); }
+  .event-level {
+    text-transform: uppercase; font-size: 10px;
+    padding: 2px 8px; border-radius: 4px;
+    font-weight: 600; letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .event-level.info { background: rgba(56, 189, 248, 0.15); color: var(--blue); }
+  .event-level.warn { background: rgba(251, 191, 36, 0.15); color: var(--amber); }
+  .event-level.error { background: rgba(248, 113, 113, 0.15); color: var(--red); }
+  .event-level.push { background: var(--green-glow); color: var(--green); }
+  .event-msg { color: var(--text); }
+  .event-meta { color: var(--text-faint); font-size: 11px; }
+
+  /* === SECTION === */
+  .section { padding: 120px 0; }
+  .section-head { text-align: center; margin-bottom: 80px; }
+  .section-eyebrow {
+    display: inline-block;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 18px;
+  }
+  .section-title {
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.1; font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    max-width: 800px; margin-left: auto; margin-right: auto;
+  }
+  .section-title .glow { color: var(--green); }
+  .section-sub {
+    font-size: 18px; color: var(--text-dim);
+    max-width: 580px; margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* === FEATURES === */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .feature {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .feature:hover {
+    border-color: rgba(74, 222, 128, 0.3);
+    transform: translateY(-2px);
+  }
+  .feature:hover::before { opacity: 1; }
+  .feature-icon {
+    width: 40px; height: 40px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    color: var(--green);
+  }
+  .feature h3 {
+    font-size: 18px; font-weight: 600;
+    letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .feature p {
+    color: var(--text-dim); font-size: 14px; line-height: 1.55;
+  }
+  .feature-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 16px;
+    font-family: var(--mono); font-size: 10px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .feature-status::before {
+    content: ''; width: 5px; height: 5px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 4px var(--green);
+  }
+
+  /* === SHARED PHONE INTERIOR STYLES === */
+  .ps {
+    width: 100%; height: 100%;
+    padding: 36px 12px 12px;
+    display: flex; flex-direction: column;
+    gap: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 11px;
+  }
+  .ps-status-bar {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 8px;
+    color: var(--text-faint);
+    padding: 0 4px 4px;
+  }
+  .ps-status-bar .live::before {
+    content: '●'; color: var(--green);
+    margin-right: 4px;
+    text-shadow: 0 0 4px var(--green);
+  }
+  .ps-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  .ps-card-l {
+    font-family: var(--mono); font-size: 7px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .ps-card-v {
+    font-size: 14px; font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .ps-card-v.green { color: var(--green); }
+  .ps-card-v.blue { color: var(--blue); }
+  .ps-card-v.amber { color: var(--amber); }
+  .ps-card-v .unit { font-size: 8px; font-weight: 400; color: var(--text-faint); }
+  .ps-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .ps-spark { height: 24px; margin-top: 4px; }
+  .ps-bar {
+    height: 3px; background: var(--bg); border-radius: 2px;
+    overflow: hidden; margin-top: 6px;
+  }
+  .ps-bar div { height: 100%; border-radius: 2px; }
+  .ps-console {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px;
+    font-family: var(--mono);
+    font-size: 7px; line-height: 1.6;
+    flex: 1;
+    overflow: hidden;
+  }
+  .ps-console .t { color: var(--text-faint); }
+  .ps-console .info { color: var(--blue); }
+  .ps-console .warn { color: var(--amber); }
+  .ps-console .err { color: var(--red); }
+  .ps-console .push { color: var(--green); }
+  .ps-chat-line { font-size: 8px; line-height: 1.6; padding: 1px 0; }
+  .ps-chat-line .name { color: var(--green); font-weight: 500; }
+  .ps-chat-line .name.staff { color: var(--blue); }
+  .ps-chat-line .msg { color: var(--text-dim); }
+  .ps-file-row {
+    font-family: var(--mono);
+    font-size: 7.5px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    padding: 1px 4px;
+  }
+  .ps-file-row.dir { color: var(--blue); }
+  .ps-file-row.editing { background: rgba(74,222,128,0.08); color: var(--green); border-left: 1px solid var(--green); padding-left: 3px; }
+  .ps-yaml {
+    font-family: var(--mono);
+    font-size: 7px; line-height: 1.55;
+  }
+  .ps-yaml .ln { color: var(--text-faint); padding-right: 4px; }
+  .ps-yaml .key { color: var(--blue); }
+  .ps-yaml .val { color: var(--green); }
+  .ps-yaml .num { color: var(--amber); }
+  .ps-tab-bar {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    padding: 6px 0 0;
+    border-top: 1px solid var(--line);
+    margin-top: auto;
+  }
+  .ps-tab {
+    text-align: center; font-family: var(--mono);
+    font-size: 6px; color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 2px 0;
+  }
+  .ps-tab.active { color: var(--green); }
+  .ps-tab.active::before {
+    content: '●'; display: block; font-size: 6px;
+    margin-bottom: 1px; text-shadow: 0 0 3px var(--green);
+  }
+
+  /* === SCREENS CAROUSEL === */
+  .screens-carousel {
+    position: relative;
+    padding: 40px 0 64px;
+  }
+  .screens-carousel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 700px 350px at 50% 50%, var(--green-glow), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .carousel-viewport {
+    position: relative;
+    height: 600px;
+    overflow: hidden;
+    perspective: 1600px;
+    z-index: 1;
+  }
+  .carousel-track {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-phone {
+    position: absolute;
+    width: 280px;
+    aspect-ratio: 9/19.5;
+    background: #000;
+    border: 8px solid #1a2530;
+    border-radius: 40px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.04) inset,
+      0 30px 60px -15px rgba(0,0,0,0.6),
+      0 60px 120px -30px rgba(0,0,0,0.5);
+  }
+  .carousel-phone.active {
+    transform: translateX(0) scale(1);
+    z-index: 5;
+    opacity: 1;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.04) inset,
+      0 40px 80px -20px rgba(0,0,0,0.7),
+      0 80px 140px -30px rgba(0,0,0,0.5),
+      0 0 100px rgba(74, 222, 128, 0.15);
+  }
+  .carousel-phone.prev {
+    transform: translateX(-280px) scale(0.78) rotateY(20deg);
+    z-index: 3; opacity: 0.6;
+  }
+  .carousel-phone.next {
+    transform: translateX(280px) scale(0.78) rotateY(-20deg);
+    z-index: 3; opacity: 0.6;
+  }
+  .carousel-phone.far-prev {
+    transform: translateX(-440px) scale(0.6) rotateY(28deg);
+    z-index: 2; opacity: 0.25; pointer-events: none;
+  }
+  .carousel-phone.far-next {
+    transform: translateX(440px) scale(0.6) rotateY(-28deg);
+    z-index: 2; opacity: 0.25; pointer-events: none;
+  }
+  .carousel-phone.hidden {
+    transform: translateX(0) scale(0.4);
+    opacity: 0; pointer-events: none; z-index: 1;
+  }
+  .carousel-phone:hover.active {
+    transform: translateX(0) scale(1.02);
+  }
+  .carousel-phone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .carousel-phone.active::after {
+    content: 'Tap to enlarge';
+    position: absolute;
+    bottom: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s 0.2s;
+  }
+  .carousel-phone.active:hover::after { opacity: 1; }
+
+  .carousel-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 32px;
+    position: relative;
+    z-index: 10;
+  }
+  .carousel-arrow {
+    width: 44px; height: 44px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--mono);
+  }
+  .carousel-arrow:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-glow);
+  }
+  .carousel-dots { display: flex; gap: 8px; }
+  .carousel-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--line);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+  }
+  .carousel-dot.active {
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    width: 24px;
+    border-radius: 4px;
+  }
+  .carousel-dot:hover:not(.active) { background: var(--text-faint); }
+
+  .carousel-caption {
+    text-align: center;
+    margin-top: 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .carousel-caption-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 6px;
+  }
+  .carousel-caption-title {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .carousel-caption-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    max-width: 48ch;
+    margin: 0 auto;
+  }
+
+  /* === LIGHTBOX === */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 10, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 32px;
+  }
+  .lightbox.open { opacity: 1; pointer-events: auto; }
+  .lightbox-close {
+    position: absolute;
+    top: 24px; right: 24px;
+    width: 44px; height: 44px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 20px;
+    z-index: 1010;
+  }
+  .lightbox-close:hover { border-color: var(--red); color: var(--red); }
+  .lightbox-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px; height: 56px;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 24px;
+    z-index: 1010;
+  }
+  .lightbox-arrow:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-glow);
+  }
+  .lightbox-arrow.prev { left: 32px; }
+  .lightbox-arrow.next { right: 32px; }
+  .lightbox-content {
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .lightbox-phone {
+    width: 360px;
+    aspect-ratio: 9/19.5;
+    background: #000;
+    border: 10px solid #1a2530;
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.04) inset,
+      0 50px 100px rgba(0,0,0,0.6),
+      0 0 120px rgba(74, 222, 128, 0.2);
+    flex-shrink: 0;
+  }
+  .lightbox-phone img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .lightbox-info { text-align: center; max-width: 480px; }
+  .lightbox-info-eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 8px;
+  }
+  .lightbox-info-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .lightbox-info-desc { color: var(--text-dim); font-size: 15px; }
+  .lightbox-counter {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+  }
+
+  /* === HOW IT WORKS — server rack visual === */
+  .rack {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    counter-reset: step;
+  }
+  .rack-item {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .rack-head {
+    background: var(--bg-deep);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .rack-head .rack-num { color: var(--green); font-weight: 600; }
+  .rack-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--green);
+  }
+  .rack-status::before {
+    content: ''; width: 5px; height: 5px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 4px var(--green);
+  }
+  .rack-body { padding: 28px 24px; }
+  .rack-body h3 {
+    font-size: 22px; font-weight: 600;
+    letter-spacing: -0.02em; margin-bottom: 12px;
+  }
+  .rack-body p {
+    color: var(--text-dim); font-size: 15px;
+    line-height: 1.55; margin-bottom: 20px;
+  }
+  .rack-body code {
+    font-family: var(--mono);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 12px; color: var(--green);
+  }
+  .rack-output {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: var(--mono);
+    font-size: 11px; line-height: 1.7;
+    color: var(--text-dim);
+  }
+  .rack-output .green { color: var(--green); }
+  .rack-output .blue { color: var(--blue); }
+
+  /* === FAQ === */
+  .faq-list { max-width: 800px; margin: 0 auto; }
+  .faq-item {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .faq-item:hover { border-color: rgba(74, 222, 128, 0.2); }
+  .faq-q {
+    padding: 20px 24px;
+    font-size: 16px; font-weight: 600;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .faq-q-num {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--green); font-weight: 600;
+  }
+  .faq-a {
+    padding: 0 24px 20px 60px;
+    color: var(--text-dim); font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* === CTA === */
+  .cta {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 80px 40px;
+    text-align: center;
+    margin: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, var(--green-glow), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content { position: relative; }
+  .cta h2 {
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.1; font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .cta h2 .glow { color: var(--green); }
+  .cta p {
+    color: var(--text-dim); font-size: 18px;
+    margin-bottom: 36px;
+  }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 64px 0 32px;
+    color: var(--text-faint); font-size: 13px;
+    margin-top: 40px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+  }
+  .foot-col h4 {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .foot-col ul { list-style: none; }
+  .foot-col li { margin-bottom: 10px; }
+  .foot-col a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+  }
+  .foot-col a:hover { color: var(--green); }
+  .foot-brand .logo { margin-bottom: 16px; }
+  .foot-brand p {
+    color: var(--text-dim); font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+  .foot-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .foot-status::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .foot-bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap;
+    gap: 16px; align-items: center;
+    padding-top: 32px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+  .foot-bottom-links { display: flex; gap: 24px; }
+  .foot-bottom-links a { color: var(--text-faint); text-decoration: none; }
+  .foot-bottom-links a:hover { color: var(--text-dim); }
+
+  @media (max-width: 940px) {
+    .monitor-grid { grid-template-columns: 1fr 1fr; }
+    .chart-card { grid-column: span 2; grid-row: span 1; }
+    .features { grid-template-columns: 1fr; }
+    .rack { grid-template-columns: 1fr; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .event-row { grid-template-columns: 70px 70px 1fr; gap: 8px; }
+    .event-meta { display: none; }
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .carousel-viewport { height: 540px; perspective: none; }
+    .carousel-phone.prev,
+    .carousel-phone.next,
+    .carousel-phone.far-prev,
+    .carousel-phone.far-next {
+      transform: translateX(0) scale(0.4);
+      opacity: 0;
+    }
+    .carousel-phone.active { transform: translateX(0) scale(1); }
+    .lightbox-phone { width: 280px; }
+    .lightbox-arrow { width: 44px; height: 44px; }
+    .lightbox-arrow.prev { left: 12px; }
+    .lightbox-arrow.next { right: 12px; }
+    .lightbox { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-bars">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      PulsePanel
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#screens">Screens</a>
+      <a href="setup.html">Setup</a>
+      <a href="resources.html">Resources</a>
+      <a href="#faq">FAQ</a>
+      <a href="#download" class="nav-cta">Download</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-pill">▸ All systems operational</div>
+    <h1>Your server,<br>under <span class="glow">observation.</span></h1>
+    <p class="hero-sub">PulsePanel is a full Minecraft server admin app for iOS. Live console, players, worlds, push notifications, real-time monitoring — all from your phone.</p>
+    <div class="hero-ctas">
+      <a href="#download" class="btn btn-primary">Download on the App Store →</a>
+      <a href="#features" class="btn btn-ghost">See features</a>
+    </div>
+
+    <div class="monitor">
+      <div class="monitor-head">
+        <div class="monitor-title">
+          <span>Survival</span>
+          <span class="monitor-status">Live</span>
+        </div>
+        <div class="monitor-meta">28ms · v1.21.4 · uptime 4d 12h</div>
+      </div>
+
+      <div class="monitor-grid">
+        <div class="chart-card">
+          <div class="chart-head">
+            <div>
+              <div class="chart-label">TPS · last 60s</div>
+              <div class="chart-value">19.94 <span class="chart-delta">↑ 0.2</span></div>
+            </div>
+            <div class="chart-label" style="text-align: right;">Target: 20</div>
+          </div>
+          <svg class="chart-svg" viewBox="0 0 400 110" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="grad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#4ade80" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#4ade80" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,80 L20,75 L40,72 L60,68 L80,70 L100,60 L120,55 L140,50 L160,52 L180,45 L200,40 L220,38 L240,42 L260,30 L280,25 L300,28 L320,20 L340,18 L360,22 L380,15 L400,12 L400,110 L0,110 Z" fill="url(#grad)"/>
+            <path d="M0,80 L20,75 L40,72 L60,68 L80,70 L100,60 L120,55 L140,50 L160,52 L180,45 L200,40 L220,38 L240,42 L260,30 L280,25 L300,28 L320,20 L340,18 L360,22 L380,15 L400,12" fill="none" stroke="#4ade80" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="stat-card">
+          <div><div class="stat-card-label">Players</div><div class="stat-card-value blue">23</div></div>
+          <div class="stat-card-bar"><div style="width: 23%; background: var(--blue);"></div></div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-card-label">Memory</div><div class="stat-card-value amber">4.2GB</div></div>
+          <div class="stat-card-bar"><div style="width: 52%; background: var(--amber);"></div></div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-card-label">CPU</div><div class="stat-card-value green">28%</div></div>
+          <div class="stat-card-bar"><div style="width: 28%; background: var(--green);"></div></div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-card-label">Network</div><div class="stat-card-value blue">2.1<span style="font-size: 12px; color: var(--text-faint); font-weight: 400;">mbps</span></div></div>
+          <div class="stat-card-bar"><div style="width: 21%; background: var(--blue);"></div></div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-card-label">Uptime</div><div class="stat-card-value green">99.9<span style="font-size: 12px; color: var(--text-faint); font-weight: 400;">%</span></div></div>
+          <div class="stat-card-bar"><div style="width: 99%; background: var(--green);"></div></div>
+        </div>
+        <div class="stat-card">
+          <div><div class="stat-card-label">Push</div><div class="stat-card-value green">218<span style="font-size: 12px; color: var(--text-faint); font-weight: 400;">ms</span></div></div>
+          <div class="stat-card-bar"><div style="width: 12%; background: var(--green);"></div></div>
+        </div>
+      </div>
+
+      <div class="event-log">
+        <div class="event-log-head">
+          <span>Event log · live</span>
+          <span>Last 5 events</span>
+        </div>
+        <div class="event-row">
+          <span class="event-time">12:42:08</span>
+          <span class="event-level info">INFO</span>
+          <span class="event-msg">Steve_42 joined the server</span>
+          <span class="event-meta">76.18.x.x</span>
+        </div>
+        <div class="event-row">
+          <span class="event-time">12:41:32</span>
+          <span class="event-level push">PUSH</span>
+          <span class="event-msg">Notification sent · keyword "griefing"</span>
+          <span class="event-meta">218ms</span>
+        </div>
+        <div class="event-row">
+          <span class="event-time">12:39:15</span>
+          <span class="event-level warn">WARN</span>
+          <span class="event-msg">Tick took 32ms · monitoring</span>
+          <span class="event-meta">Survival</span>
+        </div>
+        <div class="event-row">
+          <span class="event-time">12:34:01</span>
+          <span class="event-level error">ERROR</span>
+          <span class="event-msg">NullPointerException · WorldEdit:142</span>
+          <span class="event-meta">stack saved</span>
+        </div>
+        <div class="event-row">
+          <span class="event-time">12:30:00</span>
+          <span class="event-level info">INFO</span>
+          <span class="event-msg">Auto-backup completed</span>
+          <span class="event-meta">2.4GB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">// capabilities</div>
+      <h2 class="section-title">Everything <span class="glow">monitored.</span> Everything controlled.</h2>
+      <p class="section-sub">Nine integrated systems for running a Minecraft server. Real-time data, push notifications, role-based access — built like infrastructure, used like an app.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        </div>
+        <h3>Live Console</h3>
+        <p>Stream logs in real time. Filter by severity. Run commands with saved macros and autocomplete.</p>
+        <div class="feature-status">Streaming · WebSocket</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Chat Bridge</h3>
+        <p>Watch in-game chat live. Send messages. Mute, kick, or moderate without joining the server.</p>
+        <div class="feature-status">Two-way · Real-time</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
+        </div>
+        <h3>Players</h3>
+        <p>Browse the roster. View inventories. Edit gear. Manage permissions, op, ban, kick.</p>
+        <div class="feature-status">Inventory editing</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20"/></svg>
+        </div>
+        <h3>Worlds</h3>
+        <p>Switch worlds, edit gamerules, set spawn, change difficulty, weather, time.</p>
+        <div class="feature-status">Per-world settings</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+        </div>
+        <h3>File Manager</h3>
+        <p>Edit plugin .yml configs from your phone. Sandboxed paths. Reload plugins when done.</p>
+        <div class="feature-status">Sandboxed</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Push Notifications</h3>
+        <p>Joins, keywords, TPS drops, errors. Configurable triggers, delivered via APNs.</p>
+        <div class="feature-status">Sub-second latency</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        </div>
+        <h3>Tickets</h3>
+        <p>In-game /ticket opens a thread. You answer from your phone. Players see replies in chat.</p>
+        <div class="feature-status">Threaded</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 12l4-4 4 4 5-5"/></svg>
+        </div>
+        <h3>Analytics</h3>
+        <p>Player count over time. TPS history. Chat volume. Joins by hour. Honest charts.</p>
+        <div class="feature-status">30-day retention</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Permissions</h3>
+        <p>Per-user roles. Owner, admin, moderator. Audit log on every action — who did what when.</p>
+        <div class="feature-status">RBAC · Audit log</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="screens">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">// the app</div>
+      <h2 class="section-title">Designed for <span class="glow">thumbs.</span> Not desktops.</h2>
+      <p class="section-sub">Every screen built from scratch for iOS. No reskinned web dashboard. No squinting at tiny tables. Real native UI, optimized for one-handed operation.</p>
+    </div>
+
+    <div class="screens-carousel">
+      <div class="carousel-viewport">
+        <div class="carousel-track" id="carouselTrack">
+
+          <!-- 01 · Dashboard -->
+          <div class="carousel-phone" data-index="0" data-eyebrow="// dashboard" data-title="Server health, at a glance" data-desc="TPS, memory, players, uptime — all on one screen with live charts and trend indicators.">
+            <img src="Screenshots/01-dashboard.png" alt="PulsePanel dashboard" loading="lazy">
+          </div>
+
+          <!-- 02 · Console -->
+          <div class="carousel-phone" data-index="1" data-eyebrow="// live console" data-title="Stream the server log in real time" data-desc="Severity-coloured output, fast filtering, command history, and one-tap rerun. The console you'd run from your laptop — in your pocket.">
+            <img src="Screenshots/02-console.png" alt="PulsePanel live console" loading="lazy">
+          </div>
+
+          <!-- 03 · Chat -->
+          <div class="carousel-phone" data-index="2" data-eyebrow="// chat bridge" data-title="Two-way in-game chat" data-desc="Read every message live. Reply as console, whisper a player, or moderate from anywhere — without joining the server.">
+            <img src="Screenshots/03-chat.png" alt="PulsePanel chat bridge" loading="lazy">
+          </div>
+
+          <!-- 04 · Players -->
+          <div class="carousel-phone" data-index="3" data-eyebrow="// players" data-title="The whole roster, in your hand" data-desc="Browse online players, view inventories, edit gear, manage permissions. Kick, ban, op, teleport — every action audit-logged.">
+            <img src="Screenshots/04-players.png" alt="PulsePanel players list" loading="lazy">
+          </div>
+
+          <!-- 05 · Worlds -->
+          <div class="carousel-phone" data-index="4" data-eyebrow="// worlds" data-title="Per-world controls" data-desc="Switch worlds, edit gamerules, set spawn, change weather and time. Manage every dimension from the same screen.">
+            <img src="Screenshots/05-worlds.png" alt="PulsePanel worlds settings" loading="lazy">
+          </div>
+
+          <!-- 06 · File Manager -->
+          <div class="carousel-phone" data-index="5" data-eyebrow="// file manager" data-title="Edit plugin configs from your phone" data-desc="Sandboxed, validated, version-checked. Tweak any plugin's .yml without FTP, SSH, or panic.">
+            <img src="Screenshots/06-files.png" alt="PulsePanel file manager" loading="lazy">
+          </div>
+
+          <!-- 07 · Tickets -->
+          <div class="carousel-phone" data-index="6" data-eyebrow="// tickets" data-title="Threaded support, in-game and out" data-desc="Players use /ticket in-game; you reply from your phone. Their reply comes back as a chat message. Persistent, threaded, never lost.">
+            <img src="Screenshots/07-tickets.png" alt="PulsePanel tickets list" loading="lazy">
+          </div>
+
+          <!-- 08 · Analytics -->
+          <div class="carousel-phone" data-index="7" data-eyebrow="// analytics" data-title="Honest charts, not vanity metrics" data-desc="TPS history, player count over time, daily uniques, peak hours. Real data on how your server is actually doing.">
+            <img src="Screenshots/08-analytics.png" alt="PulsePanel analytics dashboard" loading="lazy">
+          </div>
+
+          <!-- 09 · Settings -->
+          <div class="carousel-phone" data-index="8" data-eyebrow="// settings" data-title="Tuned for your workflow" data-desc="Notifications, theme, server connection, account — all the controls in one place. Light or dark, your choice.">
+            <img src="Screenshots/09-settings.png" alt="PulsePanel settings" loading="lazy">
+          </div>
+
+        </div>
+      </div>
+
+      <div class="carousel-caption">
+        <div class="carousel-caption-eyebrow" id="capEyebrow">// dashboard</div>
+        <div class="carousel-caption-title" id="capTitle">Server health, at a glance</div>
+        <div class="carousel-caption-desc" id="capDesc">TPS, memory, players, uptime — all on one screen with live charts and trend indicators.</div>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-arrow" id="prevBtn" aria-label="Previous screen">←</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-arrow" id="nextBtn" aria-label="Next screen">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">// setup</div>
+      <h2 class="section-title">From zero to <span class="glow">monitoring</span> in minutes.</h2>
+      <p class="section-sub">PulsePanel pairs with PulseConnect, a free Paper/Spigot plugin that does the talking on the server side.</p>
+    </div>
+
+    <div class="rack">
+      <div class="rack-item">
+        <div class="rack-head">
+          <span class="rack-num">[01] INSTALL</span>
+          <span class="rack-status">Ready</span>
+        </div>
+        <div class="rack-body">
+          <h3>Drop the plugin</h3>
+          <p>Download <code>PulseConnect.jar</code> and drop it into <code>/plugins</code>. Free, no license required. Restart the server.</p>
+          <div class="rack-output">
+            <div><span class="green">$</span> ls plugins/</div>
+            <div>PulseConnect.jar</div>
+            <div>WorldEdit.jar</div>
+            <div><span class="green">$</span> systemctl restart minecraft</div>
+            <div><span class="blue">[OK]</span> server started · 14 plugins</div>
+          </div>
+        </div>
+      </div>
+      <div class="rack-item">
+        <div class="rack-head">
+          <span class="rack-num">[02] CONFIGURE</span>
+          <span class="rack-status">Ready</span>
+        </div>
+        <div class="rack-body">
+          <h3>Set port and secret</h3>
+          <p>Open <code>config.yml</code>, set a port (default <code>7070</code>) and a strong shared secret. Forward that port on your router for remote access.</p>
+          <div class="rack-output">
+            <div><span class="blue">port:</span> 7070</div>
+            <div><span class="blue">secret:</span> "<span class="green">your-strong-secret</span>"</div>
+            <div><span class="blue">tls:</span> true</div>
+            <div><span class="green">[PulseConnect]</span> listening on :7070</div>
+          </div>
+        </div>
+      </div>
+      <div class="rack-item">
+        <div class="rack-head">
+          <span class="rack-num">[03] CONNECT</span>
+          <span class="rack-status">Live</span>
+        </div>
+        <div class="rack-body">
+          <h3>Sign in on the app</h3>
+          <p>Open PulsePanel, enter your server's address and port, then sign in with the account you set up. Status indicator turns green and you're running the panel.</p>
+          <div class="rack-output">
+            <div><span class="green">●</span> stream.tps · 19.94</div>
+            <div><span class="green">●</span> stream.players · 23 online</div>
+            <div><span class="green">●</span> stream.chat · subscribed</div>
+            <div><span class="green">●</span> push · enabled</div>
+            <div><span class="blue">[OK]</span> all systems operational</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 56px;">
+      <a href="setup.html" class="btn btn-ghost">Read the full setup guide →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">// faq</div>
+      <h2 class="section-title">Frequently asked.</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-num">[01]</span>
+          What server software is supported?
+        </div>
+        <div class="faq-a">Paper and Spigot, modern versions. Anything that runs Bukkit-API plugins.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-num">[02]</span>
+          Do I need to open ports on my server?
+        </div>
+        <div class="faq-a">Yes — one TCP port for the plugin (7070 by default, configurable). Forward it on your router for remote access. Setup takes about a minute on most routers, and the docs walk through the common cases.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-num">[03]</span>
+          Is it safe?
+        </div>
+        <div class="faq-a">Every action is logged. File access is sandboxed to plugin folders. The app authenticates over TLS with the account credentials you create on the server — your data flows directly between the app and your server, never through anyone else's infrastructure.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <span class="faq-q-num">[04]</span>
+          Is the plugin free?
+        </div>
+        <div class="faq-a">Yes. PulseConnect is free and stays free. You only pay once for the iOS app.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="cta" id="download">
+    <div class="cta-content">
+      <h2>Stay <span class="glow">connected</span><br>to your server.</h2>
+      <p>One-time purchase. No subscription. No tracking.</p>
+      <a href="#" class="btn btn-primary">Download on the App Store →</a>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lightbox-arrow prev" id="lbPrev" aria-label="Previous">←</button>
+  <button class="lightbox-arrow next" id="lbNext" aria-label="Next">→</button>
+  <div class="lightbox-content">
+    <div class="lightbox-phone" id="lbPhone">
+      <img id="lbImage" src="" alt="">
+    </div>
+    <div class="lightbox-info">
+      <div class="lightbox-info-eyebrow" id="lbEyebrow">// dashboard</div>
+      <div class="lightbox-info-title" id="lbTitle">Server health, at a glance</div>
+      <div class="lightbox-info-desc" id="lbDesc">TPS, memory, players, uptime — all on one screen.</div>
+      <div class="lightbox-counter" id="lbCounter">1 / 9</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-bars"><span></span><span></span><span></span><span></span></div>
+          PulsePanel
+        </a>
+        <p>A full Minecraft server admin app for iOS. Console, players, files, push — all from your phone.</p>
+        <div class="foot-status">All systems operational</div>
+      </div>
+
+      <div class="foot-col">
+        <h4>// product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#screens">Screens</a></li>
+          <li><a href="setup.html">Setup</a></li>
+          <li><a href="#download">Download</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// resources</h4>
+        <ul>
+          <li><a href="resources.html">Documentation</a></li>
+          <li><a href="resources.html">Plugin download</a></li>
+          <li><a href="resources.html">Changelog</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// support</h4>
+        <ul>
+          <li><a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>© 2026 PulsePanel · All rights reserved</div>
+      <div class="foot-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="mailto:support@pulsepanelapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  const phones = document.querySelectorAll('.carousel-phone');
+  const total = phones.length;
+  let current = 0;
+  let autoTimer = null;
+  const AUTO_INTERVAL = 10000;
+
+  const dotsContainer = document.getElementById('carouselDots');
+  const capEyebrow = document.getElementById('capEyebrow');
+  const capTitle = document.getElementById('capTitle');
+  const capDesc = document.getElementById('capDesc');
+
+  // Build dots
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to screen ' + (i + 1));
+    dot.addEventListener('click', () => {
+      goTo(i);
+      restartAuto();
+    });
+    dotsContainer.appendChild(dot);
+  }
+  const dots = dotsContainer.querySelectorAll('.carousel-dot');
+
+  function position(i) {
+    const diff = ((i - current) % total + total) % total;
+    if (diff === 0) return 'active';
+    if (diff === 1) return 'next';
+    if (diff === total - 1) return 'prev';
+    if (diff === 2) return 'far-next';
+    if (diff === total - 2) return 'far-prev';
+    return 'hidden';
+  }
+
+  function render() {
+    phones.forEach((p, i) => {
+      p.className = 'carousel-phone ' + position(i);
+    });
+    dots.forEach((d, i) => {
+      d.className = 'carousel-dot' + (i === current ? ' active' : '');
+    });
+    const active = phones[current];
+    capEyebrow.textContent = active.dataset.eyebrow;
+    capTitle.textContent = active.dataset.title;
+    capDesc.textContent = active.dataset.desc;
+  }
+
+  function goTo(i) {
+    current = ((i % total) + total) % total;
+    render();
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  function startAuto() {
+    autoTimer = setInterval(next, AUTO_INTERVAL);
+  }
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  }
+  function restartAuto() { stopAuto(); startAuto(); }
+
+  document.getElementById('nextBtn').addEventListener('click', () => { next(); restartAuto(); });
+  document.getElementById('prevBtn').addEventListener('click', () => { prev(); restartAuto(); });
+
+  // Pause on viewport hover
+  const viewport = document.querySelector('.carousel-viewport');
+  viewport.addEventListener('mouseenter', stopAuto);
+  viewport.addEventListener('mouseleave', startAuto);
+
+  // === LIGHTBOX ===
+  const lightbox = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lbImage');
+  const lbEyebrow = document.getElementById('lbEyebrow');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbDesc = document.getElementById('lbDesc');
+  const lbCounter = document.getElementById('lbCounter');
+  let lbIndex = 0;
+
+  function openLightbox(i) {
+    lbIndex = i;
+    renderLightbox();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    stopAuto();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    startAuto();
+  }
+
+  function renderLightbox() {
+    const phone = phones[lbIndex];
+    const img = phone.querySelector('img');
+    lbImage.src = img.src;
+    lbImage.alt = img.alt;
+    lbEyebrow.textContent = phone.dataset.eyebrow;
+    lbTitle.textContent = phone.dataset.title;
+    lbDesc.textContent = phone.dataset.desc;
+    lbCounter.textContent = (lbIndex + 1) + ' / ' + total;
+  }
+
+  function lbNext() { lbIndex = (lbIndex + 1) % total; renderLightbox(); }
+  function lbPrev() { lbIndex = (lbIndex - 1 + total) % total; renderLightbox(); }
+
+  phones.forEach((p, i) => {
+    p.addEventListener('click', (e) => {
+      // Only the active phone opens the lightbox; click on side phones advances to them
+      if (p.classList.contains('active')) {
+        openLightbox(i);
+      } else if (p.classList.contains('prev') || p.classList.contains('far-prev')) {
+        prev();
+        restartAuto();
+      } else if (p.classList.contains('next') || p.classList.contains('far-next')) {
+        next();
+        restartAuto();
+      }
+    });
+  });
+
+  document.getElementById('lbClose').addEventListener('click', closeLightbox);
+  document.getElementById('lbNext').addEventListener('click', lbNext);
+  document.getElementById('lbPrev').addEventListener('click', lbPrev);
+
+  // Click backdrop to close
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (lightbox.classList.contains('open')) {
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowRight') lbNext();
+      else if (e.key === 'ArrowLeft') lbPrev();
+    }
+  });
+
+  render();
+  startAuto();
+})();
+</script>
+
+</body>
+</html>

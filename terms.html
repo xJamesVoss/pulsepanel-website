@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service — PulsePanel</title>
+<meta name="description" content="Terms of Service for PulsePanel.">
+<meta name="robots" content="noindex">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a0e'/%3E%3Cg fill='%234ade80'%3E%3Crect x='8' y='14' width='3' height='4' rx='1'/%3E%3Crect x='13' y='10' width='3' height='12' rx='1'/%3E%3Crect x='18' y='12' width='3' height='8' rx='1'/%3E%3Crect x='23' y='8' width='3' height='16' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg-elev: #0a1117;
+    --bg-deep: #02060a;
+    --line: #1a2530;
+    --text: #e6f1ff;
+    --text-dim: #8896a8;
+    --text-faint: #4a5868;
+    --green: #4ade80;
+    --green-glow: rgba(74, 222, 128, 0.15);
+    --blue: #38bdf8;
+    --blue-glow: rgba(56, 189, 248, 0.15);
+    --amber: #fbbf24;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 1200px 600px at 50% -10%, var(--green-glow), transparent),
+      radial-gradient(ellipse 800px 400px at 80% 40%, var(--blue-glow), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; width: 100%; }
+
+  nav {
+    position: sticky; top: 16px;
+    z-index: 100;
+    margin: 0 32px;
+  }
+  .nav-inner {
+    max-width: 1216px; margin: 0 auto;
+    background: rgba(10, 17, 23, 0.8);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 16px; letter-spacing: -0.01em;
+    color: var(--text); text-decoration: none;
+  }
+  .logo-bars {
+    width: 22px; height: 22px;
+    display: flex; flex-direction: column; gap: 2px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-bars span {
+    height: 2px; background: var(--green);
+    border-radius: 2px;
+    box-shadow: 0 0 6px var(--green);
+    animation: barPulse 2s ease-in-out infinite;
+  }
+  .logo-bars span:nth-child(1) { width: 60%; animation-delay: 0s; }
+  .logo-bars span:nth-child(2) { width: 100%; animation-delay: 0.2s; }
+  .logo-bars span:nth-child(3) { width: 75%; animation-delay: 0.4s; }
+  .logo-bars span:nth-child(4) { width: 90%; animation-delay: 0.6s; }
+  @keyframes barPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--green); color: var(--bg-deep) !important;
+    padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+
+  .stub-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 32px 120px;
+  }
+  .stub-card {
+    max-width: 720px;
+    width: 100%;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 64px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3), 0 0 40px var(--green-glow);
+  }
+  .stub-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+  .stub-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--green-glow);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    color: var(--green);
+    padding: 6px 14px; border-radius: 100px;
+    font-family: var(--mono); font-size: 12px;
+    margin-bottom: 32px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .stub-eyebrow::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--amber); border-radius: 50%;
+    box-shadow: 0 0 10px var(--amber);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .stub-card h1 {
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.05; font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .stub-card h1 .glow {
+    color: var(--green);
+    text-shadow: 0 0 30px var(--green-glow);
+  }
+  .stub-card > p {
+    color: var(--text-dim);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 56ch;
+    margin: 0 auto 40px;
+  }
+  .stub-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 24px; border-radius: 10px;
+    text-decoration: none; font-weight: 600; font-size: 15px;
+    transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--green); color: var(--bg-deep);
+    box-shadow: 0 0 30px var(--green-glow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 40px var(--green-glow);
+  }
+  .btn-ghost {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 64px 0 32px;
+    color: var(--text-faint); font-size: 13px;
+    margin-top: 40px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+  }
+  .foot-col h4 {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .foot-col ul { list-style: none; padding: 0; }
+  .foot-col li { margin-bottom: 10px; }
+  .foot-col a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+  }
+  .foot-col a:hover { color: var(--green); }
+  .foot-brand .logo { margin-bottom: 16px; }
+  .foot-brand p {
+    color: var(--text-dim); font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+  .foot-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .foot-status::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .foot-bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap;
+    gap: 16px; align-items: center;
+    padding-top: 32px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+  .foot-bottom-links { display: flex; gap: 24px; }
+  .foot-bottom-links a { color: var(--text-faint); text-decoration: none; }
+  .foot-bottom-links a:hover { color: var(--text-dim); }
+
+  @media (max-width: 940px) {
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .stub-card { padding: 48px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-bars">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      PulsePanel
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#screens">Screens</a>
+      <a href="setup.html">Setup</a>
+      <a href="resources.html">Resources</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#download" class="nav-cta">Download</a>
+    </div>
+  </div>
+</nav>
+
+<section class="stub-section">
+  <div class="stub-card">
+    <div class="stub-eyebrow">// in development</div>
+    <h1>Terms of Service <span class="glow">coming soon.</span></h1>
+    <p>The Terms of Service document is being drafted alongside our App Store submission. It will live here once finalized. In the meantime, our <a href="privacy.html" style="color: var(--green); border-bottom: 1px solid rgba(74, 222, 128, 0.3); text-decoration: none;">Privacy Policy</a> covers data handling.</p>
+
+    <div class="stub-actions">
+      <a href="index.html" class="btn btn-primary">← Back to home</a>
+      <a href="privacy.html" class="btn btn-ghost">Privacy policy</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-bars"><span></span><span></span><span></span><span></span></div>
+          PulsePanel
+        </a>
+        <p>A full Minecraft server admin app for iOS. Console, players, files, push — all from your phone.</p>
+        <div class="foot-status">All systems operational</div>
+      </div>
+
+      <div class="foot-col">
+        <h4>// product</h4>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#screens">Screens</a></li>
+          <li><a href="setup.html">Setup</a></li>
+          <li><a href="index.html#download">Download</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// resources</h4>
+        <ul>
+          <li><a href="resources.html">Documentation</a></li>
+          <li><a href="resources.html">Plugin download</a></li>
+          <li><a href="resources.html">Changelog</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// support</h4>
+        <ul>
+          <li><a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>© 2026 PulsePanel · All rights reserved</div>
+      <div class="foot-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="mailto:support@pulsepanelapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
