@@ -620,48 +620,66 @@ systemctl restart minecraft
       </div>
       <div class="step-est">~ 2 min</div>
 
-      <p>Open <code>plugins/PulseConnect/config.yml</code> in your editor of choice. The file is commented and most defaults are sensible — the only fields you <em>must</em> set are the <code>secret</code> and the <code>port</code>.</p>
+      <p>Open <code>plugins/PulseConnect/config.yml</code> in your editor of choice. The file is fully commented and most defaults are sensible. The two things you <em>must</em> set before first launch are the <strong>JWT secret</strong> and the <strong>admin account</strong>.</p>
 
-      <h3>Minimal working config</h3>
-      <pre><span class="key">port:</span> <span class="num">7070</span>
-<span class="key">secret:</span> <span class="str">"replace-this-with-a-strong-secret"</span>
-<span class="key">tls:</span> <span class="val">true</span>
-<span class="key">bind-address:</span> <span class="str">"0.0.0.0"</span></pre>
+      <h3>The config file</h3>
+      <pre><span class="key">api:</span>
+  <span class="key">port:</span> <span class="num">7070</span>
+  <span class="key">jwt-secret:</span> <span class="str">"replace-with-32-plus-random-chars"</span>
+  <span class="key">token-expiry-hours:</span> <span class="num">24</span>
+
+<span class="comment"># Admin account &mdash; only used on first startup to create the initial owner account.</span>
+<span class="comment"># Once created, this is stored in the database with BCrypt hashing.</span>
+<span class="comment"># You can remove or change these after first launch &mdash; they won't affect the existing account.</span>
+<span class="key">admin:</span>
+  <span class="key">username:</span> <span class="str">"your-username"</span>
+  <span class="key">password:</span> <span class="str">"your-password"</span>
+
+<span class="key">security:</span>
+  <span class="key">max-login-attempts:</span> <span class="num">5</span>
+  <span class="key">lockout-minutes:</span> <span class="num">15</span>
+  <span class="key">rate-limit-per-minute:</span> <span class="num">60</span></pre>
 
       <h3>What each field does</h3>
       <ul>
-        <li><strong><code>port</code></strong> — the TCP port PulseConnect listens on. Default <code>7070</code>. Pick anything you like, just make sure it's not already in use and not blocked by your hosting provider.</li>
-        <li><strong><code>secret</code></strong> — a server-internal value that the plugin uses to sign things. Treat it like a password. Use a long random string. <strong>You won't enter this in the app</strong> — the app uses regular account credentials (next steps).</li>
-        <li><strong><code>tls</code></strong> — enable TLS encryption between the app and plugin. Recommended <code>true</code> for any setup that's reachable from the internet.</li>
-        <li><strong><code>bind-address</code></strong> — what IP the plugin binds to. <code>0.0.0.0</code> means "listen on all interfaces." Use <code>127.0.0.1</code> if you only want local access.</li>
+        <li><strong><code>api.port</code></strong> &mdash; the TCP port PulseConnect listens on. Default <code>7070</code>. Change this to anything you want, just make sure it's not in use and not blocked by your hosting provider.</li>
+        <li><strong><code>api.jwt-secret</code></strong> &mdash; a server-internal value the plugin uses to sign session tokens. Treat it like a password. Use 32+ random characters. <strong>You won't enter this in the app</strong> &mdash; it's purely server-side.</li>
+        <li><strong><code>api.token-expiry-hours</code></strong> &mdash; how long an app sign-in stays valid before the user has to sign in again. Default 24.</li>
+        <li><strong><code>admin.username</code> / <code>admin.password</code></strong> &mdash; the credentials for your owner account. These are <em>only used on first launch</em> to create the account in the database. After that, the account is stored hashed and these fields can be left blank or changed without effect. <strong>This is what you'll sign in with on the app.</strong></li>
+        <li><strong><code>security.*</code></strong> &mdash; built-in protections for the sign-in flow. Defaults are fine for almost everyone.</li>
       </ul>
 
       <div class="callout">
         <div class="callout-label">tip</div>
-        <p>Generate a strong secret quickly with <code>openssl rand -hex 32</code> in your terminal. Anything 32+ random characters is fine.</p>
+        <p>Generate a strong JWT secret with <code>openssl rand -hex 32</code> in your terminal. For your admin password, anything you'd use for a regular site account works &mdash; it gets hashed before being stored.</p>
       </div>
 
       <h3>Restart the server</h3>
-      <p>Once you've saved <code>config.yml</code>, restart the server again. You should see PulseConnect come online:</p>
+      <p>Once you've saved <code>config.yml</code>, restart the server. You should see PulseConnect come online and confirm the admin account was created:</p>
 
       <pre>[INFO] [PulseConnect] Loading config...
-[INFO] [PulseConnect] Listening on 0.0.0.0:7070 (TLS enabled)
+[INFO] [PulseConnect] Admin account created: your-username
+[INFO] [PulseConnect] API listening on :7070
 [INFO] [PulseConnect] Ready for connections.</pre>
+
+      <div class="callout warn">
+        <div class="callout-label">heads up</div>
+        <p>After your server has started up successfully and the admin account has been created, you can blank out the <code>admin.username</code> and <code>admin.password</code> fields in <code>config.yml</code>. The account already exists in the database &mdash; leaving credentials in plain text in the config is unnecessary.</p>
+      </div>
     </div>
 
     <!-- STEP 3 -->
     <div class="step" id="step-3">
       <div class="step-header">
         <div class="step-number">03</div>
-        <h2>Forward the port</h2>
+        <h2>Open the port</h2>
       </div>
       <div class="step-est">~ 1 min</div>
 
-      <p>If your server is hosted on a cloud provider (DigitalOcean, OVH, BisectHosting, etc.) with a public IP, <strong>you can probably skip this step</strong> — your server is already reachable. Confirm by trying to connect from the app first.</p>
+      <p>The app needs to reach your server on whatever port you set in <code>api.port</code> (default <code>7070</code>). How you make that happen depends on where your server runs.</p>
 
-      <p>If your server runs at home or behind NAT, you need to forward your chosen port (<code>7070</code> by default) on your router so the app can reach it from outside your network.</p>
-
-      <h3>The general pattern</h3>
+      <h3>If you self-host</h3>
+      <p>If your server runs at home or on your own VPS, you'll need to forward port <code>7070</code> on your router so traffic from outside your network can reach it.</p>
       <ol>
         <li>Log into your router's admin panel — typically <code>192.168.1.1</code> or <code>192.168.0.1</code> in your browser</li>
         <li>Find the section called <strong>Port Forwarding</strong>, <strong>Virtual Servers</strong>, or <strong>NAT</strong></li>
@@ -672,6 +690,20 @@ systemctl restart minecraft
       <div class="callout">
         <div class="callout-label">tip</div>
         <p>Your server's internal IP is typically something like <code>192.168.1.x</code>. On the server itself, run <code>ip a</code> (Linux) or check System Settings → Network (macOS).</p>
+      </div>
+
+      <h3>If you use a managed Minecraft host</h3>
+      <p>If your server runs on a managed host (BisectHosting, Apex, Shockbyte, PebbleHost, etc.), you usually <strong>can't open additional ports yourself</strong> &mdash; their network is locked down by default and only the Minecraft port is exposed.</p>
+
+      <p>Two paths forward:</p>
+      <ol>
+        <li><strong>Contact your host's support</strong> and ask whether they can open an additional TCP port for you. Some hosts offer this on request, some don't, some charge extra. Ask before you commit to a plan.</li>
+        <li><strong>Change <code>api.port</code> to whatever your host allows.</strong> Some hosts give you a small range of "extra" ports outside the Minecraft port (often listed in your control panel). Set <code>api.port</code> in <code>config.yml</code> to one of those, and use that port in the app.</li>
+      </ol>
+
+      <div class="callout warn">
+        <div class="callout-label">before you buy</div>
+        <p>If you're shopping for a host with PulsePanel in mind, it's worth asking up front whether they support custom TCP ports for plugins. Hosts that don't will work for the Minecraft server itself but won't work with PulsePanel — there's nothing the plugin or app can do to get around that limit.</p>
       </div>
     </div>
 
@@ -687,20 +719,20 @@ systemctl restart minecraft
 
       <h3>Fill in the connection details</h3>
       <ul>
-        <li><strong>Server address</strong> — your server's public IP or hostname (e.g. <code>1.2.3.4</code>)</li>
-        <li><strong>Port</strong> — whatever you set in <code>config.yml</code> (default <code>7070</code>)</li>
-        <li><strong>Username</strong> — the account you created when you set up the plugin</li>
-        <li><strong>Password</strong> — the password for that account</li>
+        <li><strong>Server address</strong> &mdash; your server's public IP or hostname (e.g. <code>1.2.3.4</code> or <code>play.example.com</code>)</li>
+        <li><strong>Port</strong> &mdash; whatever you set in <code>api.port</code> (default <code>7070</code>)</li>
+        <li><strong>Username</strong> &mdash; what you set in <code>admin.username</code> in <code>config.yml</code></li>
+        <li><strong>Password</strong> &mdash; what you set in <code>admin.password</code> in <code>config.yml</code></li>
       </ul>
 
       <div class="callout">
         <div class="callout-label">heads up</div>
-        <p>Account credentials are managed on the server side by the plugin, not by us. PulsePanel doesn't have its own user accounts — your credentials live on your server, and that's the only place you'll ever sign in.</p>
+        <p>Account credentials live on your server, not on our infrastructure. PulsePanel doesn't have its own user accounts &mdash; the username and password you signed in with are stored hashed in your server's PulseConnect database. There's no central registry, nothing to recover with us, and nothing to leak from us.</p>
       </div>
 
       <p>Tap <strong>Sign in</strong>. The status indicator should turn green within a second or two:</p>
 
-      <pre>● Survival · connected · 28 ms</pre>
+      <pre>● Connected · 28 ms</pre>
 
       <p>From here, the dashboard, console, chat, players, worlds, files, and tickets are all live. You're done.</p>
 
@@ -730,8 +762,9 @@ systemctl restart minecraft
       <details class="trouble">
         <summary>The app says "authentication failed"</summary>
         <div class="trouble-body">
-          <p>Your username or password is wrong. Try again carefully — watch for caps lock and trailing spaces if you copy-pasted.</p>
-          <p>If you forgot the credentials, you can reset them in <code>config.yml</code> on the server side and restart.</p>
+          <p>Your username or password is wrong. Try again carefully &mdash; watch for caps lock and trailing spaces if you copy-pasted.</p>
+          <p>If you forgot the credentials, the cleanest reset path is to stop the server, delete the PulseConnect database (<code>plugins/PulseConnect/data.db</code> or similar &mdash; check your <code>plugins/PulseConnect</code> folder), set fresh values for <code>admin.username</code> and <code>admin.password</code> in <code>config.yml</code>, and restart. The plugin will create a new account on next startup.</p>
+          <p>This wipes any other state in the database (audit log, ticket history, etc.), so it's a last resort.</p>
         </div>
       </details>
 
