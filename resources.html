@@ -1659,7 +1659,6 @@
         <a href="#cfg-admin" data-cfg-jump>admin</a>
         <a href="#cfg-security" data-cfg-jump>security</a>
         <a href="#cfg-logging" data-cfg-jump>logging</a>
-        <a href="#cfg-relay" data-cfg-jump>relay</a>
         <a href="#cfg-commands" data-cfg-jump>commands</a>
       </div>
 
@@ -1829,69 +1828,6 @@
           <div class="cfg-card-body">
             <p>Log every command executed via <code>POST /command</code> to the server console.</p>
             <p>Recommended to leave on — commands run via the API have the same authority as console commands. The audit log captures these regardless, but console visibility is useful in real time.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- ============ relay ============ -->
-      <div class="cfg-section">
-        <div class="cfg-section-head" id="cfg-relay">
-          <h3>relay:</h3>
-          <span class="cfg-section-desc">Push notification settings.</span>
-        </div>
-
-        <div class="cfg-card">
-          <div class="cfg-card-head">
-            <span class="cfg-key">how it works</span>
-            <span class="cfg-pill">background</span>
-          </div>
-          <div class="cfg-card-body">
-            <p>Push notifications are delivered through PulseRelay — a small forwarding service that holds the Apple authentication key on its end. Your server sends an HTTPS request to the relay, the relay forwards to Apple's APNs, Apple delivers to your device.</p>
-            <p>This means the cryptographic Apple key never lives on your Minecraft server. The values below are what the plugin needs to talk to the relay.</p>
-          </div>
-        </div>
-
-        <div class="cfg-card">
-          <div class="cfg-card-head">
-            <span class="cfg-key"><span class="cfg-key-prefix">relay.</span><span class="cfg-key-name">url</span></span>
-            <span class="cfg-pill type">string</span>
-            <span class="cfg-pill default">default <code>""</code></span>
-          </div>
-          <div class="cfg-card-body">
-            <p>The PulseRelay endpoint URL. Leave blank to disable push notifications.</p>
-            <p>The trailing <code>/push</code> is optional — the plugin handles both forms.</p>
-            <div class="cfg-card-note">
-              <span class="note-label">note</span>If you bought the iOS app, the URL and shared secret are provided to you. If you're testing or running your own relay, point this at your instance.
-            </div>
-          </div>
-        </div>
-
-        <div class="cfg-card security">
-          <div class="cfg-card-head">
-            <span class="cfg-key"><span class="cfg-key-prefix">relay.</span><span class="cfg-key-name">shared-secret</span></span>
-            <span class="cfg-pill type">string</span>
-            <span class="cfg-pill default">default <code>""</code></span>
-            <span class="cfg-pill security">security</span>
-          </div>
-          <div class="cfg-card-body">
-            <p>The token the plugin uses to authenticate to the relay. Leave blank to disable push notifications.</p>
-            <p>Treat this like a password — anyone with it can send pushes through your relay account.</p>
-          </div>
-        </div>
-
-        <div class="cfg-card">
-          <div class="cfg-card-head">
-            <span class="cfg-key"><span class="cfg-key-prefix">relay.</span><span class="cfg-key-name">environment</span></span>
-            <span class="cfg-pill type">string</span>
-            <span class="cfg-pill default">default <code>development</code></span>
-          </div>
-          <div class="cfg-card-body">
-            <p>Which APNs environment to deliver to. Two valid values:</p>
-            <ul>
-              <li><code>development</code> — for Xcode builds and TestFlight internal testing</li>
-              <li><code>production</code> — for App Store builds and TestFlight external testing</li>
-            </ul>
-            <p>Leave at <code>development</code> unless you've been explicitly told to switch. Mismatching this causes pushes to silently fail — Apple won't tell you why.</p>
           </div>
         </div>
       </div>
@@ -2240,7 +2176,7 @@
           <ol>
             <li><strong>iOS-level permission</strong> — Settings → PulsePanel → Notifications → confirm Allow Notifications is on.</li>
             <li><strong>App-level toggles</strong> — in the app, Settings → Notifications → confirm the categories you care about (tickets, server lag, etc.) are enabled.</li>
-            <li><strong>Server can reach the relay</strong> — from the server, run <code>curl https://push.pulsepanelapp.com/health</code> (when that endpoint exists). The plugin needs outbound HTTPS to <code>push.pulsepanelapp.com</code>.</li>
+            <li><strong>Server has internet access</strong> — the plugin needs outbound HTTPS to deliver pushes. If your server is firewalled to local-only, push won't work. A quick <code>curl https://www.google.com</code> from the server confirms outbound is open.</li>
             <li><strong>Device is registered</strong> — open the app once on the device you want notifications on. The app registers its APNs token on each launch.</li>
             <li><strong>Trigger a test event</strong> — join the server yourself (player_join is an easy one to verify), or open and reply to a ticket in-game.</li>
           </ol>
