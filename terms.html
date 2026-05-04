@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terms of Service — PulsePanel</title>
-<meta name="description" content="Terms of Service for PulsePanel.">
-<meta name="robots" content="noindex">
+<meta name="description" content="PulsePanel's Terms of Service — what you agree to when you use the app.">
+
+<meta property="og:title" content="Terms of Service — PulsePanel">
+<meta property="og:description" content="What you agree to when you use the app.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pulsepanelapp.com/terms.html">
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a0e'/%3E%3Cg fill='%234ade80'%3E%3Crect x='8' y='14' width='3' height='4' rx='1'/%3E%3Crect x='13' y='10' width='3' height='12' rx='1'/%3E%3Crect x='18' y='12' width='3' height='8' rx='1'/%3E%3Crect x='23' y='8' width='3' height='16' rx='1'/%3E%3C/g%3E%3C/svg%3E">
 
@@ -38,12 +42,9 @@
     color: var(--text);
     font-family: var(--sans);
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
   }
 
   body::before {
@@ -57,8 +58,9 @@
     z-index: 0;
   }
 
-  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; width: 100%; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
 
+  /* === NAV === */
   nav {
     position: sticky; top: 16px;
     z-index: 100;
@@ -102,101 +104,204 @@
   .nav-links { display: flex; gap: 28px; align-items: center; font-size: 14px; }
   .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
   .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--green); }
   .nav-cta {
     background: var(--green); color: var(--bg-deep) !important;
     padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;
     box-shadow: 0 0 20px var(--green-glow);
   }
 
-  .stub-section {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 32px 120px;
+  /* === DOC HEADER === */
+  .doc-header {
+    text-align: center;
+    padding: 100px 32px 64px;
   }
-  .stub-card {
-    max-width: 720px;
-    width: 100%;
+  .doc-eyebrow {
+    display: inline-block;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 18px;
+  }
+  .doc-header h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05; font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+  }
+  .doc-meta {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    display: inline-flex; align-items: center; gap: 24px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .doc-meta span strong {
+    color: var(--text-dim);
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  .doc-meta .sep { color: var(--text-faint); opacity: 0.5; }
+
+  /* === DOC CONTENT === */
+  .doc-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px 96px;
+    position: relative;
+    z-index: 1;
+  }
+  .doc-wrap > p,
+  .doc-wrap > ul,
+  .doc-wrap > ol {
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .doc-wrap > p:first-of-type {
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--text);
+    padding: 24px 28px;
     background: var(--bg-elev);
     border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 64px 48px;
-    text-align: center;
+    border-left: 3px solid var(--green);
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+  .doc-wrap p {
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+  .doc-wrap h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 64px 0 20px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    position: relative;
+  }
+  .doc-wrap h2::before {
+    content: '//';
+    position: absolute;
+    top: 24px;
+    left: -32px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .doc-wrap h3 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 36px 0 14px;
+  }
+  .doc-wrap ul, .doc-wrap ol {
+    padding-left: 24px;
+    margin-bottom: 20px;
+  }
+  .doc-wrap li {
+    margin-bottom: 10px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .doc-wrap li::marker { color: var(--green); }
+  .doc-wrap a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74, 222, 128, 0.3);
+    transition: border-color 0.15s;
+  }
+  .doc-wrap a:hover {
+    border-bottom-color: var(--green);
+  }
+  .doc-wrap strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .doc-wrap code {
+    font-family: var(--mono);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 13px;
+    color: var(--green);
+  }
+
+  .callout {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 32px 0;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.3), 0 0 40px var(--green-glow);
   }
-  .stub-card::before {
+  .callout::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--green), transparent);
   }
-  .stub-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
+  .callout-label {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .callout-label::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .callout ul {
+    padding-left: 20px;
+    margin: 0;
+  }
+  .callout li {
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .callout li:last-child { margin-bottom: 0; }
+  .callout li::marker { color: var(--green); }
+  .callout p:last-child { margin-bottom: 0 !important; }
+
+  .doc-divider {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 56px 0;
+  }
+
+  .contact-block {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    margin: 48px 0;
+  }
+  .contact-block a {
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--green);
+    border: none;
+    display: inline-block;
+    padding: 12px 24px;
     background: var(--green-glow);
     border: 1px solid rgba(74, 222, 128, 0.3);
-    color: var(--green);
-    padding: 6px 14px; border-radius: 100px;
-    font-family: var(--mono); font-size: 12px;
-    margin-bottom: 32px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    border-radius: 8px;
+    margin-top: 8px;
   }
-  .stub-eyebrow::before {
-    content: ''; width: 6px; height: 6px;
-    background: var(--amber); border-radius: 50%;
-    box-shadow: 0 0 10px var(--amber);
-    animation: pulse 1.5s ease-in-out infinite;
+  .contact-block a:hover {
+    background: rgba(74, 222, 128, 0.2);
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-  .stub-card h1 {
-    font-size: clamp(36px, 5vw, 56px);
-    line-height: 1.05; font-weight: 700;
-    letter-spacing: -0.03em;
-    margin-bottom: 20px;
-  }
-  .stub-card h1 .glow {
-    color: var(--green);
-    text-shadow: 0 0 30px var(--green-glow);
-  }
-  .stub-card > p {
-    color: var(--text-dim);
-    font-size: 17px;
-    line-height: 1.6;
-    max-width: 56ch;
-    margin: 0 auto 40px;
-  }
-  .stub-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 24px; border-radius: 10px;
-    text-decoration: none; font-weight: 600; font-size: 15px;
-    transition: all 0.15s;
-  }
-  .btn-primary {
-    background: var(--green); color: var(--bg-deep);
-    box-shadow: 0 0 30px var(--green-glow);
-  }
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 0 40px var(--green-glow);
-  }
-  .btn-ghost {
-    color: var(--text);
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line);
-  }
-  .btn-ghost:hover { background: rgba(255,255,255,0.08); }
 
   /* === FOOTER === */
   footer {
@@ -226,6 +331,7 @@
     text-decoration: none;
     font-size: 14px;
     transition: color 0.15s;
+    border: none;
   }
   .foot-col a:hover { color: var(--green); }
   .foot-brand .logo { margin-bottom: 16px; }
@@ -255,13 +361,14 @@
     letter-spacing: 0.05em;
   }
   .foot-bottom-links { display: flex; gap: 24px; }
-  .foot-bottom-links a { color: var(--text-faint); text-decoration: none; }
+  .foot-bottom-links a { color: var(--text-faint); text-decoration: none; border: none; }
   .foot-bottom-links a:hover { color: var(--text-dim); }
 
   @media (max-width: 940px) {
     .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
     .nav-links a:not(.nav-cta) { display: none; }
-    .stub-card { padding: 48px 28px; }
+    .doc-wrap h2::before { display: none; }
+    .doc-header { padding: 60px 24px 40px; }
   }
 </style>
 </head>
@@ -286,18 +393,178 @@
   </div>
 </nav>
 
-<section class="stub-section">
-  <div class="stub-card">
-    <div class="stub-eyebrow">// in development</div>
-    <h1>Terms of Service <span class="glow">coming soon.</span></h1>
-    <p>The Terms of Service document is being drafted alongside our App Store submission. It will live here once finalized. In the meantime, our <a href="privacy.html" style="color: var(--green); border-bottom: 1px solid rgba(74, 222, 128, 0.3); text-decoration: none;">Privacy Policy</a> covers data handling.</p>
+<header class="doc-header">
+  <div class="doc-eyebrow">// legal · agreement</div>
+  <h1>Terms of Service</h1>
+  <p class="doc-meta">
+    <span><strong>Last updated:</strong>May 3, 2026</span>
+    <span class="sep">·</span>
+    <span><strong>Effective:</strong>May 3, 2026</span>
+  </p>
+</header>
 
-    <div class="stub-actions">
-      <a href="index.html" class="btn btn-primary">← Back to home</a>
-      <a href="privacy.html" class="btn btn-ghost">Privacy policy</a>
-    </div>
-  </div>
-</section>
+<div class="doc-wrap">
+
+<p>These Terms of Service govern your use of the PulsePanel iOS application and related services. By downloading, installing, or using PulsePanel, you agree to these Terms. If you don't agree, please don't use the app.</p>
+
+<p>This document is written in plain English on purpose. It still has the protections we need to operate responsibly, but we'd rather you actually read it than wade through legalese.</p>
+
+<h2>Who you're agreeing with</h2>
+
+<p>This agreement is between you and <strong>PulsePanel</strong>, the operator of the PulsePanel iOS application and related services. In these Terms, "we," "us," and "our" refer to PulsePanel. "You" and "your" refer to the person using the app.</p>
+
+<p>For questions, support, or legal notices, contact us at <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a>.</p>
+
+<h2>Eligibility</h2>
+
+<p>You must be at least 18 years old to enter into this agreement. If you're under 18, a parent or legal guardian must agree to these Terms on your behalf and supervise your use of the app.</p>
+
+<p>You must also have the legal authority to administer the Minecraft server you connect PulsePanel to. Don't connect PulsePanel to servers you don't own or aren't authorized to administer.</p>
+
+<h2>What PulsePanel is</h2>
+
+<p>PulsePanel is a Minecraft server administration tool for iOS. It pairs with PulseConnect, a free server-side plugin, to give you remote access to your Minecraft server's console, players, files, chat, and other administrative functions from your phone.</p>
+
+<p>Important things to understand about how PulsePanel works:</p>
+
+<ul>
+<li>The app communicates directly with your Minecraft server. Your server's data does not pass through our infrastructure.</li>
+<li>Your account credentials are managed by the PulseConnect plugin running on your server. We do not have user accounts on our infrastructure.</li>
+<li>Push notifications are routed through a relay we operate, but the relay does not store the contents of those notifications. See our <a href="privacy.html">Privacy Policy</a> for details.</li>
+</ul>
+
+<h2>License to use the app</h2>
+
+<p>When you purchase PulsePanel through the Apple App Store, we grant you a personal, non-exclusive, non-transferable, revocable license to install and use the app on iOS devices that you own or control, subject to Apple's App Store Terms and these Terms.</p>
+
+<p>This license is for your personal use as a Minecraft server administrator. You may not:</p>
+
+<ul>
+<li>Reverse engineer, decompile, disassemble, or attempt to derive the source code of the app, except where this restriction is prohibited by law</li>
+<li>Modify, adapt, translate, or create derivative works based on the app</li>
+<li>Resell, redistribute, sublicense, rent, or lease the app to anyone else</li>
+<li>Remove, alter, or obscure any copyright, trademark, or other proprietary notices</li>
+<li>Use the app to violate any law or to infringe on anyone else's rights</li>
+</ul>
+
+<h2>Acceptable use</h2>
+
+<p>PulsePanel is a powerful administrative tool. With it, you can run server commands, edit files, kick or ban players, view inventories, and modify worlds. By using the app, you agree to:</p>
+
+<ul>
+<li>Only use it on Minecraft servers you own or are authorized to administer</li>
+<li>Comply with all applicable laws and regulations, including any laws governing computer access in your jurisdiction</li>
+<li>Not use the app to harass, harm, or invade the privacy of players or other users on your server</li>
+<li>Not use the app to circumvent, disable, or interfere with security-related features of any system</li>
+<li>Not use the app for any commercial server-administration-as-a-service offering without our written permission</li>
+</ul>
+
+<p>You are solely responsible for the actions you take through the app. We do not monitor, control, or take responsibility for the commands you run or the changes you make to your server.</p>
+
+<h2>The PulseConnect plugin</h2>
+
+<p>PulseConnect is the free, server-side plugin that PulsePanel pairs with. The plugin is provided separately and may have its own license terms in its source repository or distribution. Your use of the plugin is governed by those terms; these Terms apply specifically to the PulsePanel iOS app and the relay service we operate.</p>
+
+<h2>Purchases and refunds</h2>
+
+<p>PulsePanel is sold as a one-time purchase through the Apple App Store. We do not currently offer subscriptions or in-app purchases.</p>
+
+<p>All purchases are processed by Apple. <strong>Refund requests must be submitted to Apple</strong> through their standard refund process at <a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>. We do not have the ability to issue refunds directly, and we are not party to your purchase transaction with Apple.</p>
+
+<p>If you have a problem with the app, please contact us first at <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a> — we may be able to fix the issue without you having to seek a refund.</p>
+
+<h2>Service availability</h2>
+
+<p>We provide the relay service used for push notifications on a "best effort" basis. While we monitor uptime and aim for high availability, we don't guarantee that the relay will be available without interruption. The core functionality of the app — administering your server, viewing console output, running commands, editing files — does not depend on our relay and continues to work even if our infrastructure has an outage.</p>
+
+<p>We may perform maintenance, deploy updates, or temporarily suspend the relay service for any reason. We'll try to give notice when we can.</p>
+
+<h2>Updates and changes to the app</h2>
+
+<p>We may release updates to the app from time to time. Updates may add features, fix bugs, change behavior, or remove features that no longer make sense. Some updates may be required for the app to continue functioning correctly with our relay service or with the latest versions of the PulseConnect plugin.</p>
+
+<p>By using the app, you consent to receiving these updates through the App Store.</p>
+
+<h2>Disclaimers — please read this</h2>
+
+<div class="callout">
+<div class="callout-label">important</div>
+<p>This section is in plain English but it's legally significant. PulsePanel is sold "as is," with no warranties. Use the app responsibly and at your own risk.</p>
+</div>
+
+<p>To the fullest extent permitted by law, the app and the relay service are provided <strong>"as is" and "as available," without any warranties of any kind</strong>, express or implied, including without limitation warranties of merchantability, fitness for a particular purpose, non-infringement, or that the app will be uninterrupted, error-free, secure, or free of viruses or other harmful components.</p>
+
+<p>You acknowledge that:</p>
+
+<ul>
+<li>Minecraft server administration is inherently risky. Commands run through PulsePanel can damage, corrupt, or destroy server data, plugins, worlds, or player progress.</li>
+<li>You are solely responsible for backing up your server data before making changes.</li>
+<li>We do not warrant that the app will work with every server configuration, plugin combination, or hosting environment.</li>
+<li>You use the app at your own risk.</li>
+</ul>
+
+<h2>Limitation of liability</h2>
+
+<p>To the fullest extent permitted by applicable law, in no event will we be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation lost profits, lost data, server downtime, business interruption, or damage to your reputation, arising out of or related to your use of the app — even if we've been advised of the possibility of such damages.</p>
+
+<p>Our total cumulative liability to you for any claim arising out of or related to these Terms or your use of the app is limited to <strong>the greater of (a) the amount you paid Apple for the app, or (b) ten US dollars ($10.00)</strong>.</p>
+
+<p>Some jurisdictions don't allow the exclusion or limitation of certain damages, so some of the above may not apply to you. In those cases, our liability is limited to the maximum extent permitted by applicable law.</p>
+
+<h2>Indemnification</h2>
+
+<p>You agree to defend, indemnify, and hold harmless PulsePanel from any claims, damages, losses, liabilities, and expenses (including reasonable attorneys' fees) arising out of or related to:</p>
+
+<ul>
+<li>Your use of the app or the relay service</li>
+<li>Your violation of these Terms</li>
+<li>Your violation of any third-party right, including without limitation the rights of players or users on the Minecraft server you administer with the app</li>
+<li>Any actions you take on your Minecraft server through the app</li>
+</ul>
+
+<h2>Termination</h2>
+
+<p>You can stop using the app at any time by uninstalling it from your device.</p>
+
+<p>We may terminate or suspend your access to the relay service if you violate these Terms or use the app or relay in a way that harms us or other users. Because the core functionality of the app does not depend on our infrastructure, terminating relay access does not necessarily prevent you from continuing to administer your server with the app — but push notifications will stop working.</p>
+
+<p>The provisions of these Terms that by their nature should survive termination — including disclaimers, limitation of liability, indemnification, and governing law — will survive.</p>
+
+<h2>Changes to these Terms</h2>
+
+<p>We may update these Terms from time to time. If we make material changes, we'll update the "Last updated" date at the top and, where appropriate, surface the change in the app. Your continued use of the app after changes take effect constitutes your acceptance of the updated Terms.</p>
+
+<p>If you don't agree with the updated Terms, your remedy is to stop using the app.</p>
+
+<h2>Governing law and disputes</h2>
+
+<p>These Terms are governed by the laws of the State of South Dakota, USA, without regard to its conflict-of-laws principles. Any dispute arising out of or related to these Terms or your use of the app will be brought exclusively in the state or federal courts located in Lawrence County, South Dakota, and you consent to the personal jurisdiction of those courts.</p>
+
+<p>If you live in a jurisdiction that grants you the right to bring claims in your local courts (such as certain consumer-protection rights in the EU or UK), this clause does not override those rights.</p>
+
+<h2>Apple-specific terms</h2>
+
+<p>You acknowledge that these Terms are between you and PulsePanel, not between you and Apple. Apple has no responsibility for the app or its content. To the extent any of these Terms conflict with Apple's App Store Terms of Service, Apple's terms control with respect to your use of the app through the App Store.</p>
+
+<p>You and PulsePanel acknowledge that Apple is a third-party beneficiary of these Terms and may enforce them against you.</p>
+
+<h2>Miscellaneous</h2>
+
+<p>If any provision of these Terms is found to be unenforceable, the rest of the Terms remain in effect. Our failure to enforce any provision does not waive our right to enforce it later. These Terms, together with our <a href="privacy.html">Privacy Policy</a>, are the entire agreement between you and us regarding the app.</p>
+
+<p>You may not assign these Terms without our written consent. We may assign these Terms in connection with a merger, acquisition, or sale of assets.</p>
+
+<h2>Contact and notices</h2>
+
+<p>For questions, support, or legal notices regarding these Terms or the app, contact us at:</p>
+
+<div class="contact-block">
+  <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a>
+</div>
+
+<p>We read every email and respond within a reasonable time.</p>
+
+</div>
 
 <footer>
   <div class="container">
