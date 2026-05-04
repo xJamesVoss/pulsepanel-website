@@ -856,6 +856,269 @@
     .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
     .nav-links a:not(.nav-cta) { display: none; }
   }
+  /* ============ TROUBLESHOOTING: FLOWCHART ============ */
+  .flowchart {
+    background: linear-gradient(135deg, var(--bg-elev) 0%, rgba(56, 189, 248, 0.04) 100%);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .flowchart::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  }
+  .flowchart-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .flowchart-header-icon {
+    width: 36px; height: 36px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+    flex-shrink: 0;
+  }
+  .flowchart-header-icon svg { width: 18px; height: 18px; }
+  .flowchart-header h3 {
+    font-size: 18px !important;
+    font-weight: 600;
+    margin: 0 !important;
+    color: var(--text);
+  }
+  .flowchart-header p {
+    font-size: 13px !important;
+    color: var(--text-faint);
+    margin: 2px 0 0 !important;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .flow-step {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .flow-step:last-child { margin-bottom: 0; }
+  .flow-step-num {
+    position: absolute;
+    top: 16px;
+    left: -10px;
+    width: 24px;
+    height: 24px;
+    background: var(--blue);
+    color: var(--bg-deep);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+  }
+  .flow-step-q {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px !important;
+    margin-left: 22px;
+  }
+  .flow-answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-left: 22px;
+  }
+  .flow-answer {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-dim);
+  }
+  .flow-answer strong {
+    display: block;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .flow-answer.yes strong { color: var(--green); }
+  .flow-answer.no strong { color: var(--amber); }
+  .flow-answer code {
+    font-size: 0.9em !important;
+    padding: 1px 5px !important;
+  }
+  .flow-answer a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74,222,128,0.3);
+  }
+
+  /* ============ TROUBLESHOOTING: CATEGORY HEADERS ============ */
+  .ts-category {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .ts-category:first-of-type { margin-top: 8px; }
+  .ts-category-icon {
+    width: 28px; height: 28px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+  .ts-category-icon svg { width: 14px; height: 14px; }
+  .ts-category h3 {
+    font-size: 17px !important;
+    margin: 0 !important;
+    color: var(--text);
+  }
+  .ts-category-count {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ============ TROUBLESHOOTING: TICKET STYLE ============ */
+  details.ts {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  details.ts[open] { border-color: rgba(74,222,128,0.2); }
+  details.ts summary {
+    padding: 16px 22px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  details.ts summary::-webkit-details-marker { display: none; }
+  details.ts summary::before {
+    content: '+';
+    font-family: var(--mono);
+    color: var(--green);
+    font-size: 18px;
+    width: 18px;
+    flex-shrink: 0;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  details.ts[open] summary::before { content: '\2212'; }
+  details.ts .ts-body {
+    padding: 0 22px 18px 54px;
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  details.ts .ts-body p { margin-bottom: 10px; }
+  details.ts .ts-body p:last-child { margin-bottom: 0; }
+  details.ts .ts-body ol,
+  details.ts .ts-body ul {
+    padding-left: 20px;
+    margin: 8px 0 12px;
+  }
+  details.ts .ts-body li {
+    margin-bottom: 6px;
+    font-size: 13.5px;
+  }
+  details.ts .ts-body pre {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text);
+    overflow-x: auto;
+  }
+  details.ts .ts-body .ts-cause {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 4px;
+    padding: 2px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  details.ts .ts-body .ts-fix {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--green);
+    background: var(--green-glow);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 4px;
+    padding: 2px 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  /* ============ TROUBLESHOOTING: API NOTE INSET ============ */
+  .ts-api-note {
+    background: rgba(167, 139, 250, 0.05);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-left: 3px solid var(--purple);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0 4px !important;
+    font-size: 13px !important;
+  }
+  .ts-api-note .ts-api-label {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .ts-api-note a { color: var(--purple) !important; border-bottom-color: rgba(167,139,250,0.3) !important; }
+
 </style>
 </head>
 <body>
@@ -927,7 +1190,7 @@
       <a href="#troubleshooting" data-section="troubleshooting">
         <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         Troubleshooting
-        <span class="sb-tag soon">Soon</span>
+        <span class="sb-tag live">Live</span>
       </a>
     </div>
 
@@ -1204,29 +1467,403 @@
       </div>
     </section>
 
-    <!-- ===== TROUBLESHOOTING (placeholder) ===== -->
+    <!-- ===== TROUBLESHOOTING ===== -->
     <section class="section" data-section="troubleshooting">
       <div class="section-eyebrow">troubleshooting</div>
       <h2>When things <span class="glow">break.</span></h2>
-      <p class="lede">Common issues, diagnostic steps, and the questions to answer before you email support.</p>
+      <p class="lede">Most issues fall into one of a dozen patterns. Start with the diagnostic flowchart if the app won't connect, otherwise jump to the relevant category below.</p>
 
-      <div class="empty-state">
-        <div class="empty-state-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      <!-- DIAGNOSTIC FLOWCHART -->
+      <div class="flowchart">
+        <div class="flowchart-header">
+          <div class="flowchart-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <h3>App won't connect — diagnose in 4 steps</h3>
+            <p>// the most common failure path</p>
+          </div>
         </div>
-        <h3>Coming soon</h3>
-        <p>A dedicated troubleshooting page is on the way — covering connection issues, authentication failures, push notification delivery, and when to suspect a host network problem vs. a plugin issue.</p>
-        <p>For now, the setup guide has a troubleshooting section that handles the most common cases.</p>
-        <div class="empty-eta">// in development</div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-q">Does the server console show <code>[PulseConnect] API listening on :7070</code> after startup?</div>
+          <div class="flow-answers">
+            <div class="flow-answer yes">
+              <strong>Yes</strong>
+              The plugin is loaded and listening. Continue to step 2.
+            </div>
+            <div class="flow-answer no">
+              <strong>No</strong>
+              The plugin didn't load. See <em>Plugin doesn't load</em> below.
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-q">From a different network (or your phone on cellular, Wi-Fi off), can you reach the port? Test at <a href="https://canyouseeme.org" target="_blank" rel="noopener">canyouseeme.org</a>.</div>
+          <div class="flow-answers">
+            <div class="flow-answer yes">
+              <strong>Yes — port open</strong>
+              Network is fine. Continue to step 3.
+            </div>
+            <div class="flow-answer no">
+              <strong>No — port closed</strong>
+              Port forward isn't working, host is blocking, or you're behind CGNAT. See <em>Port forwarding & CGNAT</em>.
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-q">In the app, does the error say <strong>connection refused</strong> / <strong>timeout</strong>, or <strong>authentication failed</strong>?</div>
+          <div class="flow-answers">
+            <div class="flow-answer no">
+              <strong>Refused / timeout</strong>
+              Address or port is wrong, or a firewall is in the path. See <em>Connection refused</em>.
+            </div>
+            <div class="flow-answer yes">
+              <strong>Auth failed</strong>
+              Credentials don't match the database. See <em>Auth failed with correct password</em>.
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-q">Did the connection ever work before, or is this the first time?</div>
+          <div class="flow-answers">
+            <div class="flow-answer yes">
+              <strong>First time</strong>
+              Most likely a router or host config issue. Recheck the <a href="setup.html">setup guide</a>.
+            </div>
+            <div class="flow-answer no">
+              <strong>Worked before</strong>
+              Something changed: router restart, dynamic IP, plugin update, or iOS update. See <em>Worked yesterday, broken today</em>.
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="cta-card">
-        <div class="cta-card-text">
-          <div class="cta-card-title">Already stuck?</div>
-          <div class="cta-card-desc">Jump to the troubleshooting section of the setup guide for the fixes available today.</div>
+      <!-- ============ CONNECTION & NETWORK ============ -->
+      <div class="ts-category">
+        <div class="ts-category-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
         </div>
-        <a href="setup.html#troubleshooting" class="btn-secondary">
-          Open troubleshooting
+        <h3>Connection & network</h3>
+        <span class="ts-category-count">5 issues</span>
+      </div>
+
+      <details class="ts">
+        <summary>Connection refused or timeout</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>The plugin isn't running, or it isn't reachable on the address/port you gave the app.</p>
+          <span class="ts-fix">Diagnose</span>
+          <ol>
+            <li>Check the server console for <code>[PulseConnect] API listening on :7070</code> after startup. If it's missing, the plugin didn't load — see <em>Plugin doesn't load</em>.</li>
+            <li>Confirm the address in the app matches your server's public IP or hostname. If you self-host, your <strong>public</strong> IP (not <code>192.168.x.x</code>).</li>
+            <li>Confirm the port matches <code>api.port</code> in <code>config.yml</code> (default <code>7070</code>).</li>
+            <li>Test the port from outside your network using <a href="https://canyouseeme.org" target="_blank" rel="noopener">canyouseeme.org</a> or your phone on cellular data. If the port is closed, your forward isn't working.</li>
+            <li>If you're behind a managed Minecraft host, confirm they've opened that port for you. Many hosts only expose the Minecraft port by default.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Port forwarding & CGNAT</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>Either the router rule isn't applying, or your ISP is using Carrier-Grade NAT (CGNAT) — common on mobile, rural, and cellular ISPs — which makes inbound connections impossible without a workaround.</p>
+          <span class="ts-fix">Diagnose</span>
+          <ol>
+            <li>In your router, confirm the rule: external port <code>7070</code> → internal IP of your server, internal port <code>7070</code>, protocol TCP.</li>
+            <li>Make sure you're forwarding to the server's <strong>current</strong> internal IP — DHCP can change it. Set a static lease for the server in your router.</li>
+            <li>Compare your public IP at <a href="https://whatismyipaddress.com" target="_blank" rel="noopener">whatismyipaddress.com</a> with the IP your router shows on its WAN interface. If they differ, you're behind CGNAT and standard port forwarding won't work.</li>
+          </ol>
+          <span class="ts-fix">Workarounds for CGNAT</span>
+          <ul>
+            <li>Ask your ISP for a public IPv4 address (sometimes free, sometimes a small monthly fee).</li>
+            <li>Use a tunneling service: Tailscale Funnel, Cloudflare Tunnel, or a small VPS reverse proxy.</li>
+            <li>Move the Minecraft server to a VPS provider that gives you a real public IP (DigitalOcean, Linode, Hetzner, etc.).</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Connects on Wi-Fi but fails on cellular (or vice versa)</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>Almost always a network-side restriction, not the app. Some Wi-Fi networks (corporate, school, public guest) block non-standard ports outbound. Some cellular carriers throttle or block similarly. Or, if it works on Wi-Fi but not cellular, you might be using a local IP that only resolves on your home network.</p>
+          <span class="ts-fix">Diagnose</span>
+          <ol>
+            <li>If you used a <code>192.168.x.x</code> address in the app, that only works on your home Wi-Fi. Use your public IP or hostname instead.</li>
+            <li>Test from cellular by toggling Wi-Fi off. If it fails, the Wi-Fi network is blocking outbound traffic to your port.</li>
+            <li>Try a non-default port like <code>8443</code> in <code>api.port</code> — many networks allow that range while blocking unusual ones.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>"Local Network" permission prompt didn't appear</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>iOS only prompts once. If you dismissed it or denied it, the app can't reach servers on your local Wi-Fi (only over the internet).</p>
+          <span class="ts-fix">Fix</span>
+          <p>The app's connection-error screen has an <strong>Open Settings</strong> button that deep-links to the right place. Or manually: <strong>iOS Settings → PulsePanel → Local Network → On</strong>.</p>
+          <p>This only matters when connecting to a server on the same Wi-Fi network as your phone. Connecting to a remote server over the internet doesn't need Local Network permission.</p>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Worked yesterday, broken today</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>Something on either side changed. The usual suspects, in order of likelihood:</p>
+          <ul>
+            <li><strong>Dynamic IP changed</strong> (most common for self-hosters) — your home IP rotates, and the address saved in the app no longer points to your server. Check your current public IP and update the app.</li>
+            <li><strong>Router restarted</strong> — port-forward rules sometimes don't survive firmware updates or reboots. Verify the rule is still active.</li>
+            <li><strong>Plugin or server updated</strong> — check the server console for <code>[PulseConnect]</code> errors after startup.</li>
+            <li><strong>iOS or app updated</strong> — try fully quitting and relaunching the app. If still broken, sign out and sign back in.</li>
+            <li><strong>Token expired</strong> — by default JWTs expire after 24 hours. Sign in again.</li>
+          </ul>
+          <span class="ts-fix">Long-term fix</span>
+          <p>If your IP rotates often, set up a dynamic DNS hostname (DuckDNS, No-IP, Cloudflare with a script) and point the app at the hostname instead of the raw IP.</p>
+        </div>
+      </details>
+
+      <!-- ============ PLUGIN ISSUES ============ -->
+      <div class="ts-category">
+        <div class="ts-category-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3>The plugin itself</h3>
+        <span class="ts-category-count">3 issues</span>
+      </div>
+
+      <details class="ts">
+        <summary>Plugin doesn't load on server start</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>The JAR is missing, in the wrong folder, incompatible with the server software, or has a corrupted <code>config.yml</code>.</p>
+          <span class="ts-fix">Diagnose</span>
+          <ol>
+            <li>Confirm <code>PulseConnect.jar</code> is in <code>plugins/</code>, not a subfolder.</li>
+            <li>Check the full server console output during startup. Look for any line containing <code>PulseConnect</code> — if the JAR is being seen, you'll get either a success line or an explicit error.</li>
+            <li>If you see a YAML parse error, your <code>config.yml</code> has bad indentation or unquoted special characters. Restore the default by deleting <code>plugins/PulseConnect/config.yml</code> and restarting the server — it'll regenerate.</li>
+            <li>Confirm Java version: PulseConnect requires Java 17 or newer. Run <code>java -version</code> on the server.</li>
+            <li>Confirm server software: Paper, Spigot, or Purpur on Minecraft 1.20+. Forge and Fabric aren't supported.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Port already in use / <code>BindException</code></summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>Something else is already listening on port <code>7070</code> (or whatever you set in <code>api.port</code>). Common culprits: another instance of the same plugin, a different admin plugin (ServerTap, AdminAPI, etc.), or a leftover process from a previous server crash.</p>
+          <span class="ts-fix">Fix</span>
+          <ol>
+            <li>Stop the server cleanly. If a plugin from a previous run is still holding the port, give it 30 seconds to release.</li>
+            <li>On Linux: <code>sudo lsof -i :7070</code> shows what's using the port. Kill that process if it's stale.</li>
+            <li>If two plugins genuinely need different ports, change <code>api.port</code> in <code>config.yml</code> to something unused (e.g. <code>7080</code>) and update your port forward + the app.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Database errors — <code>SQLITE_BUSY</code> or Hikari pool exhausted</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>The plugin's SQLite database is being hit by multiple writers at once and locking up. This is rare in normal use but can happen on very busy servers, after a crash, or if another tool is reading <code>plugins/PulseConnect/pulseconnect.db</code> while the plugin is running.</p>
+          <span class="ts-fix">Fix</span>
+          <ol>
+            <li>Close any external SQLite browser, sqlite3 CLI session, or backup tool that's accessing the plugin's database.</li>
+            <li>Stop the server. Wait 10 seconds. Start it again.</li>
+            <li>If errors persist, the database may be partially corrupt. Stop the server, copy <code>pulseconnect.db</code> somewhere safe as a backup, then delete it. The plugin will recreate a fresh database on next startup. (You'll lose audit log history, ticket history, and accounts — re-add the admin account via <code>config.yml</code>.)</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- ============ AUTHENTICATION ============ -->
+      <div class="ts-category">
+        <div class="ts-category-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3>Authentication</h3>
+        <span class="ts-category-count">3 issues</span>
+      </div>
+
+      <details class="ts">
+        <summary>Auth failed with correct password</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>Username or password doesn't match what the plugin's database stored. Common reasons: trailing spaces from copy-paste, caps lock, or the credentials in <code>config.yml</code> were changed <em>after</em> first launch (those fields only matter on first launch — the database is the source of truth after that).</p>
+          <span class="ts-fix">Fix</span>
+          <ol>
+            <li>Type the username and password manually instead of pasting. Watch for caps lock and trailing spaces.</li>
+            <li>If you changed <code>admin.username</code> or <code>admin.password</code> in <code>config.yml</code> after the plugin's first run, those changes had no effect. Use whatever credentials existed at first launch.</li>
+            <li>If you've truly forgotten, see <em>Forgot admin credentials</em> below.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Locked out — "too many attempts"</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>5 failed login attempts within 15 minutes triggers an automatic lockout (configurable). The lockout is keyed by username + IP, and resets on its own.</p>
+          <span class="ts-fix">Fix</span>
+          <ol>
+            <li>Wait 15 minutes (or whatever <code>security.lockout-minutes</code> is in <code>config.yml</code>) and try once more — this time with the correct credentials.</li>
+            <li>If you need to bypass it immediately, restarting the server clears the in-memory lockout state.</li>
+          </ol>
+          <div class="ts-api-note">
+            <span class="ts-api-label">// developers</span>
+            The same lockout applies to API calls to <code>POST /auth/login</code> — your custom client will get a <code>429 Too Many Requests</code>. Implement an exponential backoff after a 401 to avoid tripping the lockout during testing.
+          </div>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Forgot admin credentials</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>The owner password is BCrypt-hashed in the plugin's database and isn't recoverable. The clean reset path is to wipe the database and let the plugin recreate the account from <code>config.yml</code>.</p>
+          <span class="ts-fix">Fix — clean reset</span>
+          <ol>
+            <li>Stop the server.</li>
+            <li>Edit <code>plugins/PulseConnect/config.yml</code> and set <code>admin.username</code> and <code>admin.password</code> to fresh values.</li>
+            <li>Delete (or move aside as backup) <code>plugins/PulseConnect/pulseconnect.db</code>.</li>
+            <li>Start the server. The plugin will create a new database and a new owner account from the values in <code>config.yml</code>.</li>
+            <li>Sign in with the new credentials in the app.</li>
+          </ol>
+          <p><strong>What you lose:</strong> audit log history, closed tickets, any flagged players, ban/mute history that's stored in the plugin (server-side bans in the vanilla banlist are unaffected).</p>
+        </div>
+      </details>
+
+      <!-- ============ PUSH NOTIFICATIONS ============ -->
+      <div class="ts-category">
+        <div class="ts-category-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </div>
+        <h3>Push notifications</h3>
+        <span class="ts-category-count">2 issues</span>
+      </div>
+
+      <details class="ts">
+        <summary>Notifications not arriving</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>Push delivery has several layers — any one of them can be off. Work through them in order.</p>
+          <span class="ts-fix">Diagnose</span>
+          <ol>
+            <li><strong>iOS-level permission</strong> — Settings → PulsePanel → Notifications → confirm Allow Notifications is on.</li>
+            <li><strong>App-level toggles</strong> — in the app, Settings → Notifications → confirm the categories you care about (tickets, server lag, etc.) are enabled.</li>
+            <li><strong>Server can reach the relay</strong> — from the server, run <code>curl https://push.pulsepanelapp.com/health</code> (when that endpoint exists). The plugin needs outbound HTTPS to <code>push.pulsepanelapp.com</code>.</li>
+            <li><strong>Device is registered</strong> — open the app once on the device you want notifications on. The app registers its APNs token on each launch.</li>
+            <li><strong>Trigger a test event</strong> — join the server yourself (player_join is an easy one to verify), or open and reply to a ticket in-game.</li>
+          </ol>
+          <p>If all of the above check out and notifications still aren't arriving, send the symptom + your iOS version to <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a>.</p>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>Notifications arrive delayed (minutes late)</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>Almost always iOS-side, not server-side. Apple intentionally batches and throttles pushes when the device is in low-power mode, on a constrained network, or has been idle for a while. The relay forwards within milliseconds — Apple's queue is what introduces delay.</p>
+          <span class="ts-fix">Things that help</span>
+          <ul>
+            <li>Disable Low Power Mode on the device.</li>
+            <li>Open the PulsePanel app at least once a day — apps that haven't been opened in a while get more aggressively throttled.</li>
+            <li>For tickets specifically, raising priority (<code>tickets.manage</code> + Set priority → high) marks the push as time-sensitive on iOS, which bypasses some throttling.</li>
+          </ul>
+          <p>For genuinely real-time monitoring, the in-app live console and dashboard are sub-second; push is for awareness when you're not in the app.</p>
+        </div>
+      </details>
+
+      <!-- ============ APP & DATA ============ -->
+      <div class="ts-category">
+        <div class="ts-category-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        <h3>App behavior</h3>
+        <span class="ts-category-count">2 issues</span>
+      </div>
+
+      <details class="ts">
+        <summary>Dashboard is empty after connecting</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>The app authenticated but no data is flowing. Most often this means the server is still mid-startup, or there's a plugin error suppressing the data streams.</p>
+          <span class="ts-fix">Fix</span>
+          <ol>
+            <li>Wait 20-30 seconds, then pull-to-refresh the dashboard.</li>
+            <li>Check the server console for any <code>[PulseConnect]</code> error lines around the time you signed in.</li>
+            <li>Force quit the app (swipe up from app switcher) and reopen it.</li>
+            <li>If the dashboard fills in but specific tabs (Console, Players, etc.) are empty, that points to a permission issue — sign out and back in to refresh your token.</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="ts">
+        <summary>File manager won't save — "file changed" conflict</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>The plugin uses optimistic locking on file writes. If the file changed on disk between when you opened it in the app and when you tried to save, the plugin returns a conflict instead of overwriting blindly.</p>
+          <span class="ts-fix">Fix</span>
+          <ol>
+            <li>Tap the file again to reload the latest version.</li>
+            <li>Re-apply your edits to the fresh content.</li>
+            <li>Save again.</li>
+          </ol>
+          <p>This usually happens when something else (a plugin auto-rewrite, a separate SSH session, or another admin) modified the same file. The conflict is protecting your edits — the file would have lost data otherwise.</p>
+          <div class="ts-api-note">
+            <span class="ts-api-label">// developers</span>
+            The same mechanism applies to <code>POST /files/write</code> — if your <code>expected_hash</code> doesn't match, you'll get <code>409 Conflict</code> with the current hash in the response. Re-read with <code>GET /files/read</code> and retry. Full details in the <a href="api.html#files">API reference</a>.
+          </div>
+        </div>
+      </details>
+
+      <!-- ============ HOSTING-SPECIFIC ============ -->
+      <div class="ts-category">
+        <div class="ts-category-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <h3>Hosting-specific gotchas</h3>
+        <span class="ts-category-count">1 issue</span>
+      </div>
+
+      <details class="ts">
+        <summary>Reverse proxy (nginx / Caddy / Cloudflare) breaks WebSocket</summary>
+        <div class="ts-body">
+          <span class="ts-cause">Cause</span>
+          <p>HTTP requests work but the live console / chat / events don't stream. Reverse proxies often need explicit WebSocket upgrade headers, and Cloudflare's free tier will sometimes interfere with long-lived WebSocket connections.</p>
+          <span class="ts-fix">Fix — nginx</span>
+          <pre>location /api/v1/ws {
+  proxy_pass http://localhost:7070;
+  proxy_http_version 1.1;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection "upgrade";
+  proxy_read_timeout 86400;
+}</pre>
+          <span class="ts-fix">Fix — Caddy</span>
+          <p>Caddy handles WebSocket upgrades automatically. A simple <code>reverse_proxy localhost:7070</code> works for both REST and WebSocket — no extra config needed.</p>
+          <span class="ts-fix">Fix — Cloudflare</span>
+          <p>Cloudflare's free plan supports WebSockets, but you may need to enable it explicitly under Network → WebSockets. If you're seeing intermittent disconnects, also check your <a href="https://dash.cloudflare.com" target="_blank" rel="noopener">Page Rules</a> aren't caching the API path.</p>
+        </div>
+      </details>
+
+      <!-- BUG REPORT CTA -->
+      <div class="cta-card" style="margin-top: 40px;">
+        <div class="cta-card-text">
+          <div class="cta-card-title">Still stuck?</div>
+          <div class="cta-card-desc">If your issue isn't above, the Contact section has a checklist of what to include in a bug report so I can help fast.</div>
+        </div>
+        <a href="#contact" class="btn-secondary" data-section="contact">
+          Open contact
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       </div>
