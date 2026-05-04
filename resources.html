@@ -1119,6 +1119,222 @@
   }
   .ts-api-note a { color: var(--purple) !important; border-bottom-color: rgba(167,139,250,0.3) !important; }
 
+  /* ============ CONFIG REFERENCE ============ */
+  .cfg-jumpbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 32px;
+    position: sticky;
+    top: 80px;
+    z-index: 10;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(10, 17, 23, 0.85);
+  }
+  .cfg-jumpbar a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 6px 12px;
+    text-decoration: none !important;
+    border-bottom: 1px solid var(--line) !important;
+    transition: all 0.12s;
+  }
+  .cfg-jumpbar a:hover {
+    color: var(--green);
+    border-color: rgba(74,222,128,0.3) !important;
+    background: var(--green-glow);
+  }
+
+  .cfg-section {
+    margin-bottom: 48px;
+  }
+  .cfg-section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 32px 0 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+    scroll-margin-top: 90px;
+  }
+  .cfg-section-head h3 {
+    font-family: var(--mono) !important;
+    font-size: 17px !important;
+    color: var(--green) !important;
+    margin: 0 !important;
+    letter-spacing: 0;
+  }
+  .cfg-section-desc {
+    color: var(--text-faint);
+    font-size: 13px;
+  }
+
+  .cfg-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    transition: border-color 0.15s;
+  }
+  .cfg-card:hover {
+    border-color: rgba(74,222,128,0.2);
+  }
+  .cfg-card.danger {
+    border-left: 3px solid var(--red);
+  }
+  .cfg-card.security {
+    border-left: 3px solid var(--amber);
+  }
+  .cfg-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .cfg-key {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0;
+  }
+  .cfg-key .cfg-key-prefix {
+    color: var(--text-faint);
+  }
+  .cfg-key .cfg-key-name {
+    color: var(--green);
+  }
+  .cfg-pill {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--line);
+    color: var(--text-faint);
+    background: var(--bg-deep);
+  }
+  .cfg-pill.type {
+    color: var(--blue);
+    border-color: rgba(56,189,248,0.3);
+    background: rgba(56,189,248,0.08);
+  }
+  .cfg-pill.default {
+    color: var(--text-dim);
+  }
+  .cfg-pill.default code {
+    background: none !important;
+    border: none !important;
+    color: var(--text) !important;
+    padding: 0 !important;
+    font-size: 10px !important;
+  }
+  .cfg-pill.danger {
+    color: var(--red);
+    border-color: rgba(248,113,113,0.3);
+    background: rgba(248,113,113,0.08);
+  }
+  .cfg-pill.security {
+    color: var(--amber);
+    border-color: rgba(251,191,36,0.3);
+    background: rgba(251,191,36,0.08);
+  }
+  .cfg-pill.required {
+    color: var(--purple);
+    border-color: rgba(167,139,250,0.3);
+    background: rgba(167,139,250,0.08);
+  }
+  .cfg-card-body {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .cfg-card-body p { margin-bottom: 10px; }
+  .cfg-card-body p:last-child { margin-bottom: 0; }
+  .cfg-card-body ul {
+    padding-left: 20px;
+    margin: 8px 0 10px;
+  }
+  .cfg-card-body li {
+    margin-bottom: 4px;
+    font-size: 13.5px;
+  }
+  .cfg-card-note {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--amber);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .cfg-card-note .note-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .cfg-card-note.danger {
+    border-left-color: var(--red);
+  }
+  .cfg-card-note.danger .note-label { color: var(--red); }
+
+  .cfg-cmd-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+  }
+  .cfg-cmd-card h4 {
+    font-family: var(--mono) !important;
+    font-size: 14px !important;
+    color: var(--green) !important;
+    margin: 0 0 6px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+  }
+  .cfg-cmd-card .cfg-cmd-usage {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+  .cfg-cmd-card p {
+    color: var(--text-dim);
+    font-size: 13.5px;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .cfg-cmd-card ul {
+    padding-left: 20px;
+    margin: 8px 0 0;
+  }
+  .cfg-cmd-card li {
+    color: var(--text-dim);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
 </style>
 </head>
 <body>
@@ -1185,7 +1401,7 @@
       <a href="#config" data-section="config">
         <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         Configuration
-        <span class="sb-tag soon">Soon</span>
+        <span class="sb-tag live">Live</span>
       </a>
       <a href="#troubleshooting" data-section="troubleshooting">
         <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -1278,7 +1494,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </div>
             <div class="dest-title">Configuration reference</div>
-            <div class="dest-tag soon">Soon</div>
+            <div class="dest-tag">Live</div>
           </div>
           <p class="dest-desc">Every key in <code>config.yml</code> explained — defaults, valid values, security implications.</p>
         </a>
@@ -1375,7 +1591,7 @@
           </div>
           <div class="info-tile">
             <div class="info-tile-label">Minecraft version</div>
-            <div class="info-tile-value">1.20 or newer</div>
+            <div class="info-tile-value">1.21 or newer</div>
           </div>
           <div class="info-tile">
             <div class="info-tile-label">Java</div>
@@ -1431,29 +1647,300 @@
       </div>
     </section>
 
-    <!-- ===== CONFIG REFERENCE (placeholder) ===== -->
+    <!-- ===== CONFIG REFERENCE ===== -->
     <section class="section" data-section="config">
       <div class="section-eyebrow">configuration</div>
       <h2>Configuration <span class="glow">reference.</span></h2>
-      <p class="lede">Every key in <code>config.yml</code>, what it does, valid values, and security notes.</p>
+      <p class="lede">Every key in <code>plugins/PulseConnect/config.yml</code>, what it does, and what to watch out for. The plugin generates this file with sensible defaults on first start — you only need to touch a few keys.</p>
 
-      <div class="empty-state">
-        <div class="empty-state-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
-        </div>
-        <h3>Coming soon</h3>
-        <p>A full reference for every key in <code>config.yml</code> — defaults, valid values, what each setting controls, and the security implications of changing it.</p>
-        <p>Until this lands, the inline comments in your generated <code>config.yml</code> cover everything you need.</p>
-        <div class="empty-eta">// in development</div>
+      <!-- Jump bar -->
+      <div class="cfg-jumpbar">
+        <a href="#cfg-api" data-cfg-jump>api</a>
+        <a href="#cfg-admin" data-cfg-jump>admin</a>
+        <a href="#cfg-security" data-cfg-jump>security</a>
+        <a href="#cfg-logging" data-cfg-jump>logging</a>
+        <a href="#cfg-relay" data-cfg-jump>relay</a>
+        <a href="#cfg-commands" data-cfg-jump>commands</a>
       </div>
 
-      <div class="cta-card">
-        <div class="cta-card-text">
-          <div class="cta-card-title">In a hurry?</div>
-          <div class="cta-card-desc">The setup guide explains the most important fields (JWT secret, admin credentials, port) with examples.</div>
+      <!-- ============ api ============ -->
+      <div class="cfg-section">
+        <div class="cfg-section-head" id="cfg-api">
+          <h3>api:</h3>
+          <span class="cfg-section-desc">How the plugin exposes its HTTP + WebSocket interface to the app.</span>
         </div>
-        <a href="setup.html" class="btn-secondary">
-          Open setup guide
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">api.</span><span class="cfg-key-name">port</span></span>
+            <span class="cfg-pill type">integer</span>
+            <span class="cfg-pill default">default <code>7070</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>The TCP port the plugin listens on. The app connects to this port. Forward this port on your router for remote access.</p>
+            <p>Change it if <code>7070</code> is already in use, or if your hosting provider only allows specific ports.</p>
+          </div>
+        </div>
+
+        <div class="cfg-card security">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">api.</span><span class="cfg-key-name">jwt-secret</span></span>
+            <span class="cfg-pill type">string</span>
+            <span class="cfg-pill required">required</span>
+            <span class="cfg-pill security">security</span>
+          </div>
+          <div class="cfg-card-body">
+            <p>A server-internal secret the plugin uses to sign session tokens. Treat it like a password.</p>
+            <p>This is <strong>not</strong> something you enter in the app — it stays on the server. Use 32+ random characters; <code>openssl rand -hex 32</code> works well.</p>
+            <div class="cfg-card-note">
+              <span class="note-label">change this</span>The plugin generates a random secret on first launch, so the default is already safe. Only change it if you suspect it was leaked — changing it invalidates every signed-in session.
+            </div>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">api.</span><span class="cfg-key-name">token-expiry-hours</span></span>
+            <span class="cfg-pill type">integer</span>
+            <span class="cfg-pill default">default <code>24</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>How long an app sign-in stays valid before the user has to sign in again.</p>
+            <p>Lower values are slightly more secure but more annoying. Higher values are convenient but extend the lifetime of a leaked token. The default of 24 hours is a reasonable trade-off.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ admin ============ -->
+      <div class="cfg-section">
+        <div class="cfg-section-head" id="cfg-admin">
+          <h3>admin:</h3>
+          <span class="cfg-section-desc">Used <em>only</em> on first launch to create the initial owner account.</span>
+        </div>
+
+        <div class="cfg-card danger">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">admin.</span><span class="cfg-key-name">username</span></span>
+            <span class="cfg-pill type">string</span>
+            <span class="cfg-pill default">default <code>admin</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>The username for the owner account. This is what you'll sign in with on the app.</p>
+          </div>
+        </div>
+
+        <div class="cfg-card danger">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">admin.</span><span class="cfg-key-name">password</span></span>
+            <span class="cfg-pill type">string</span>
+            <span class="cfg-pill default">default <code>password123</code></span>
+            <span class="cfg-pill danger">change before launch</span>
+          </div>
+          <div class="cfg-card-body">
+            <p>The password for the owner account. Stored hashed (BCrypt) in the database after first launch.</p>
+            <div class="cfg-card-note danger">
+              <span class="note-label">do this first</span>The plugin ships with <code>password123</code> as the placeholder. <strong>Change this in <code>config.yml</code> before you start the server</strong>, or change it via the app's account settings immediately after first sign-in.
+            </div>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key">first-launch only</span>
+            <span class="cfg-pill">behavior</span>
+          </div>
+          <div class="cfg-card-body">
+            <p>The <code>admin:</code> block is read <em>only</em> on first plugin startup, when the database is empty. Once the owner account exists, this block is ignored — changing the values here won't affect the existing account.</p>
+            <p>To change credentials after first launch, use the app's account settings (or do a clean reset; see <a href="#troubleshooting" data-section="troubleshooting">troubleshooting</a>).</p>
+            <p>You can blank these fields out after first launch — the plugin doesn't need them anymore.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ security ============ -->
+      <div class="cfg-section">
+        <div class="cfg-section-head" id="cfg-security">
+          <h3>security:</h3>
+          <span class="cfg-section-desc">Built-in protections for the sign-in flow and API rate limiting.</span>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">security.</span><span class="cfg-key-name">max-login-attempts</span></span>
+            <span class="cfg-pill type">integer</span>
+            <span class="cfg-pill default">default <code>5</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>How many failed sign-in attempts allowed before the (username, IP) pair is locked out.</p>
+            <p>Lower values are stricter against brute-force attacks but more punishing if you fat-finger your password.</p>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">security.</span><span class="cfg-key-name">lockout-minutes</span></span>
+            <span class="cfg-pill type">integer</span>
+            <span class="cfg-pill default">default <code>15</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>How long the lockout lasts after hitting <code>max-login-attempts</code>.</p>
+            <p>Restarting the server clears the in-memory lockout state regardless of this value.</p>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">security.</span><span class="cfg-key-name">rate-limit-per-minute</span></span>
+            <span class="cfg-pill type">integer</span>
+            <span class="cfg-pill default">default <code>60</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>Maximum API requests per minute, per authenticated user. Prevents a misbehaving client from hammering the server.</p>
+            <p>The default is generous for normal app usage. Custom integrations doing heavy polling may need a higher value — or better, switch to the WebSocket for real-time data.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ logging ============ -->
+      <div class="cfg-section">
+        <div class="cfg-section-head" id="cfg-logging">
+          <h3>logging:</h3>
+          <span class="cfg-section-desc">What the plugin writes to the server console.</span>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">logging.</span><span class="cfg-key-name">log-requests</span></span>
+            <span class="cfg-pill type">boolean</span>
+            <span class="cfg-pill default">default <code>true</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>Log every API request to the server console. Useful for debugging client integrations and verifying the plugin is reachable.</p>
+            <p>Set to <code>false</code> on busy servers to reduce log noise. Privileged actions are still recorded in the audit log regardless.</p>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">logging.</span><span class="cfg-key-name">log-commands</span></span>
+            <span class="cfg-pill type">boolean</span>
+            <span class="cfg-pill default">default <code>true</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>Log every command executed via <code>POST /command</code> to the server console.</p>
+            <p>Recommended to leave on — commands run via the API have the same authority as console commands. The audit log captures these regardless, but console visibility is useful in real time.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ relay ============ -->
+      <div class="cfg-section">
+        <div class="cfg-section-head" id="cfg-relay">
+          <h3>relay:</h3>
+          <span class="cfg-section-desc">Push notification settings.</span>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key">how it works</span>
+            <span class="cfg-pill">background</span>
+          </div>
+          <div class="cfg-card-body">
+            <p>Push notifications are delivered through PulseRelay — a small forwarding service that holds the Apple authentication key on its end. Your server sends an HTTPS request to the relay, the relay forwards to Apple's APNs, Apple delivers to your device.</p>
+            <p>This means the cryptographic Apple key never lives on your Minecraft server. The values below are what the plugin needs to talk to the relay.</p>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">relay.</span><span class="cfg-key-name">url</span></span>
+            <span class="cfg-pill type">string</span>
+            <span class="cfg-pill default">default <code>""</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>The PulseRelay endpoint URL. Leave blank to disable push notifications.</p>
+            <p>The trailing <code>/push</code> is optional — the plugin handles both forms.</p>
+            <div class="cfg-card-note">
+              <span class="note-label">note</span>If you bought the iOS app, the URL and shared secret are provided to you. If you're testing or running your own relay, point this at your instance.
+            </div>
+          </div>
+        </div>
+
+        <div class="cfg-card security">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">relay.</span><span class="cfg-key-name">shared-secret</span></span>
+            <span class="cfg-pill type">string</span>
+            <span class="cfg-pill default">default <code>""</code></span>
+            <span class="cfg-pill security">security</span>
+          </div>
+          <div class="cfg-card-body">
+            <p>The token the plugin uses to authenticate to the relay. Leave blank to disable push notifications.</p>
+            <p>Treat this like a password — anyone with it can send pushes through your relay account.</p>
+          </div>
+        </div>
+
+        <div class="cfg-card">
+          <div class="cfg-card-head">
+            <span class="cfg-key"><span class="cfg-key-prefix">relay.</span><span class="cfg-key-name">environment</span></span>
+            <span class="cfg-pill type">string</span>
+            <span class="cfg-pill default">default <code>development</code></span>
+          </div>
+          <div class="cfg-card-body">
+            <p>Which APNs environment to deliver to. Two valid values:</p>
+            <ul>
+              <li><code>development</code> — for Xcode builds and TestFlight internal testing</li>
+              <li><code>production</code> — for App Store builds and TestFlight external testing</li>
+            </ul>
+            <p>Leave at <code>development</code> unless you've been explicitly told to switch. Mismatching this causes pushes to silently fail — Apple won't tell you why.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ commands ============ -->
+      <div class="cfg-section">
+        <div class="cfg-section-head" id="cfg-commands">
+          <h3>// commands</h3>
+          <span class="cfg-section-desc">In-game commands the plugin registers.</span>
+        </div>
+
+        <div class="cfg-cmd-card">
+          <h4>/pulseconnect</h4>
+          <div class="cfg-cmd-usage">aliases: <code>/pc</code></div>
+          <p>Admin command for inspecting and managing the plugin from in-game or the server console.</p>
+          <ul>
+            <li><code>/pulseconnect help</code> — list available subcommands</li>
+            <li><code>/pulseconnect status</code> — show plugin status (port, connected sessions, uptime)</li>
+            <li><code>/pulseconnect reload</code> — reload <code>config.yml</code> without restarting the server</li>
+          </ul>
+        </div>
+
+        <div class="cfg-cmd-card">
+          <h4>/ticket</h4>
+          <div class="cfg-cmd-usage">player-facing</div>
+          <p>Player command for the in-game support ticket system. Players use this to ask staff for help; tickets show up in the app for the owner to respond to.</p>
+          <ul>
+            <li><code>/ticket create &lt;message&gt;</code> — open a new ticket</li>
+            <li><code>/ticket reply &lt;message&gt;</code> — reply to your active ticket</li>
+            <li><code>/ticket close</code> — close your active ticket</li>
+            <li><code>/ticket list</code> — view your ticket history</li>
+          </ul>
+        </div>
+
+        <div class="cfg-cmd-card">
+          <h4>pulseconnect.admin</h4>
+          <div class="cfg-cmd-usage">permission node · default: op</div>
+          <p>Bukkit permission required to run <code>/pulseconnect</code> subcommands. Granted to operators by default; reassign via your permission plugin (LuckPerms, etc.) if you want it to behave differently.</p>
+        </div>
+      </div>
+
+      <!-- Bottom CTA -->
+      <div class="cta-card" style="margin-top: 32px;">
+        <div class="cta-card-text">
+          <div class="cta-card-title">Building a custom client?</div>
+          <div class="cta-card-desc">The API reference covers every endpoint, the WebSocket protocol, and the full permission catalog — all the values <code>config.yml</code> influences but doesn't fully document on its own.</div>
+        </div>
+        <a href="api.html" class="btn-secondary">
+          Open API reference
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       </div>
@@ -1645,7 +2132,7 @@
             <li>Check the full server console output during startup. Look for any line containing <code>PulseConnect</code> — if the JAR is being seen, you'll get either a success line or an explicit error.</li>
             <li>If you see a YAML parse error, your <code>config.yml</code> has bad indentation or unquoted special characters. Restore the default by deleting <code>plugins/PulseConnect/config.yml</code> and restarting the server — it'll regenerate.</li>
             <li>Confirm Java version: PulseConnect requires Java 17 or newer. Run <code>java -version</code> on the server.</li>
-            <li>Confirm server software: Paper, Spigot, or Purpur on Minecraft 1.20+. Forge and Fabric aren't supported.</li>
+            <li>Confirm server software: Paper, Spigot, or Purpur on Minecraft 1.21+. Forge and Fabric aren't supported.</li>
           </ol>
         </div>
       </details>
@@ -1903,7 +2390,7 @@
       <details class="faq">
         <summary>What server software is supported?</summary>
         <div class="faq-body">
-          <p>Paper, Spigot, and Purpur on Minecraft 1.20 or newer. Anything that runs Bukkit-API plugins on Java 17+. Forge and Fabric are not currently supported.</p>
+          <p>Paper, Spigot, and Purpur on Minecraft 1.21 or newer. Anything that runs Bukkit-API plugins on Java 17+. Forge and Fabric are not currently supported.</p>
         </div>
       </details>
 
@@ -2151,10 +2638,19 @@
     });
   });
 
-  // Handle browser back/forward
+  // Handle browser back/forward.
+  // Only respond to hashes that name a real section — ignore in-page anchors
+  // like #cfg-api so jump-bar links don't kick the user back to Welcome.
   window.addEventListener('hashchange', () => {
     const name = location.hash.slice(1);
-    showSection(name || DEFAULT, { updateHash: false });
+    if (!name) {
+      showSection(DEFAULT, { updateHash: false });
+      return;
+    }
+    if (SECTIONS.includes(name)) {
+      showSection(name, { updateHash: false });
+    }
+    // else: leave the current section active; browser will scroll to the anchor naturally.
   });
 
   // Plugin download button (placeholder — wires up real URL when distribution is decided)
