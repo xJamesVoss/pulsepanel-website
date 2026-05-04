@@ -4,14 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Resources — PulsePanel</title>
-<meta name="description" content="Documentation, plugin downloads, changelog, and guides for PulsePanel.">
-<meta name="robots" content="noindex">
+<meta name="description" content="Documentation, plugin downloads, configuration reference, changelog, and developer guides for PulsePanel and PulseConnect.">
+
+<meta property="og:title" content="Resources — PulsePanel">
+<meta property="og:description" content="Everything you need to set up, configure, and extend PulsePanel.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pulsepanelapp.com/resources.html">
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a0e'/%3E%3Cg fill='%234ade80'%3E%3Crect x='8' y='14' width='3' height='4' rx='1'/%3E%3Crect x='13' y='10' width='3' height='12' rx='1'/%3E%3Crect x='18' y='12' width='3' height='8' rx='1'/%3E%3Crect x='23' y='8' width='3' height='16' rx='1'/%3E%3C/g%3E%3C/svg%3E">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -23,10 +27,13 @@
     --text-dim: #8896a8;
     --text-faint: #4a5868;
     --green: #4ade80;
+    --green-deep: #22c55e;
     --green-glow: rgba(74, 222, 128, 0.15);
     --blue: #38bdf8;
     --blue-glow: rgba(56, 189, 248, 0.15);
     --amber: #fbbf24;
+    --red: #f87171;
+    --purple: #a78bfa;
     --sans: 'Inter', sans-serif;
     --mono: 'JetBrains Mono', monospace;
   }
@@ -38,7 +45,7 @@
     color: var(--text);
     font-family: var(--sans);
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
     min-height: 100vh;
@@ -59,7 +66,8 @@
 
   .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; width: 100%; }
 
-  nav {
+  /* ============ NAV ============ */
+  nav.topnav {
     position: sticky; top: 16px;
     z-index: 100;
     margin: 0 32px;
@@ -109,157 +117,661 @@
     box-shadow: 0 0 20px var(--green-glow);
   }
 
-  /* === COMING SOON === */
-  .stub-section {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 32px 120px;
-  }
-  .stub-card {
-    max-width: 720px;
-    width: 100%;
-    background: var(--bg-elev);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 64px 48px;
+  /* ============ DOC HEADER ============ */
+  .doc-header {
     text-align: center;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.3), 0 0 40px var(--green-glow);
+    padding: 80px 32px 48px;
   }
-  .stub-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--green), transparent);
-  }
-  .stub-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--green-glow);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    color: var(--green);
-    padding: 6px 14px; border-radius: 100px;
+  .doc-eyebrow {
+    display: inline-block;
     font-family: var(--mono); font-size: 12px;
-    margin-bottom: 32px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 18px;
   }
-  .stub-eyebrow::before {
-    content: ''; width: 6px; height: 6px;
-    background: var(--amber); border-radius: 50%;
-    box-shadow: 0 0 10px var(--amber);
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-  .stub-card h1 {
-    font-size: clamp(36px, 5vw, 56px);
+  .doc-header h1 {
+    font-size: clamp(40px, 6vw, 64px);
     line-height: 1.05; font-weight: 700;
     letter-spacing: -0.03em;
     margin-bottom: 20px;
   }
-  .stub-card h1 .glow {
+  .doc-header h1 .glow {
     color: var(--green);
     text-shadow: 0 0 30px var(--green-glow);
   }
-  .stub-card > p {
-    color: var(--text-dim);
-    font-size: 17px;
-    line-height: 1.6;
-    max-width: 56ch;
-    margin: 0 auto 40px;
+  .doc-header p.lede {
+    font-size: 18px; color: var(--text-dim);
+    max-width: 60ch; margin: 0 auto;
+    line-height: 1.55;
   }
-  .stub-list {
+
+  /* ============ LAYOUT: SIDEBAR + CONTENT ============ */
+  .hub {
+    flex: 1;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 32px 96px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    max-width: 520px;
-    margin: 0 auto 40px;
-    text-align: left;
+    grid-template-columns: 260px 1fr;
+    gap: 48px;
+    align-items: start;
+    position: relative;
+    z-index: 1;
   }
-  .stub-item {
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+    background: rgba(10, 17, 23, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px 18px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+
+  .sidebar-group {
+    margin-bottom: 18px;
+  }
+  .sidebar-group:last-child { margin-bottom: 0; }
+  .sidebar-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 0 12px 8px;
+    font-weight: 600;
+  }
+  .sidebar a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    transition: all 0.12s;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .sidebar a:hover {
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+  }
+  .sidebar a.active {
+    background: var(--green-glow);
+    color: var(--green);
+  }
+  .sidebar a.active::before {
+    content: '';
+    position: absolute;
+    left: -18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 18px;
+    background: var(--green);
+    border-radius: 0 3px 3px 0;
+    box-shadow: 0 0 8px var(--green);
+  }
+  .sidebar a .sb-icon {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    color: currentColor;
+    opacity: 0.8;
+  }
+  .sidebar a .sb-tag {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+  }
+  .sidebar a .sb-tag.live {
+    color: var(--green);
+    border-color: rgba(74,222,128,0.3);
+    background: rgba(74,222,128,0.08);
+  }
+  .sidebar a .sb-tag.soon {
+    color: var(--text-faint);
+  }
+  .sidebar a .sb-tag.external {
+    color: var(--blue);
+    border-color: rgba(56,189,248,0.3);
+    background: rgba(56,189,248,0.08);
+    font-size: 11px;
+    line-height: 1;
+    padding: 2px 5px;
+  }
+
+  /* ============ CONTENT PANEL ============ */
+  .panel {
+    min-width: 0;
+  }
+
+  .section {
+    display: none;
+    animation: fadeIn 0.25s ease-out;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 16px;
+  }
+  .section-eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .section h2 {
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .section h2 .glow {
+    color: var(--green);
+    text-shadow: 0 0 30px var(--green-glow);
+  }
+  .section > p.lede {
+    font-size: 17px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    max-width: 64ch;
+    margin-bottom: 32px;
+  }
+  .section h3 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 36px 0 12px;
+  }
+  .section p {
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .section ul, .section ol {
+    color: var(--text-dim);
+    padding-left: 24px;
+    margin-bottom: 20px;
+  }
+  .section li {
+    margin-bottom: 8px;
+    line-height: 1.65;
+  }
+  .section li::marker { color: var(--green); }
+  .section code {
+    font-family: var(--mono);
     background: var(--bg-deep);
     border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 0.88em;
+    color: var(--green);
+  }
+  .section a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74,222,128,0.3);
+  }
+  .section a:hover { border-bottom-color: var(--green); }
+  .section strong { color: var(--text); font-weight: 600; }
+
+  /* ============ WELCOME / DESTINATION CARDS ============ */
+  .dest-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .dest {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    text-decoration: none !important;
+    border-bottom: 1px solid var(--line) !important;
+    color: inherit;
+    transition: all 0.18s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dest::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .dest:hover {
+    border-color: rgba(74,222,128,0.3) !important;
+    transform: translateY(-2px);
+  }
+  .dest:hover::before { opacity: 1; }
+  .dest-head {
     display: flex;
     align-items: center;
     gap: 12px;
-    text-decoration: none;
-    transition: all 0.15s;
   }
-  .stub-item.live {
-    border-color: rgba(74, 222, 128, 0.3);
-  }
-  .stub-item.live:hover {
-    border-color: var(--green);
-    background: rgba(74, 222, 128, 0.08);
-    transform: translateY(-1px);
-  }
-  .stub-item-icon {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--text-faint);
+  .dest-icon {
+    width: 36px; height: 36px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green);
     flex-shrink: 0;
   }
-  .stub-item.live .stub-item-icon {
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-  }
-  .stub-item-text {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text-dim);
-    letter-spacing: 0.02em;
-    flex: 1;
-  }
-  .stub-item.live .stub-item-text {
+  .dest-icon svg { width: 18px; height: 18px; }
+  .dest-title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--text);
   }
-  .stub-item-tag {
+  .dest-tag {
+    margin-left: auto;
     font-family: var(--mono);
     font-size: 9px;
     color: var(--green);
     background: var(--green-glow);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    padding: 2px 7px;
+    border: 1px solid rgba(74,222,128,0.3);
+    padding: 3px 7px;
     border-radius: 4px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     flex-shrink: 0;
   }
-  .stub-actions {
+  .dest-tag.soon {
+    color: var(--text-faint);
+    background: transparent;
+    border-color: var(--line);
+  }
+  .dest-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ============ DOWNLOAD CARD ============ */
+  .download-card {
+    background: linear-gradient(135deg, var(--bg-elev) 0%, rgba(74, 222, 128, 0.04) 100%);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .download-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+  .dl-row {
     display: flex;
-    gap: 12px;
-    justify-content: center;
+    align-items: center;
+    gap: 24px;
     flex-wrap: wrap;
   }
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 14px 24px; border-radius: 10px;
-    text-decoration: none; font-weight: 600; font-size: 15px;
+  .dl-jar {
+    width: 64px; height: 64px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+  .dl-jar svg { width: 28px; height: 28px; }
+  .dl-meta { flex: 1; min-width: 180px; }
+  .dl-name {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .dl-version {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-faint);
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .dl-version span { display: inline-flex; align-items: center; gap: 6px; }
+  .dl-version .dot { color: var(--text-faint); opacity: 0.5; }
+  .dl-action {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .btn-dl {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: var(--green);
+    color: var(--bg-deep);
+    text-decoration: none !important;
+    border: none !important;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 0 0 30px var(--green-glow);
     transition: all 0.15s;
   }
-  .btn-primary {
-    background: var(--green); color: var(--bg-deep);
-    box-shadow: 0 0 30px var(--green-glow);
-  }
-  .btn-primary:hover {
+  .btn-dl:hover {
     transform: translateY(-1px);
     box-shadow: 0 0 40px var(--green-glow);
   }
-  .btn-ghost {
-    color: var(--text);
+  .btn-dl svg { width: 16px; height: 16px; }
+  .btn-mirror {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 18px;
     background: rgba(255,255,255,0.04);
-    border: 1px solid var(--line);
+    color: var(--text-dim) !important;
+    border: 1px solid var(--line) !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    font-size: 13px;
+    font-family: var(--mono);
+    border-radius: 10px;
+    transition: all 0.15s;
   }
-  .btn-ghost:hover { background: rgba(255,255,255,0.08); }
+  .btn-mirror:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--text) !important;
+  }
 
-  /* === FOOTER === */
+  /* ============ INFO BLOCKS ============ */
+  .info-block {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .info-block h3 {
+    margin-top: 0 !important;
+  }
+  .info-block-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .info-tile {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .info-tile-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .info-tile-value {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ============ FAQ ============ */
+  details.faq {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  details.faq[open] { border-color: rgba(74,222,128,0.2); }
+  details.faq summary {
+    padding: 18px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::before {
+    content: '+';
+    font-family: var(--mono);
+    color: var(--green);
+    font-size: 18px;
+    width: 18px;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  details.faq[open] summary::before { content: '\2212'; }
+  details.faq .faq-body {
+    padding: 0 22px 18px 54px;
+    color: var(--text-dim);
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+  details.faq .faq-body p { margin-bottom: 10px; }
+  details.faq .faq-body p:last-child { margin-bottom: 0; }
+
+  /* ============ CHANGELOG ============ */
+  .changelog-entry {
+    border-left: 2px solid var(--line);
+    padding-left: 24px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .changelog-entry::before {
+    content: '';
+    position: absolute;
+    left: -7px; top: 4px;
+    width: 12px; height: 12px;
+    background: var(--bg);
+    border: 2px solid var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--green-glow);
+  }
+  .changelog-version {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .changelog-version h4 {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0;
+  }
+  .changelog-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .changelog-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--green-glow);
+    color: var(--green);
+    border: 1px solid rgba(74,222,128,0.3);
+  }
+
+  /* ============ EMPTY/COMING-SOON STATE ============ */
+  .empty-state {
+    background: var(--bg-elev);
+    border: 1px dashed var(--line);
+    border-radius: 16px;
+    padding: 56px 32px;
+    text-align: center;
+  }
+  .empty-state-icon {
+    width: 56px; height: 56px;
+    margin: 0 auto 20px;
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-faint);
+  }
+  .empty-state-icon svg { width: 24px; height: 24px; }
+  .empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 10px !important;
+    color: var(--text);
+  }
+  .empty-state p {
+    color: var(--text-dim);
+    max-width: 44ch;
+    margin: 0 auto 6px;
+    line-height: 1.6;
+    font-size: 14.5px;
+  }
+  .empty-state .empty-eta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-top: 16px;
+  }
+
+  /* ============ EXTERNAL CTA / OPEN-IN-PAGE CARDS ============ */
+  .cta-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .cta-card-text { flex: 1; min-width: 220px; }
+  .cta-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .cta-card-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 18px;
+    background: rgba(74,222,128,0.08);
+    color: var(--green) !important;
+    border: 1px solid rgba(74,222,128,0.3) !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: 8px;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .btn-secondary:hover {
+    background: rgba(74,222,128,0.15);
+    border-color: var(--green) !important;
+  }
+  .btn-secondary svg { width: 14px; height: 14px; }
+
+  /* ============ MOBILE SIDEBAR ============ */
+  .mobile-sidebar-toggle {
+    display: none;
+    width: 100%;
+    padding: 14px 18px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    margin-bottom: 16px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .mobile-sidebar-toggle::after {
+    content: '▾';
+    color: var(--green);
+    transition: transform 0.2s;
+  }
+  .mobile-sidebar-toggle.open::after { transform: rotate(180deg); }
+
+  /* ============ FOOTER ============ */
   footer {
     border-top: 1px solid var(--line);
     padding: 64px 0 32px;
@@ -320,16 +832,35 @@
   .foot-bottom-links a:hover { color: var(--text-dim); }
 
   @media (max-width: 940px) {
+    .hub {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 16px 24px 64px;
+    }
+    .sidebar {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 12px;
+      display: none;
+    }
+    .sidebar.open { display: block; }
+    .mobile-sidebar-toggle { display: flex; }
+    .doc-header { padding: 60px 24px 32px; }
+    .dest-grid { grid-template-columns: 1fr; }
+    .download-card { padding: 24px; }
+    .dl-row { gap: 16px; }
+    .dl-action { width: 100%; }
+    .btn-dl { width: 100%; justify-content: center; }
+    .btn-mirror { width: 100%; justify-content: center; }
     .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
     .nav-links a:not(.nav-cta) { display: none; }
-    .stub-list { grid-template-columns: 1fr; }
-    .stub-card { padding: 48px 28px; }
   }
 </style>
 </head>
 <body>
 
-<nav>
+<nav class="topnav">
   <div class="nav-inner">
     <a href="index.html" class="logo">
       <div class="logo-bars">
@@ -348,46 +879,521 @@
   </div>
 </nav>
 
-<section class="stub-section">
-  <div class="stub-card">
-    <div class="stub-eyebrow">// in development</div>
-    <h1>Resources hub <span class="glow">coming soon.</span></h1>
-    <p>Documentation, plugin downloads, setup guides, and the changelog will live here. We're building it out alongside the app's launch.</p>
+<header class="doc-header">
+  <div class="doc-eyebrow">// resources</div>
+  <h1>Everything you need, <span class="glow">in one place.</span></h1>
+  <p class="lede">Plugin downloads, setup guides, configuration reference, API docs, and support — all the tools to get PulsePanel running and keep it running.</p>
+</header>
 
-    <div class="stub-list">
-      <div class="stub-item">
-        <div class="stub-item-icon"></div>
-        <div class="stub-item-text">Setup documentation</div>
-      </div>
-      <div class="stub-item">
-        <div class="stub-item-icon"></div>
-        <div class="stub-item-text">Plugin downloads</div>
-      </div>
-      <div class="stub-item">
-        <div class="stub-item-icon"></div>
-        <div class="stub-item-text">Configuration guides</div>
-      </div>
-      <a href="api.html" class="stub-item live">
-        <div class="stub-item-icon"></div>
-        <div class="stub-item-text">API reference</div>
-        <div class="stub-item-tag">Live</div>
+<div class="hub">
+
+  <!-- ============ MOBILE TOGGLE ============ -->
+  <button class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-expanded="false">
+    <span><span style="color: var(--text-faint); margin-right: 8px;">//</span> menu</span>
+  </button>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">// get started</div>
+      <a href="#welcome" data-section="welcome">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Welcome
       </a>
-      <div class="stub-item">
-        <div class="stub-item-icon"></div>
-        <div class="stub-item-text">Changelog</div>
-      </div>
-      <div class="stub-item">
-        <div class="stub-item-icon"></div>
-        <div class="stub-item-text">Status page</div>
-      </div>
+      <a href="#plugin" data-section="plugin">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Plugin download
+        <span class="sb-tag live">Live</span>
+      </a>
+      <a href="#requirements" data-section="requirements">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z" opacity="0"/><circle cx="12" cy="12" r="10"/></svg>
+        Requirements
+      </a>
     </div>
 
-    <div class="stub-actions">
-      <a href="index.html" class="btn btn-primary">← Back to home</a>
-      <a href="mailto:support@pulsepanelapp.com" class="btn btn-ghost">Get in touch</a>
+    <div class="sidebar-group">
+      <div class="sidebar-label">// guides</div>
+      <a href="setup.html">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Setup guide
+        <span class="sb-tag external">↗</span>
+      </a>
+      <a href="#config" data-section="config">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Configuration
+        <span class="sb-tag soon">Soon</span>
+      </a>
+      <a href="#troubleshooting" data-section="troubleshooting">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Troubleshooting
+        <span class="sb-tag soon">Soon</span>
+      </a>
     </div>
-  </div>
-</section>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">// developers</div>
+      <a href="api.html">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        API reference
+        <span class="sb-tag external">↗</span>
+      </a>
+      <a href="#changelog" data-section="changelog">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+        Changelog
+        <span class="sb-tag soon">Soon</span>
+      </a>
+    </div>
+
+    <div class="sidebar-group">
+      <div class="sidebar-label">// support</div>
+      <a href="#faq" data-section="faq">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        FAQ
+      </a>
+      <a href="#contact" data-section="contact">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact
+      </a>
+      <a href="privacy.html">
+        <svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Privacy
+        <span class="sb-tag external">↗</span>
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- ============ CONTENT PANEL ============ -->
+  <main class="panel">
+
+    <!-- ===== WELCOME ===== -->
+    <section class="section" data-section="welcome">
+      <div class="section-eyebrow">welcome</div>
+      <h2>Resource <span class="glow">hub.</span></h2>
+      <p class="lede">Whether you're just installing the plugin, troubleshooting a quirk, or building something custom on top of the API — everything lives here.</p>
+
+      <h3>Top destinations</h3>
+      <div class="dest-grid">
+
+        <a href="#plugin" class="dest" data-section="plugin">
+          <div class="dest-head">
+            <div class="dest-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <div class="dest-title">Plugin download</div>
+            <div class="dest-tag">Live</div>
+          </div>
+          <p class="dest-desc">Get the latest <code>PulseConnect.jar</code>. Free, MIT-licensed companion plugin for Paper, Spigot, and Purpur.</p>
+        </a>
+
+        <a href="setup.html" class="dest">
+          <div class="dest-head">
+            <div class="dest-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <div class="dest-title">Setup guide</div>
+            <div class="dest-tag">Live</div>
+          </div>
+          <p class="dest-desc">Step-by-step walkthrough: install the plugin, configure the secret, forward your port, sign in. ~5 minutes.</p>
+        </a>
+
+        <a href="api.html" class="dest">
+          <div class="dest-head">
+            <div class="dest-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div class="dest-title">API reference</div>
+            <div class="dest-tag">Live</div>
+          </div>
+          <p class="dest-desc">Build a Discord bot, web dashboard, or custom client. Full REST + WebSocket reference, JWT auth, worked examples.</p>
+        </a>
+
+        <a href="#config" class="dest" data-section="config">
+          <div class="dest-head">
+            <div class="dest-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+            <div class="dest-title">Configuration reference</div>
+            <div class="dest-tag soon">Soon</div>
+          </div>
+          <p class="dest-desc">Every key in <code>config.yml</code> explained — defaults, valid values, security implications.</p>
+        </a>
+
+        <a href="#faq" class="dest" data-section="faq">
+          <div class="dest-head">
+            <div class="dest-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="dest-title">FAQ</div>
+            <div class="dest-tag">Live</div>
+          </div>
+          <p class="dest-desc">Quick answers to the most common questions about hosting, security, and supported server software.</p>
+        </a>
+
+        <a href="#contact" class="dest" data-section="contact">
+          <div class="dest-head">
+            <div class="dest-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="dest-title">Contact</div>
+            <div class="dest-tag">Live</div>
+          </div>
+          <p class="dest-desc">Bug reports, feature requests, anything else — every message reaches the developer directly.</p>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ===== PLUGIN DOWNLOAD ===== -->
+    <section class="section" data-section="plugin">
+      <div class="section-eyebrow">plugin download</div>
+      <h2>PulseConnect <span class="glow">plugin.</span></h2>
+      <p class="lede">The free, server-side companion to PulsePanel. Drop it in your <code>plugins/</code> folder, configure once, and the iOS app can talk to your server.</p>
+
+      <div class="download-card">
+        <div class="dl-row">
+          <div class="dl-jar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg>
+          </div>
+          <div class="dl-meta">
+            <div class="dl-name">PulseConnect.jar</div>
+            <div class="dl-version">
+              <span><strong style="color: var(--text-dim);">v1.0.0</strong></span>
+              <span class="dot">·</span>
+              <span>Paper / Spigot / Purpur</span>
+              <span class="dot">·</span>
+              <span>MC 1.20+</span>
+            </div>
+          </div>
+          <div class="dl-action">
+            <a href="#" class="btn-dl" id="downloadBtn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <h3>Where the plugin lives</h3>
+        <p>Distribution is being finalized. The plugin will be available from one or both of:</p>
+        <ul>
+          <li><strong>GitHub Releases</strong> — for direct downloads, version history, and source code (if open-sourced)</li>
+          <li><strong>SpigotMC</strong> — for discoverability inside the Minecraft plugin ecosystem</li>
+        </ul>
+        <p style="margin-bottom: 0;">In the meantime, contact <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a> if you'd like early access for testing.</p>
+      </div>
+
+      <div class="cta-card">
+        <div class="cta-card-text">
+          <div class="cta-card-title">Need to install it?</div>
+          <div class="cta-card-desc">The setup guide walks through dropping the JAR, configuring <code>config.yml</code>, and connecting the app — about 5 minutes.</div>
+        </div>
+        <a href="setup.html" class="btn-secondary">
+          Open setup guide
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== REQUIREMENTS ===== -->
+    <section class="section" data-section="requirements">
+      <div class="section-eyebrow">requirements</div>
+      <h2>What you'll <span class="glow">need.</span></h2>
+      <p class="lede">PulsePanel runs on most modern Minecraft servers and any iPhone or iPad on iOS 17+. Here's the full compatibility matrix.</p>
+
+      <div class="info-block">
+        <h3>Server</h3>
+        <div class="info-block-grid">
+          <div class="info-tile">
+            <div class="info-tile-label">Software</div>
+            <div class="info-tile-value">Paper · Spigot · Purpur</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Minecraft version</div>
+            <div class="info-tile-value">1.20 or newer</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Java</div>
+            <div class="info-tile-value">17 or newer</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Memory overhead</div>
+            <div class="info-tile-value">~64 MB additional</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <h3>Network</h3>
+        <div class="info-block-grid">
+          <div class="info-tile">
+            <div class="info-tile-label">Default port</div>
+            <div class="info-tile-value"><code>7070</code> TCP (configurable)</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Inbound</div>
+            <div class="info-tile-value">Port forwarding required for remote access</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Outbound</div>
+            <div class="info-tile-value">HTTPS to <code>push.pulsepanelapp.com</code> (push only)</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">TLS</div>
+            <div class="info-tile-value">Reverse proxy recommended (nginx / Caddy)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <h3>iOS app</h3>
+        <div class="info-block-grid">
+          <div class="info-tile">
+            <div class="info-tile-label">iOS version</div>
+            <div class="info-tile-value">17.0 or newer</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Devices</div>
+            <div class="info-tile-value">iPhone · iPad</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Distribution</div>
+            <div class="info-tile-value">Apple App Store</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-label">Permissions</div>
+            <div class="info-tile-value">Local Network · Notifications</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <h3>Managed Minecraft hosts</h3>
+        <p>Many managed hosts (BisectHosting, Apex, Shockbyte, PebbleHost) lock down their network and only expose the Minecraft port. Before signing up, confirm the host supports <strong>opening additional TCP ports for plugins</strong> — without it, PulsePanel can't reach your server remotely.</p>
+        <p style="margin-bottom: 0;">Self-hosted servers and most VPS providers (DigitalOcean, Linode, Hetzner, etc.) work without restrictions.</p>
+      </div>
+    </section>
+
+    <!-- ===== CONFIG REFERENCE (placeholder) ===== -->
+    <section class="section" data-section="config">
+      <div class="section-eyebrow">configuration</div>
+      <h2>Configuration <span class="glow">reference.</span></h2>
+      <p class="lede">Every key in <code>config.yml</code>, what it does, valid values, and security notes.</p>
+
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+        </div>
+        <h3>Coming soon</h3>
+        <p>A full reference for every key in <code>config.yml</code> — defaults, valid values, what each setting controls, and the security implications of changing it.</p>
+        <p>Until this lands, the inline comments in your generated <code>config.yml</code> cover everything you need.</p>
+        <div class="empty-eta">// in development</div>
+      </div>
+
+      <div class="cta-card">
+        <div class="cta-card-text">
+          <div class="cta-card-title">In a hurry?</div>
+          <div class="cta-card-desc">The setup guide explains the most important fields (JWT secret, admin credentials, port) with examples.</div>
+        </div>
+        <a href="setup.html" class="btn-secondary">
+          Open setup guide
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== TROUBLESHOOTING (placeholder) ===== -->
+    <section class="section" data-section="troubleshooting">
+      <div class="section-eyebrow">troubleshooting</div>
+      <h2>When things <span class="glow">break.</span></h2>
+      <p class="lede">Common issues, diagnostic steps, and the questions to answer before you email support.</p>
+
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3>Coming soon</h3>
+        <p>A dedicated troubleshooting page is on the way — covering connection issues, authentication failures, push notification delivery, and when to suspect a host network problem vs. a plugin issue.</p>
+        <p>For now, the setup guide has a troubleshooting section that handles the most common cases.</p>
+        <div class="empty-eta">// in development</div>
+      </div>
+
+      <div class="cta-card">
+        <div class="cta-card-text">
+          <div class="cta-card-title">Already stuck?</div>
+          <div class="cta-card-desc">Jump to the troubleshooting section of the setup guide for the fixes available today.</div>
+        </div>
+        <a href="setup.html#troubleshooting" class="btn-secondary">
+          Open troubleshooting
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== CHANGELOG ===== -->
+    <section class="section" data-section="changelog">
+      <div class="section-eyebrow">changelog</div>
+      <h2>What's <span class="glow">changing.</span></h2>
+      <p class="lede">Release history for both the iOS app and the PulseConnect plugin. Newest first.</p>
+
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+        </div>
+        <h3>First release pending</h3>
+        <p>The full changelog will start populating with the App Store launch. Subsequent updates to the iOS app and plugin will all land here with version numbers, dates, and notes.</p>
+        <div class="empty-eta">// awaiting v1.0</div>
+      </div>
+
+      <!--
+      Once releases start, replace the empty-state above with entries like:
+
+      <div class="changelog-entry">
+        <div class="changelog-version">
+          <h4>v1.0.0</h4>
+          <span class="changelog-date">May 2026</span>
+          <span class="changelog-tag">Initial release</span>
+        </div>
+        <ul>
+          <li>...</li>
+        </ul>
+      </div>
+      -->
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section" data-section="faq">
+      <div class="section-eyebrow">faq</div>
+      <h2>Frequently <span class="glow">asked.</span></h2>
+      <p class="lede">Quick answers to the questions that come up most often. If yours isn't here, <a href="#contact" data-section="contact">get in touch</a>.</p>
+
+      <h3>Compatibility & hosting</h3>
+
+      <details class="faq">
+        <summary>What server software is supported?</summary>
+        <div class="faq-body">
+          <p>Paper, Spigot, and Purpur on Minecraft 1.20 or newer. Anything that runs Bukkit-API plugins on Java 17+. Forge and Fabric are not currently supported.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Will it work on a managed Minecraft host?</summary>
+        <div class="faq-body">
+          <p>Only if the host allows you to open an additional TCP port beyond the Minecraft port. Some managed hosts lock the network down and only expose Minecraft itself — PulsePanel can't reach the server in that case.</p>
+          <p>Before paying for a host, ask whether they support opening custom TCP ports for plugins. Many do, some on request, some not at all.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Do I need to open ports on my server?</summary>
+        <div class="faq-body">
+          <p>Yes — one TCP port for the plugin (<code>7070</code> by default, configurable). Forward it on your router for remote access. Setup takes about a minute on most routers, and the <a href="setup.html">setup guide</a> walks through the common cases.</p>
+        </div>
+      </details>
+
+      <h3>Security & privacy</h3>
+
+      <details class="faq">
+        <summary>Is it safe to expose my server like this?</summary>
+        <div class="faq-body">
+          <p>Yes, with the standard caveats that apply to any service exposed to the internet. The plugin authenticates every request, file access is sandboxed to plugin folders, every privileged action is logged, and login attempts are rate-limited with lockouts.</p>
+          <p>The app authenticates over TLS using the credentials you create on the server. Your data flows directly between the app and your server — never through anyone else's infrastructure.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Where do my credentials live?</summary>
+        <div class="faq-body">
+          <p>On your server (hashed with BCrypt in the plugin's database) and on your iPhone (in the iOS Keychain). Nothing is stored on PulsePanel infrastructure — there are no PulsePanel accounts.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>What does PulseRelay see?</summary>
+        <div class="faq-body">
+          <p>The relay is a pass-through for push notifications. It forwards to Apple's Push Notification service and discards the data. No database, no logs of notification contents, no IP retention. Full details in the <a href="privacy.html">privacy policy</a>.</p>
+        </div>
+      </details>
+
+      <h3>Pricing & licensing</h3>
+
+      <details class="faq">
+        <summary>Is the plugin free?</summary>
+        <div class="faq-body">
+          <p>Yes. PulseConnect is free and stays free. You only pay once for the iOS app — no subscription, no per-server fee.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Is there a free trial?</summary>
+        <div class="faq-body">
+          <p>The plugin is free, so you can run it on your server with no commitment. The iOS app is a one-time purchase — Apple's standard refund policy applies if it doesn't work for you.</p>
+        </div>
+      </details>
+
+      <h3>Features & roadmap</h3>
+
+      <details class="faq">
+        <summary>Can multiple staff use the app?</summary>
+        <div class="faq-body">
+          <p>Not yet. The current release is owner-only — one admin account, one device. Multi-staff support with per-user permissions is on the roadmap.</p>
+          <p>The plugin's API does support multi-user accounts and granular permissions if you're building a custom client. See the <a href="api.html">API reference</a>.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Can I manage multiple servers from one app?</summary>
+        <div class="faq-body">
+          <p>Not in the current release — single server only. Multi-server is on the roadmap.</p>
+        </div>
+      </details>
+
+      <details class="faq">
+        <summary>Can I integrate with Discord / a web dashboard / a CLI?</summary>
+        <div class="faq-body">
+          <p>Yes. The plugin's REST + WebSocket API is fully documented. See the <a href="api.html">API reference</a> for endpoint specs and worked examples in Python, Node, and curl.</p>
+        </div>
+      </details>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="section" data-section="contact">
+      <div class="section-eyebrow">contact</div>
+      <h2>Get in <span class="glow">touch.</span></h2>
+      <p class="lede">PulsePanel is built and maintained by one developer. Every email reaches me directly.</p>
+
+      <div class="info-block">
+        <h3>Email</h3>
+        <p style="margin-bottom: 12px;">For bug reports, feature requests, billing questions, security disclosures, or anything else:</p>
+        <p style="margin-bottom: 8px;"><a href="mailto:support@pulsepanelapp.com" style="font-family: var(--mono); font-size: 16px;">support@pulsepanelapp.com</a></p>
+        <p style="font-size: 13px; color: var(--text-faint); margin-bottom: 0;">Typical response: within a couple of days.</p>
+      </div>
+
+      <div class="info-block">
+        <h3>Bug reports — what to include</h3>
+        <p>The more of the following you can include, the faster I can help:</p>
+        <ul>
+          <li><strong>What happened</strong> vs. what you expected</li>
+          <li><strong>Steps to reproduce</strong>, if you can find them</li>
+          <li><strong>Server software and version</strong> (e.g. Paper 1.21.4)</li>
+          <li><strong>Plugin version</strong> from <code>config.yml</code> or the plugin list</li>
+          <li><strong>iOS version and device</strong></li>
+          <li><strong>Server console excerpt</strong> with any <code>[PulseConnect]</code> lines around the time of the issue</li>
+        </ul>
+        <p style="margin-bottom: 0;">A screenshot of the app's error message also helps a lot.</p>
+      </div>
+
+      <div class="info-block">
+        <h3>Security disclosures</h3>
+        <p>If you've found a security vulnerability, please email <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a> with details. Don't open a public issue or post about it publicly until it's been addressed.</p>
+        <p style="margin-bottom: 0;">I take this seriously and will respond as soon as possible — typically same day for anything that affects user security.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
 
 <footer>
   <div class="container">
@@ -416,7 +1422,7 @@
         <ul>
           <li><a href="resources.html">Documentation</a></li>
           <li><a href="api.html">API reference</a></li>
-          <li><a href="resources.html">Plugin download</a></li>
+          <li><a href="resources.html#plugin">Plugin download</a></li>
           <li><a href="index.html#faq">FAQ</a></li>
         </ul>
       </div>
@@ -439,6 +1445,123 @@
     </div>
   </div>
 </footer>
+
+<script>
+(function() {
+  // Sections that live inline (not separate pages)
+  const SECTIONS = [
+    'welcome', 'plugin', 'requirements',
+    'config', 'troubleshooting',
+    'changelog', 'faq', 'contact'
+  ];
+  const DEFAULT = 'welcome';
+
+  const sectionEls = {};
+  document.querySelectorAll('.section[data-section]').forEach(el => {
+    sectionEls[el.dataset.section] = el;
+  });
+
+  const sidebarLinks = {};
+  document.querySelectorAll('.sidebar a[data-section]').forEach(el => {
+    sidebarLinks[el.dataset.section] = el;
+  });
+
+  function showSection(name, opts = {}) {
+    if (!SECTIONS.includes(name)) name = DEFAULT;
+
+    // Toggle active section
+    Object.keys(sectionEls).forEach(k => {
+      sectionEls[k].classList.toggle('active', k === name);
+    });
+
+    // Toggle active sidebar link
+    Object.keys(sidebarLinks).forEach(k => {
+      sidebarLinks[k].classList.toggle('active', k === name);
+    });
+
+    // Update hash without triggering scroll
+    if (opts.updateHash !== false) {
+      const newHash = '#' + name;
+      if (location.hash !== newHash) {
+        history.replaceState(null, '', newHash);
+      }
+    }
+
+    // Scroll content area to top
+    if (opts.scroll !== false) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Close mobile sidebar if open
+    closeMobileSidebar();
+  }
+
+  // Handle sidebar clicks (in-page sections)
+  document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      showSection(link.dataset.section);
+    });
+  });
+
+  // Handle destination cards on the welcome page (in-page sections)
+  document.querySelectorAll('.dest[data-section]').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      showSection(card.dataset.section);
+    });
+  });
+
+  // Handle inline links that navigate sections
+  document.querySelectorAll('a[data-section]').forEach(a => {
+    if (a.classList.contains('dest')) return; // already handled
+    if (a.closest('.sidebar')) return; // already handled
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      showSection(a.dataset.section);
+    });
+  });
+
+  // Handle browser back/forward
+  window.addEventListener('hashchange', () => {
+    const name = location.hash.slice(1);
+    showSection(name || DEFAULT, { updateHash: false });
+  });
+
+  // Plugin download button (placeholder — wires up real URL when distribution is decided)
+  const dlBtn = document.getElementById('downloadBtn');
+  if (dlBtn) {
+    dlBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('Plugin distribution is being finalized. Email support@pulsepanelapp.com for early access.');
+    });
+  }
+
+  // Mobile sidebar toggle
+  const mobileToggle = document.getElementById('mobileSidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  function openMobileSidebar() {
+    sidebar.classList.add('open');
+    mobileToggle.classList.add('open');
+    mobileToggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeMobileSidebar() {
+    sidebar.classList.remove('open');
+    mobileToggle.classList.remove('open');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+  }
+  if (mobileToggle) {
+    mobileToggle.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) closeMobileSidebar();
+      else openMobileSidebar();
+    });
+  }
+
+  // Initial section from URL hash, default to welcome
+  const initial = location.hash.slice(1);
+  showSection(initial && SECTIONS.includes(initial) ? initial : DEFAULT, { scroll: false });
+})();
+</script>
 
 </body>
 </html>
