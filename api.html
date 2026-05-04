@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Reference — PulseConnect</title>
+<meta name="description" content="The full PulseConnect API reference for developers building Discord bots, web dashboards, CLIs, or custom clients on top of a Minecraft server.">
+
+<meta property="og:title" content="PulseConnect API Reference">
+<meta property="og:description" content="REST + WebSocket API reference for the PulseConnect plugin.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pulsepanelapp.com/api.html">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23050a0e'/%3E%3Cg fill='%234ade80'%3E%3Crect x='8' y='14' width='3' height='4' rx='1'/%3E%3Crect x='13' y='10' width='3' height='12' rx='1'/%3E%3Crect x='18' y='12' width='3' height='8' rx='1'/%3E%3Crect x='23' y='8' width='3' height='16' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg-elev: #0a1117;
+    --bg-deep: #02060a;
+    --line: #1a2530;
+    --text: #e6f1ff;
+    --text-dim: #8896a8;
+    --text-faint: #4a5868;
+    --green: #4ade80;
+    --green-glow: rgba(74, 222, 128, 0.15);
+    --blue: #38bdf8;
+    --blue-glow: rgba(56, 189, 248, 0.15);
+    --amber: #fbbf24;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --sans: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 1200px 600px at 50% -10%, var(--green-glow), transparent),
+      radial-gradient(ellipse 800px 400px at 80% 40%, var(--blue-glow), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  /* === NAV === */
+  nav {
+    position: sticky; top: 16px;
+    z-index: 100;
+    margin: 0 32px;
+  }
+  .nav-inner {
+    max-width: 1216px; margin: 0 auto;
+    background: rgba(10, 17, 23, 0.8);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 16px; letter-spacing: -0.01em;
+    color: var(--text); text-decoration: none;
+  }
+  .logo-bars {
+    width: 22px; height: 22px;
+    display: flex; flex-direction: column; gap: 2px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-bars span {
+    height: 2px; background: var(--green);
+    border-radius: 2px;
+    box-shadow: 0 0 6px var(--green);
+    animation: barPulse 2s ease-in-out infinite;
+  }
+  .logo-bars span:nth-child(1) { width: 60%; animation-delay: 0s; }
+  .logo-bars span:nth-child(2) { width: 100%; animation-delay: 0.2s; }
+  .logo-bars span:nth-child(3) { width: 75%; animation-delay: 0.4s; }
+  .logo-bars span:nth-child(4) { width: 90%; animation-delay: 0.6s; }
+  @keyframes barPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; font-size: 14px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: var(--bg-deep) !important;
+    padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 600;
+    box-shadow: 0 0 20px var(--green-glow);
+  }
+
+  /* === DOC HEADER === */
+  .doc-header {
+    text-align: center;
+    padding: 80px 32px 40px;
+  }
+  .doc-eyebrow {
+    display: inline-block;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 18px;
+  }
+  .doc-header h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 1.05; font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .doc-header h1 .glow {
+    color: var(--green);
+    text-shadow: 0 0 30px var(--green-glow);
+  }
+  .doc-header p.lede {
+    font-size: 18px; color: var(--text-dim);
+    max-width: 64ch; margin: 0 auto 24px;
+    line-height: 1.55;
+  }
+  .doc-meta {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    display: inline-flex; align-items: center; gap: 16px;
+    flex-wrap: wrap; justify-content: center;
+    margin-bottom: 24px;
+  }
+  .doc-meta .sep { opacity: 0.5; }
+  .doc-actions {
+    display: inline-flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: var(--mono);
+    transition: all 0.15s;
+    border: 1px solid var(--line);
+    background: var(--bg-elev);
+    color: var(--text-dim);
+  }
+  .btn-mini:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-glow);
+  }
+  .btn-mini svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* === LAYOUT: TOC + content === */
+  .doc-layout {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 32px 96px;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+  .toc {
+    position: sticky;
+    top: 90px;
+    align-self: start;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+  .toc::-webkit-scrollbar { width: 4px; }
+  .toc::-webkit-scrollbar-track { background: transparent; }
+  .toc::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
+  .toc-label {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .toc ul { list-style: none; padding: 0; }
+  .toc > ul > li { margin-bottom: 4px; }
+  .toc a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13.5px;
+    padding: 5px 0;
+    border-left: 2px solid transparent;
+    padding-left: 12px;
+    margin-left: -14px;
+    transition: all 0.15s;
+  }
+  .toc a:hover { color: var(--text); border-left-color: var(--text-faint); }
+  .toc a.active { color: var(--green); border-left-color: var(--green); }
+  .toc-section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin: 20px 0 8px;
+    padding-left: 0;
+  }
+  .toc-section-label:first-child { margin-top: 0; }
+
+  .doc-content {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Disclaimer banner at top of content */
+  .disclaimer {
+    background: linear-gradient(135deg, var(--bg-elev) 0%, rgba(56, 189, 248, 0.05) 100%);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--blue);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .disclaimer-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--blue);
+    margin-top: 2px;
+  }
+  .disclaimer-content { flex: 1; }
+  .disclaimer-label {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .disclaimer p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .disclaimer p strong { color: var(--text); font-weight: 600; }
+  .disclaimer a {
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.4);
+  }
+  .disclaimer a:hover { border-bottom-color: var(--blue); }
+
+  /* Lead paragraph */
+  .lead {
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text);
+    padding: 24px 28px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--green);
+    border-radius: 12px;
+    margin-bottom: 40px;
+  }
+  .lead p { margin-bottom: 12px; }
+  .lead p:last-child { margin-bottom: 0; }
+  .lead strong { color: var(--text); font-weight: 600; }
+
+  /* Section headers */
+  .doc-content h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin: 64px 0 20px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: 90px;
+    position: relative;
+  }
+  .doc-content h2::before {
+    content: '//';
+    position: absolute;
+    top: 28px;
+    left: -32px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--green);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .doc-content h2:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .doc-content h3 {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin: 36px 0 14px;
+    scroll-margin-top: 90px;
+  }
+  .doc-content h3 code {
+    font-size: 17px;
+    padding: 2px 10px;
+  }
+  .doc-content h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 24px 0 10px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  /* Paragraphs */
+  .doc-content p {
+    color: var(--text-dim);
+    margin-bottom: 18px;
+    line-height: 1.7;
+  }
+  .doc-content > p:last-child { margin-bottom: 0; }
+  .doc-content strong { color: var(--text); font-weight: 600; }
+  .doc-content em { color: var(--text); font-style: italic; }
+
+  /* Lists */
+  .doc-content ul, .doc-content ol {
+    color: var(--text-dim);
+    padding-left: 24px;
+    margin-bottom: 20px;
+  }
+  .doc-content li {
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+  .doc-content li::marker { color: var(--green); }
+
+  /* Inline code */
+  .doc-content code {
+    font-family: var(--mono);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 0.88em;
+    color: var(--green);
+    word-break: break-word;
+  }
+
+  /* Code blocks */
+  .doc-content pre {
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 16px 0 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+    overflow-x: auto;
+    position: relative;
+  }
+  .doc-content pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    word-break: normal;
+  }
+  .doc-content pre[data-lang]::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Syntax highlighting (light-touch) */
+  .tok-key { color: var(--blue); }
+  .tok-str { color: var(--green); }
+  .tok-num { color: var(--amber); }
+  .tok-cmt { color: var(--text-faint); font-style: italic; }
+  .tok-kw { color: var(--purple); }
+  .tok-method { color: var(--amber); font-weight: 600; }
+  .tok-path { color: var(--green); }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0 28px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg-elev);
+  }
+  .doc-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .doc-content thead th {
+    background: var(--bg-deep);
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .doc-content tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text-dim);
+    line-height: 1.55;
+    vertical-align: top;
+  }
+  .doc-content tbody tr:last-child td { border-bottom: none; }
+  .doc-content tbody td code {
+    font-size: 12.5px;
+    padding: 1px 6px;
+  }
+  .doc-content tbody td:first-child { white-space: nowrap; font-weight: 600; }
+
+  /* Method badges in tables */
+  .method {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+  }
+  .method-GET    { background: rgba(56,189,248,0.15); color: var(--blue); }
+  .method-POST   { background: rgba(74,222,128,0.15); color: var(--green); }
+  .method-PUT    { background: rgba(251,191,36,0.15); color: var(--amber); }
+  .method-DELETE { background: rgba(248,113,113,0.15); color: var(--red); }
+
+  /* Status badges in error table */
+  .status-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 4px;
+  }
+  .status-4xx { background: rgba(251,191,36,0.15); color: var(--amber); }
+  .status-5xx { background: rgba(248,113,113,0.15); color: var(--red); }
+
+  /* Permission badges */
+  .perm {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--text-dim);
+    background: var(--bg-deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 7px;
+    white-space: nowrap;
+  }
+  .perm-owner { color: var(--purple); border-color: rgba(167,139,250,0.3); }
+  .perm-none  { color: var(--text-faint); }
+  .perm-danger { color: var(--red); border-color: rgba(248,113,113,0.3); }
+
+  /* Permission catalog cards */
+  .perm-cat {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .perm-cat h4 {
+    margin: 0 0 14px !important;
+    color: var(--green) !important;
+    font-family: var(--mono) !important;
+    font-size: 11px !important;
+  }
+  .perm-cat ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .perm-cat li {
+    margin-bottom: 8px;
+    padding-left: 0;
+    line-height: 1.55;
+    font-size: 14px;
+  }
+  .perm-cat li:last-child { margin-bottom: 0; }
+  .perm-cat li code {
+    margin-right: 6px;
+  }
+  .perm-danger-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--red);
+    background: rgba(248,113,113,0.1);
+    border: 1px solid rgba(248,113,113,0.3);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Links */
+  .doc-content a {
+    color: var(--green);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(74, 222, 128, 0.3);
+    transition: border-color 0.15s;
+  }
+  .doc-content a:hover { border-bottom-color: var(--green); }
+
+  /* Anchor offset for sticky nav */
+  :target { scroll-margin-top: 90px; }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 64px 0 32px;
+    color: var(--text-faint); font-size: 13px;
+    margin-top: 40px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--line);
+  }
+  .foot-col h4 {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.14em;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .foot-col ul { list-style: none; padding: 0; }
+  .foot-col li { margin-bottom: 10px; }
+  .foot-col a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.15s;
+    border: none;
+  }
+  .foot-col a:hover { color: var(--green); }
+  .foot-brand .logo { margin-bottom: 16px; }
+  .foot-brand p {
+    color: var(--text-dim); font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+  .foot-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--green);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .foot-status::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    box-shadow: 0 0 6px var(--green);
+  }
+  .foot-bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap;
+    gap: 16px; align-items: center;
+    padding-top: 32px;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.05em;
+  }
+  .foot-bottom-links { display: flex; gap: 24px; }
+  .foot-bottom-links a { color: var(--text-faint); text-decoration: none; border: none; }
+  .foot-bottom-links a:hover { color: var(--text-dim); }
+
+  @media (max-width: 1080px) {
+    .doc-layout { grid-template-columns: 200px 1fr; gap: 36px; }
+  }
+  @media (max-width: 880px) {
+    .doc-layout { grid-template-columns: 1fr; gap: 32px; padding: 24px 24px 80px; }
+    .toc { position: static; max-height: none; overflow-y: visible; }
+    .doc-content h2::before { display: none; }
+    .doc-header { padding: 60px 24px 32px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-bars">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      PulsePanel
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#screens">Screens</a>
+      <a href="setup.html">Setup</a>
+      <a href="resources.html" class="active">Resources</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="index.html#download" class="nav-cta">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header class="doc-header">
+  <div class="doc-eyebrow">// developer reference</div>
+  <h1>PulseConnect <span class="glow">API</span> Reference</h1>
+  <p class="lede">REST + WebSocket reference for the PulseConnect plugin. Build a Discord bot, a web dashboard, a CLI, or your own custom client on top of any PulseConnect-enabled server.</p>
+  <div class="doc-meta">
+    <span>v1</span>
+    <span class="sep">·</span>
+    <span>HTTP + WebSocket</span>
+    <span class="sep">·</span>
+    <span>JWT auth</span>
+  </div>
+  <div class="doc-actions">
+    <a href="API.md" download class="btn-mini">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download .md
+    </a>
+    <a href="resources.html" class="btn-mini">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Resources
+    </a>
+  </div>
+</header>
+
+<div class="doc-layout">
+
+  <aside class="toc">
+    <div class="toc-label">// on this page</div>
+    <ul>
+      <li><a href="#conventions">Conventions</a></li>
+
+      <li class="toc-section-label">// endpoints</li>
+      <li><a href="#auth">Auth</a></li>
+      <li><a href="#server">Server</a></li>
+      <li><a href="#players">Players</a></li>
+      <li><a href="#moderation">Moderation</a></li>
+      <li><a href="#commands">Commands</a></li>
+      <li><a href="#tickets">Tickets</a></li>
+      <li><a href="#worlds">Worlds</a></li>
+      <li><a href="#analytics">Analytics</a></li>
+      <li><a href="#files">Files</a></li>
+      <li><a href="#notifications">Notifications</a></li>
+      <li><a href="#audit">Audit log</a></li>
+
+      <li class="toc-section-label">// real-time</li>
+      <li><a href="#websocket">WebSocket</a></li>
+
+      <li class="toc-section-label">// reference</li>
+      <li><a href="#permissions">Permissions catalog</a></li>
+      <li><a href="#versioning">Versioning</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#support">Support</a></li>
+    </ul>
+  </aside>
+
+  <div class="doc-content">
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <svg class="disclaimer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="16" x2="12" y2="12"/>
+        <line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+      <div class="disclaimer-content">
+        <div class="disclaimer-label">heads up</div>
+        <p>This is the <strong>developer reference</strong>. It documents the full PulseConnect API surface, including multi-user staff accounts and granular permissions. The PulsePanel iOS app uses owner-only mode and does not expose those features in its UI. If you're just running the app, you don't need this document — see the <a href="setup.html">setup guide</a> instead.</p>
+      </div>
+    </div>
+
+    <!-- Lead -->
+    <div class="lead">
+      <p><strong>For developers building custom integrations.</strong> If you want to use a Discord bot, web dashboard, CLI, or your own custom client to talk to a PulseConnect-enabled server, this is the document.</p>
+      <p>The PulsePanel iOS app is the official client and the easiest way to use PulseConnect, but the API is fully documented and not coupled to the app. Everything below is fair game for third-party integrations.</p>
+    </div>
+
+    <!-- ============ CONVENTIONS ============ -->
+    <h2 id="conventions">Conventions</h2>
+
+    <h3>Base URL</h3>
+    <pre><code>http://&lt;your-server&gt;:7070/api/v1</code></pre>
+    <p>Default port is <code>7070</code>, configurable via <code>api.port</code> in <code>config.yml</code>. The plugin serves plain HTTP — if you're exposing the API to the internet, put it behind a reverse proxy (nginx, Caddy, Cloudflare) for HTTPS.</p>
+
+    <h3>Authentication</h3>
+    <p>All endpoints except <code>POST /auth/login</code> and <code>POST /auth/register</code> require a JWT in the <code>Authorization</code> header:</p>
+    <pre><code>Authorization: Bearer &lt;token&gt;</code></pre>
+    <p>Tokens are obtained via login (see below). They expire after 24 hours by default (<code>api.token-expiry-hours</code> in config). When a token expires, the server returns <code>401 Unauthorized</code> and the client should re-login.</p>
+
+    <h3>Content type</h3>
+    <p>All request bodies are JSON. All response bodies are JSON. Set <code>Content-Type: application/json</code> on requests.</p>
+
+    <h3>Errors</h3>
+    <p>Failed requests return an HTTP error status (4xx or 5xx) with a JSON body:</p>
+    <pre data-lang="json"><code><span class="tok-key">{ "error"</span>: <span class="tok-str">"Human-readable message"</span> <span class="tok-key">}</span></code></pre>
+
+    <p>Common status codes:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><span class="status-badge status-4xx">400</span></td><td>Bad request (missing/malformed body)</td></tr>
+        <tr><td><span class="status-badge status-4xx">401</span></td><td>Not authenticated (missing or invalid token)</td></tr>
+        <tr><td><span class="status-badge status-4xx">403</span></td><td>Authenticated but lacks the required permission</td></tr>
+        <tr><td><span class="status-badge status-4xx">404</span></td><td>Resource not found</td></tr>
+        <tr><td><span class="status-badge status-4xx">409</span></td><td>Conflict (e.g., duplicate username, file edit conflict)</td></tr>
+        <tr><td><span class="status-badge status-4xx">429</span></td><td>Too many requests (login rate limiting)</td></tr>
+        <tr><td><span class="status-badge status-5xx">500</span></td><td>Server error</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Permissions</h3>
+    <p>Most endpoints require a specific permission. The Owner role bypasses all permission checks. Other staff have the permissions explicitly granted to them by the Owner.</p>
+    <p>The full <a href="#permissions">permission catalog</a> is documented at the bottom of this page.</p>
+
+    <!-- ============ AUTH ============ -->
+    <h2 id="auth">Auth</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/auth/login</code></td><td><span class="perm perm-none">none</span></td><td>Exchange username/password for a JWT</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/auth/register</code></td><td><span class="perm">bootstrap or Owner</span></td><td>Create the first user (bootstrap) or another user</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/auth/me</code></td><td><span class="perm">any auth'd</span></td><td>Get the caller's username, role, permissions</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/auth/me/password</code></td><td><span class="perm">any auth'd</span></td><td>Change own password</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/auth/users</code></td><td><span class="perm perm-owner">Owner</span></td><td>List all staff</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/auth/users</code></td><td><span class="perm perm-owner">Owner</span></td><td>Create a staff user</td></tr>
+        <tr><td><span class="method method-DELETE">DELETE</span></td><td><code>/auth/users/{username}</code></td><td><span class="perm perm-owner">Owner</span></td><td>Delete a staff user</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/auth/users/{username}/permissions</code></td><td><span class="perm perm-owner">Owner</span></td><td>Get a user's permissions</td></tr>
+        <tr><td><span class="method method-PUT">PUT</span></td><td><code>/auth/users/{username}/permissions</code></td><td><span class="perm perm-owner">Owner</span></td><td>Replace a user's permission set</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/auth/users/{username}/password</code></td><td><span class="perm perm-owner">Owner</span></td><td>Reset another user's password</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Bootstrap and registration</h3>
+    <p><code>POST /auth/register</code> creates user accounts. There are two distinct modes:</p>
+    <p><strong>Bootstrap mode</strong> — when zero accounts exist in the database (fresh install, or after the database has been wiped), <code>/auth/register</code> is callable without authentication. The first call creates the Owner. Once any account exists, bootstrap mode closes permanently and the endpoint requires an Owner JWT.</p>
+    <p>In practice, the Owner is normally created automatically from the <code>admin:</code> block in <code>config.yml</code> on first server startup, and direct calls to <code>/auth/register</code> are only needed for the post-bootstrap case (creating additional staff users, which require Owner auth).</p>
+    <p>Request body for both modes:</p>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"username"</span>: <span class="tok-str">"new-user"</span>,
+  <span class="tok-key">"password"</span>: <span class="tok-str">"their-password"</span>,
+  <span class="tok-key">"role"</span>: <span class="tok-str">"staff"</span>
+}</code></pre>
+    <p><code>role</code> is <code>"owner"</code> or <code>"staff"</code>. Only one Owner exists per server; attempting to create a second returns <code>409 Conflict</code>.</p>
+
+    <h3>Login (worked example)</h3>
+    <pre data-lang="http"><code><span class="tok-method">POST</span> <span class="tok-path">/api/v1/auth/login</span>
+<span class="tok-key">Content-Type</span>: application/json
+
+{
+  <span class="tok-key">"username"</span>: <span class="tok-str">"admin"</span>,
+  <span class="tok-key">"password"</span>: <span class="tok-str">"your-password"</span>
+}</code></pre>
+    <p>Response:</p>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"token"</span>: <span class="tok-str">"eyJhbGciOiJIUzI1NiJ9..."</span>,
+  <span class="tok-key">"username"</span>: <span class="tok-str">"admin"</span>,
+  <span class="tok-key">"role"</span>: <span class="tok-str">"owner"</span>
+}</code></pre>
+    <p>After 5 failed attempts in 15 minutes (configurable), the (username, IP) pair is locked out and <code>429 Too Many Requests</code> is returned. The lockout window resets on a successful login.</p>
+
+    <h3><code>/auth/me</code> response shape</h3>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"username"</span>: <span class="tok-str">"admin"</span>,
+  <span class="tok-key">"role"</span>: <span class="tok-str">"owner"</span>,
+  <span class="tok-key">"permissions"</span>: [<span class="tok-str">"dashboard.view"</span>, <span class="tok-str">"console.view"</span>, <span class="tok-str">"..."</span>]
+}</code></pre>
+    <p>For Owner accounts, <code>permissions</code> is the full catalog. For other roles, it's only what the Owner has granted.</p>
+
+    <!-- ============ SERVER ============ -->
+    <h2 id="server">Server</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/server/status</code></td><td><span class="perm">dashboard.view</span></td><td>TPS, memory, uptime, player counts</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/server/reload</code></td><td><span class="perm">server.reload</span></td><td>Reload the server config</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/server/restart</code></td><td><span class="perm">server.restart</span></td><td>Restart the server</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/server/stop</code></td><td><span class="perm perm-danger">server.stop</span></td><td>Stop the server</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/server/console-history</code></td><td><span class="perm">console.view</span></td><td>Last 100 lines of server console</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Status (worked example)</h3>
+    <pre data-lang="http"><code><span class="tok-method">GET</span> <span class="tok-path">/api/v1/server/status</span>
+<span class="tok-key">Authorization</span>: Bearer &lt;token&gt;</code></pre>
+    <p>Response:</p>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"online"</span>: <span class="tok-kw">true</span>,
+  <span class="tok-key">"version"</span>: <span class="tok-str">"Paper 1.21.4"</span>,
+  <span class="tok-key">"motd"</span>: <span class="tok-str">"A Minecraft Server"</span>,
+  <span class="tok-key">"onlinePlayers"</span>: <span class="tok-num">3</span>,
+  <span class="tok-key">"maxPlayers"</span>: <span class="tok-num">20</span>,
+  <span class="tok-key">"tps1m"</span>: <span class="tok-num">19.98</span>,
+  <span class="tok-key">"tps5m"</span>: <span class="tok-num">19.95</span>,
+  <span class="tok-key">"tps15m"</span>: <span class="tok-num">19.93</span>,
+  <span class="tok-key">"usedMemoryMb"</span>: <span class="tok-num">2048</span>,
+  <span class="tok-key">"maxMemoryMb"</span>: <span class="tok-num">8192</span>,
+  <span class="tok-key">"uptimeMs"</span>: <span class="tok-num">14400000</span>
+}</code></pre>
+
+    <!-- ============ PLAYERS ============ -->
+    <h2 id="players">Players</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/players</code></td><td><span class="perm">players.view</span></td><td>List online players</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/player/{uuid}</code></td><td><span class="perm">players.view</span></td><td>Get one player's details</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/player/{uuid}/health</code></td><td><span class="perm">players.edit_stats</span></td><td>Set health (0&ndash;20)</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/player/{uuid}/hunger</code></td><td><span class="perm">players.edit_stats</span></td><td>Set hunger (0&ndash;20)</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/player/{uuid}/gamemode</code></td><td><span class="perm">players.edit_stats</span></td><td>Set game mode</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/player/{uuid}/op</code></td><td><span class="perm perm-danger">players.op</span></td><td>Grant or revoke OP</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/player/{uuid}/inventory</code></td><td><span class="perm">players.inventory</span></td><td>Inventory + armor + ender chest</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/player/{uuid}/inventory/give</code></td><td><span class="perm">players.inventory</span></td><td>Give an item</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/player/{uuid}/inventory/set</code></td><td><span class="perm">players.inventory</span></td><td>Set a specific slot</td></tr>
+        <tr><td><span class="method method-DELETE">DELETE</span></td><td><code>/player/{uuid}/inventory</code></td><td><span class="perm">players.inventory</span></td><td>Clear inventory</td></tr>
+      </tbody>
+    </table></div>
+
+    <!-- ============ MODERATION ============ -->
+    <h2 id="moderation">Moderation</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/moderation/kick</code></td><td><span class="perm">players.kick</span></td><td>Kick a player with a reason</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/moderation/ban</code></td><td><span class="perm">players.ban</span></td><td>Ban (permanent or timed)</td></tr>
+        <tr><td><span class="method method-DELETE">DELETE</span></td><td><code>/moderation/ban/{uuid}</code></td><td><span class="perm">players.ban</span></td><td>Unban</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/moderation/bans</code></td><td><span class="perm">players.ban</span></td><td>List active bans</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/moderation/bans/{uuid}/history</code></td><td><span class="perm">players.ban</span></td><td>Ban history for one player</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/moderation/mute</code></td><td><span class="perm">players.mute</span></td><td>Mute a player</td></tr>
+        <tr><td><span class="method method-DELETE">DELETE</span></td><td><code>/moderation/mute/{uuid}</code></td><td><span class="perm">players.mute</span></td><td>Unmute</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/moderation/mutes</code></td><td><span class="perm">players.mute</span></td><td>List active mutes</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/moderation/flag</code></td><td><span class="perm">players.flag</span></td><td>Flag a player for staff attention</td></tr>
+        <tr><td><span class="method method-DELETE">DELETE</span></td><td><code>/moderation/flag/{uuid}</code></td><td><span class="perm">players.flag</span></td><td>Unflag</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/moderation/flagged</code></td><td><span class="perm">players.flag</span></td><td>List flagged players</td></tr>
+      </tbody>
+    </table></div>
+
+    <!-- ============ COMMANDS ============ -->
+    <h2 id="commands">Console / Commands</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/command</code></td><td><span class="perm perm-danger">console.execute</span></td><td>Execute a console command</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Body: <code>{ "command": "say Hello world" }</code></p>
+    <p>Response: <code>{ "success": true, "message": "..." }</code></p>
+    <p><code>stop</code>, <code>restart</code>, and <code>reload</code> are blocked at the command level — use the dedicated <code>/server/*</code> endpoints instead.</p>
+
+    <!-- ============ TICKETS ============ -->
+    <h2 id="tickets">Tickets</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/tickets?status={open|closed}</code></td><td><span class="perm">tickets.view</span></td><td>List tickets, optionally filtered</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/tickets/{id}</code></td><td><span class="perm">tickets.view</span></td><td>Ticket detail with messages</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/tickets/{id}/reply</code></td><td><span class="perm">tickets.reply</span></td><td>Add a staff reply</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/tickets/{id}/close</code></td><td><span class="perm">tickets.manage</span></td><td>Close a ticket</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/tickets/{id}/reopen</code></td><td><span class="perm">tickets.manage</span></td><td>Reopen a closed ticket</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/tickets/{id}/priority</code></td><td><span class="perm">tickets.manage</span></td><td>Set priority (low/medium/high)</td></tr>
+        <tr><td><span class="method method-DELETE">DELETE</span></td><td><code>/tickets/{id}</code></td><td><span class="perm perm-danger">tickets.delete</span></td><td>Permanently delete</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Tickets are created by players in-game via <code>/ticket create &lt;message&gt;</code>, not via the API. The API is staff-side only.</p>
+
+    <!-- ============ WORLDS ============ -->
+    <h2 id="worlds">Worlds</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/worlds</code></td><td><span class="perm">worlds.view</span></td><td>List loaded worlds</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/worlds/{name}</code></td><td><span class="perm">worlds.view</span></td><td>Detail for one world</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/worlds/{name}/gamerule</code></td><td><span class="perm">worlds.edit</span></td><td>Set a game rule</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/worlds/{name}/time</code></td><td><span class="perm">worlds.edit</span></td><td>Set time of day (0&ndash;24000)</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/worlds/{name}/weather</code></td><td><span class="perm">worlds.edit</span></td><td>Set weather (storm, thunder)</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/worlds/{name}/difficulty</code></td><td><span class="perm">worlds.edit</span></td><td>peaceful / easy / normal / hard</td></tr>
+      </tbody>
+    </table></div>
+
+    <!-- ============ ANALYTICS ============ -->
+    <h2 id="analytics">Analytics</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/analytics/tps?hours=24</code></td><td><span class="perm">analytics.view</span></td><td>TPS history</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/analytics/sessions?hours=24</code></td><td><span class="perm">analytics.view</span></td><td>Player session log</td></tr>
+      </tbody>
+    </table></div>
+
+    <!-- ============ FILES ============ -->
+    <h2 id="files">Files</h2>
+
+    <p>The file editor is sandboxed to the server's <code>plugins/</code> directory. Symlinks that escape are rejected by canonical-path validation. Editable extensions: <code>.yml</code>, <code>.yaml</code>, <code>.json</code>, <code>.properties</code>, <code>.txt</code>, <code>.conf</code>. Other files are listed but not editable. 1MB file size cap.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/files/tree?path=...</code></td><td><span class="perm">files.view</span></td><td>List a directory inside <code>plugins/</code></td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/files/read?path=...</code></td><td><span class="perm">files.view</span></td><td>Read a file (returns content + sha256 hash)</td></tr>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/files/write</code></td><td><span class="perm perm-danger">files.edit</span></td><td>Write a file (requires <code>expected_hash</code>)</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Writes use optimistic locking via the <code>expected_hash</code> field. If the file changed since you last read it, the server returns <code>409 Conflict</code> with the current hash so you can re-read and decide whether to overwrite.</p>
+
+    <h3>Write request</h3>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"path"</span>: <span class="tok-str">"Essentials/config.yml"</span>,
+  <span class="tok-key">"content"</span>: <span class="tok-str">"..."</span>,
+  <span class="tok-key">"expected_hash"</span>: <span class="tok-str">"sha256-of-the-content-when-you-last-read-it"</span>
+}</code></pre>
+
+    <h3>Conflict response (409)</h3>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"error"</span>: <span class="tok-str">"File changed since you last read it"</span>,
+  <span class="tok-key">"current_hash"</span>: <span class="tok-str">"sha256-of-current-content"</span>
+}</code></pre>
+
+    <!-- ============ NOTIFICATIONS ============ -->
+    <h2 id="notifications">Notifications (push)</h2>
+
+    <p>Per-user, self-service. Used by the iOS app to register device tokens for APNs. No permission required beyond authentication.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-POST">POST</span></td><td><code>/devices/register</code></td><td>Register an APNs device token for the current user</td></tr>
+        <tr><td><span class="method method-DELETE">DELETE</span></td><td><code>/devices/{token}</code></td><td>Unregister a device token</td></tr>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/notifications/preferences</code></td><td>Get the user's notification preferences</td></tr>
+        <tr><td><span class="method method-PUT">PUT</span></td><td><code>/notifications/preferences</code></td><td>Update preferences</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Third-party integrations can ignore this section unless they're building their own iOS app.</p>
+
+    <!-- ============ AUDIT ============ -->
+    <h2 id="audit">Audit Log</h2>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Method</th><th>Path</th><th>Permission</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method method-GET">GET</span></td><td><code>/audit?limit=100&amp;before=&lt;timestamp&gt;</code></td><td><span class="perm perm-owner">Owner</span></td><td>Audit log entries, newest-first</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Pagination is keyset-based: pass the timestamp of the oldest row from the previous page as <code>before</code>.</p>
+
+    <!-- ============ WEBSOCKET ============ -->
+    <h2 id="websocket">WebSocket</h2>
+
+    <p>A single WebSocket connection delivers all real-time events.</p>
+    <pre><code>ws://&lt;server&gt;:7070/api/v1/ws?token=&lt;jwt&gt;</code></pre>
+
+    <p>The token is passed as a query parameter (WebSocket upgrades don't carry custom headers reliably across implementations). It's verified on connect; an invalid token closes the connection immediately with code <code>1008</code>.</p>
+
+    <h3>Envelope</h3>
+    <p>Every server-to-client message has this envelope:</p>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"type"</span>: <span class="tok-str">"event_type"</span>,
+  <span class="tok-key">"data"</span>: { ... },
+  <span class="tok-key">"timestamp"</span>: <span class="tok-num">1730390400000</span>
+}</code></pre>
+
+    <p><code>timestamp</code> is server-side milliseconds since epoch, applied at the moment the event was produced. Per-event fields go in <code>data</code>.</p>
+
+    <h3>Event types</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>type</th><th>data fields</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>system</code></td><td><code>message</code></td><td>Connection-level message. Sent once on connect with <code>"Connected to PulseConnect"</code></td></tr>
+        <tr><td><code>chat</code></td><td><code>uuid</code>, <code>name</code>, <code>message</code></td><td>In-game chat message</td></tr>
+        <tr><td><code>console</code></td><td><code>line</code></td><td>New console log line. May include raw ANSI escape codes — clients can render them as colors or strip them</td></tr>
+        <tr><td><code>player_join</code></td><td><code>uuid</code>, <code>name</code></td><td>Player joined the server</td></tr>
+        <tr><td><code>player_leave</code></td><td><code>uuid</code>, <code>name</code></td><td>Player left the server</td></tr>
+        <tr><td><code>flagged_player_join</code></td><td><code>uuid</code>, <code>name</code></td><td>A player previously flagged by staff just joined. Sent in addition to <code>player_join</code></td></tr>
+        <tr><td><code>ticket_created</code></td><td><code>ticketId</code>, <code>playerName</code>, <code>subject</code></td><td>New ticket opened</td></tr>
+        <tr><td><code>ticket_message</code></td><td><code>ticketId</code>, <code>sender</code>, <code>senderType</code>, <code>message</code></td><td>Message added to a ticket. <code>senderType</code> is <code>"player"</code> or <code>"staff"</code></td></tr>
+        <tr><td><code>ticket_update</code></td><td><code>ticketId</code>, <code>status?</code>, <code>priority?</code></td><td>Ticket status or priority changed (close, reopen, priority change). Fields are present only if changed</td></tr>
+        <tr><td><code>tps_alert</code></td><td><code>tps</code>, <code>message</code></td><td>TPS dropped below the configured threshold</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Example payload</h3>
+    <pre data-lang="json"><code>{
+  <span class="tok-key">"type"</span>: <span class="tok-str">"chat"</span>,
+  <span class="tok-key">"data"</span>: {
+    <span class="tok-key">"uuid"</span>: <span class="tok-str">"550e8400-e29b-41d4-a716-446655440000"</span>,
+    <span class="tok-key">"name"</span>: <span class="tok-str">"Notch"</span>,
+    <span class="tok-key">"message"</span>: <span class="tok-str">"hello world"</span>
+  },
+  <span class="tok-key">"timestamp"</span>: <span class="tok-num">1730390400000</span>
+}</code></pre>
+
+    <h3>Client-to-server messages</h3>
+    <p>Clients can send messages on the WebSocket, but the plugin currently only logs them — there are no client-initiated commands over the WebSocket. To execute a server command, use <code>POST /command</code>.</p>
+
+    <!-- ============ PERMISSIONS CATALOG ============ -->
+    <h2 id="permissions">Permissions Catalog</h2>
+
+    <p>The complete list of permission keys, used in <code>PUT /auth/users/{username}/permissions</code>:</p>
+
+    <div class="perm-cat">
+      <h4>Dashboard / Analytics</h4>
+      <ul>
+        <li><code>dashboard.view</code> — see the dashboard at all</li>
+        <li><code>analytics.view</code> — see TPS history and player session graphs</li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Server control</h4>
+      <ul>
+        <li><code>server.restart</code> — restart the server</li>
+        <li><code>server.stop</code> — stop the server <span class="perm-danger-tag">dangerous</span></li>
+        <li><code>server.reload</code> — reload the server config</li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Console</h4>
+      <ul>
+        <li><code>console.view</code> — see live console logs and history</li>
+        <li><code>console.execute</code> — run console commands (effectively grants OP-level access) <span class="perm-danger-tag">dangerous</span></li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Players</h4>
+      <ul>
+        <li><code>players.view</code> — see player list and details</li>
+        <li><code>players.kick</code> — kick players</li>
+        <li><code>players.ban</code> — ban / unban players</li>
+        <li><code>players.mute</code> — mute / unmute players</li>
+        <li><code>players.edit_stats</code> — set health, hunger, game mode</li>
+        <li><code>players.op</code> — grant or revoke OP <span class="perm-danger-tag">dangerous</span></li>
+        <li><code>players.inventory</code> — view and edit player inventories</li>
+        <li><code>players.flag</code> — flag players for staff attention</li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Tickets</h4>
+      <ul>
+        <li><code>tickets.view</code> — see tickets</li>
+        <li><code>tickets.reply</code> — reply to tickets</li>
+        <li><code>tickets.manage</code> — close, reopen, set priority</li>
+        <li><code>tickets.delete</code> — permanently delete tickets <span class="perm-danger-tag">dangerous</span></li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Worlds</h4>
+      <ul>
+        <li><code>worlds.view</code> — see world settings</li>
+        <li><code>worlds.edit</code> — change game rules, time, weather, difficulty</li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Chat</h4>
+      <ul>
+        <li><code>chat.view</code> — see in-game chat</li>
+        <li><code>chat.send</code> — send messages as staff</li>
+        <li><code>chat.broadcast</code> — send server-wide broadcasts</li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Files</h4>
+      <ul>
+        <li><code>files.view</code> — list and read files in <code>plugins/</code></li>
+        <li><code>files.edit</code> — write files in <code>plugins/</code> (full access to plugin configs) <span class="perm-danger-tag">dangerous</span></li>
+      </ul>
+    </div>
+
+    <div class="perm-cat">
+      <h4>Notification subscriptions</h4>
+      <p style="margin-bottom: 12px; font-size: 13px;">These don't unlock actions; they unlock receiving push notifications for specific events.</p>
+      <ul>
+        <li><code>notifications.server_lag</code> — receive a push when TPS drops</li>
+        <li><code>notifications.server_stop</code> — receive a push when the server stops</li>
+      </ul>
+    </div>
+
+    <h3>Defaults</h3>
+    <p>When the Owner creates a new staff user without specifying permissions explicitly, they get a view-only set:</p>
+    <p><code>dashboard.view</code>, <code>analytics.view</code>, <code>console.view</code>, <code>players.view</code>, <code>tickets.view</code>, <code>worlds.view</code>, <code>chat.view</code>, <code>files.view</code>, <code>notifications.server_lag</code>, <code>notifications.server_stop</code></p>
+    <p>The Owner toggles individual write permissions on per-staff-member.</p>
+
+    <!-- ============ VERSIONING ============ -->
+    <h2 id="versioning">Versioning</h2>
+
+    <p>The API is versioned in the URL path (<code>/api/v1/...</code>). Breaking changes will go to <code>/api/v2</code>; <code>/api/v1</code> will continue to work alongside.</p>
+    <p>Adding new endpoints, new optional fields, or new permission keys is <strong>not</strong> considered breaking. Removing or renaming endpoints, removing fields, or changing field types is.</p>
+
+    <!-- ============ EXAMPLES ============ -->
+    <h2 id="examples">Examples</h2>
+
+    <h3>Get current player count (curl)</h3>
+    <pre data-lang="bash"><code><span class="tok-kw">TOKEN</span>=$(curl -s -X POST http://localhost:7070/api/v1/auth/login \
+  -H <span class="tok-str">"Content-Type: application/json"</span> \
+  -d <span class="tok-str">'{"username":"admin","password":"your-password"}'</span> \
+  | jq -r .token)
+
+curl -s http://localhost:7070/api/v1/server/status \
+  -H <span class="tok-str">"Authorization: Bearer </span><span class="tok-key">$TOKEN</span><span class="tok-str">"</span> \
+  | jq .onlinePlayers</code></pre>
+
+    <h3>Send a broadcast from a Discord bot (Python)</h3>
+    <pre data-lang="python"><code><span class="tok-kw">import</span> requests
+
+base = <span class="tok-str">"http://your-server:7070/api/v1"</span>
+
+<span class="tok-cmt"># Login once at startup</span>
+token = requests.post(<span class="tok-str">f"{base}/auth/login"</span>, json={
+    <span class="tok-str">"username"</span>: <span class="tok-str">"discord-bot"</span>,
+    <span class="tok-str">"password"</span>: <span class="tok-str">"..."</span>
+}).json()[<span class="tok-str">"token"</span>]
+
+headers = {<span class="tok-str">"Authorization"</span>: <span class="tok-str">f"Bearer {token}"</span>}
+
+<span class="tok-cmt"># Send a broadcast</span>
+requests.post(<span class="tok-str">f"{base}/command"</span>, headers=headers, json={
+    <span class="tok-str">"command"</span>: <span class="tok-str">"say [Discord] Server restart in 5 minutes"</span>
+})</code></pre>
+
+    <h3>Watch chat in real time (Node)</h3>
+    <pre data-lang="javascript"><code><span class="tok-kw">const</span> WebSocket = <span class="tok-kw">require</span>(<span class="tok-str">"ws"</span>);
+
+<span class="tok-kw">const</span> ws = <span class="tok-kw">new</span> WebSocket(<span class="tok-str">`ws://your-server:7070/api/v1/ws?token=${TOKEN}`</span>);
+
+ws.on(<span class="tok-str">"message"</span>, (data) =&gt; {
+  <span class="tok-kw">const</span> event = JSON.parse(data);
+  <span class="tok-kw">if</span> (event.type === <span class="tok-str">"chat"</span>) {
+    console.log(<span class="tok-str">`&lt;${event.data.name}&gt; ${event.data.message}`</span>);
+  }
+});</code></pre>
+
+    <!-- ============ SUPPORT ============ -->
+    <h2 id="support">Support</h2>
+
+    <ul>
+      <li><strong>Bug reports / feature requests:</strong> email <a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a></li>
+      <li><strong>General questions:</strong> <a href="index.html">pulsepanelapp.com</a></li>
+    </ul>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col foot-brand">
+        <a href="index.html" class="logo">
+          <div class="logo-bars"><span></span><span></span><span></span><span></span></div>
+          PulsePanel
+        </a>
+        <p>A full Minecraft server admin app for iOS. Console, players, files, push — all from your phone.</p>
+        <div class="foot-status">All systems operational</div>
+      </div>
+
+      <div class="foot-col">
+        <h4>// product</h4>
+        <ul>
+          <li><a href="index.html#features">Features</a></li>
+          <li><a href="index.html#screens">Screens</a></li>
+          <li><a href="setup.html">Setup</a></li>
+          <li><a href="index.html#download">Download</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// resources</h4>
+        <ul>
+          <li><a href="resources.html">Documentation</a></li>
+          <li><a href="api.html">API reference</a></li>
+          <li><a href="resources.html">Plugin download</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>// support</h4>
+        <ul>
+          <li><a href="mailto:support@pulsepanelapp.com">support@pulsepanelapp.com</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div>© 2026 PulsePanel · All rights reserved</div>
+      <div class="foot-bottom-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="mailto:support@pulsepanelapp.com">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Highlight active section in TOC as you scroll
+(function() {
+  const sections = document.querySelectorAll('.doc-content h2[id]');
+  const tocLinks = document.querySelectorAll('.toc a[href^="#"]');
+  const linkMap = {};
+  tocLinks.forEach(a => linkMap[a.getAttribute('href').slice(1)] = a);
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const link = linkMap[id];
+      if (!link) return;
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-90px 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+})();
+</script>
+
+</body>
+</html>
