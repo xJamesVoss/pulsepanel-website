@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Setup Guide — PulsePanel</title>
-<meta name="description" content="Step-by-step setup guide for PulsePanel and PulseConnect. Install the plugin, configure the secret, forward your port, and connect the iOS app.">
+<meta name="description" content="Step-by-step setup guide for PulsePanel and PulseConnect. Install the plugin, set your password, forward your port, and connect the iOS app.">
 
 <meta property="og:title" content="Setup Guide — PulsePanel">
 <meta property="og:description" content="Step-by-step setup guide for PulsePanel and PulseConnect.">
@@ -529,13 +529,13 @@
 <header class="doc-header">
   <div class="doc-eyebrow">// setup guide</div>
   <h1>Get up and running <span class="glow">in five minutes.</span></h1>
-  <p class="lede">Install the plugin, set your secret, forward a port, connect the app. Detailed walkthrough below — every step, every option, every common gotcha.</p>
+  <p class="lede">Drop the plugin in, set your password, forward a port, sign in. Everything else is automatic. Detailed walkthrough below — every step, every option, every common gotcha.</p>
   <div class="doc-meta">
     <span>~ 5 min</span>
     <span class="sep">·</span>
     <span>Paper · Spigot · Purpur</span>
     <span class="sep">·</span>
-    <span>1.20+</span>
+    <span>1.21+</span>
   </div>
 </header>
 
@@ -546,7 +546,7 @@
     <ul>
       <li><a href="#requirements"><span class="num">00</span>Requirements</a></li>
       <li><a href="#step-1"><span class="num">01</span>Install plugin</a></li>
-      <li><a href="#step-2"><span class="num">02</span>Configure</a></li>
+      <li><a href="#step-2"><span class="num">02</span>Set password</a></li>
       <li><a href="#step-3"><span class="num">03</span>Forward port</a></li>
       <li><a href="#step-4"><span class="num">04</span>Connect app</a></li>
       <li><a href="#troubleshooting"><span class="num">??</span>Troubleshooting</a></li>
@@ -565,7 +565,7 @@
 
       <p>You'll need:</p>
       <ul>
-        <li>A Minecraft server running <strong>Paper, Spigot, or Purpur</strong> on Minecraft <strong>1.20 or newer</strong></li>
+        <li>A Minecraft server running <strong>Paper, Spigot, or Purpur</strong> on Minecraft <strong>1.21 or newer</strong></li>
         <li>Access to your server's <code>plugins/</code> folder and the ability to restart the server</li>
         <li>Access to your router's admin panel (for port forwarding, if your server is behind NAT)</li>
         <li>An iPhone or iPad running iOS 17 or later</li>
@@ -601,14 +601,17 @@ systemctl restart minecraft
 <span class="comment"># Or if you run the server manually:</span>
 ./start.sh</pre>
 
-      <p>On first run, PulseConnect creates a default config at <code>plugins/PulseConnect/config.yml</code> and logs that it's been generated:</p>
+      <p>On first run, PulseConnect creates a default config at <code>plugins/PulseConnect/config.yml</code> and then refuses to start &mdash; on purpose. It's waiting for you to set your admin password (next step).</p>
 
       <pre>[INFO] [PulseConnect] Default config generated at plugins/PulseConnect/config.yml
-[INFO] [PulseConnect] Edit your config and restart to enable the plugin.</pre>
+[SEVERE] PulseConnect: refusing to start.
+[SEVERE]   The admin password in plugins/PulseConnect/config.yml is still
+[SEVERE]   set to the placeholder value. Choose your own password before
+[SEVERE]   starting the server.</pre>
 
-      <div class="callout warn">
-        <div class="callout-label">heads up</div>
-        <p>The plugin won't accept connections until you've set a secret in <code>config.yml</code> (next step). This is intentional — it prevents an unconfigured plugin from being reachable with default credentials.</p>
+      <div class="callout">
+        <div class="callout-label">why?</div>
+        <p>If the plugin booted with the default password, anyone who's downloaded the JAR would know how to log into a freshly-installed server before its real owner finishes setup. Forcing you to set a password up front closes that window entirely.</p>
       </div>
     </div>
 
@@ -616,56 +619,46 @@ systemctl restart minecraft
     <div class="step" id="step-2">
       <div class="step-header">
         <div class="step-number">02</div>
-        <h2>Configure the plugin</h2>
+        <h2>Set your admin password</h2>
       </div>
-      <div class="step-est">~ 2 min</div>
+      <div class="step-est">~ 1 min</div>
 
-      <p>Open <code>plugins/PulseConnect/config.yml</code> in your editor of choice. The file is fully commented and most defaults are sensible. The two things you <em>must</em> set before first launch are the <strong>JWT secret</strong> and the <strong>admin account</strong>.</p>
+      <p>Open <code>plugins/PulseConnect/config.yml</code> in your editor of choice. The file is fully commented and almost everything in it is configured automatically. The <strong>one</strong> thing you need to set yourself is the admin password.</p>
 
-      <h3>The config file</h3>
-      <pre><span class="key">api:</span>
-  <span class="key">port:</span> <span class="num">7070</span>
-  <span class="key">jwt-secret:</span> <span class="str">"replace-with-32-plus-random-chars"</span>
-  <span class="key">token-expiry-hours:</span> <span class="num">24</span>
+      <h3>Find the admin block</h3>
+      <p>Near the top of the file:</p>
 
-<span class="comment"># Admin account &mdash; only used on first startup to create the initial owner account.</span>
-<span class="comment"># Once created, this is stored in the database with BCrypt hashing.</span>
-<span class="comment"># You can remove or change these after first launch &mdash; they won't affect the existing account.</span>
-<span class="key">admin:</span>
-  <span class="key">username:</span> <span class="str">"your-username"</span>
-  <span class="key">password:</span> <span class="str">"your-password"</span>
+      <pre><span class="key">admin:</span>
+  <span class="key">username:</span> <span class="str">"admin"</span>
+  <span class="key">password:</span> <span class="str">"CHANGE_ME_BEFORE_FIRST_LAUNCH"</span></pre>
 
-<span class="key">security:</span>
-  <span class="key">max-login-attempts:</span> <span class="num">5</span>
-  <span class="key">lockout-minutes:</span> <span class="num">15</span>
-  <span class="key">rate-limit-per-minute:</span> <span class="num">60</span></pre>
+      <p>Change <code>password</code> to a strong password of your choice &mdash; this is what you'll use to sign in from the app. You can also change <code>username</code> if you'd like, though <code>admin</code> is fine for most people.</p>
 
-      <h3>What each field does</h3>
-      <ul>
-        <li><strong><code>api.port</code></strong> &mdash; the TCP port PulseConnect listens on. Default <code>7070</code>. Change this to anything you want, just make sure it's not in use and not blocked by your hosting provider.</li>
-        <li><strong><code>api.jwt-secret</code></strong> &mdash; a server-internal value the plugin uses to sign session tokens. Treat it like a password. Use 32+ random characters. <strong>You won't enter this in the app</strong> &mdash; it's purely server-side.</li>
-        <li><strong><code>api.token-expiry-hours</code></strong> &mdash; how long an app sign-in stays valid before the user has to sign in again. Default 24.</li>
-        <li><strong><code>admin.username</code> / <code>admin.password</code></strong> &mdash; the credentials for your owner account. These are <em>only used on first launch</em> to create the account in the database. After that, the account is stored hashed and these fields can be left blank or changed without effect. <strong>This is what you'll sign in with on the app.</strong></li>
-        <li><strong><code>security.*</code></strong> &mdash; built-in protections for the sign-in flow. Defaults are fine for almost everyone.</li>
-      </ul>
-
-      <div class="callout">
-        <div class="callout-label">tip</div>
-        <p>Generate a strong JWT secret with <code>openssl rand -hex 32</code> in your terminal. For your admin password, anything you'd use for a regular site account works &mdash; it gets hashed before being stored.</p>
-      </div>
+      <pre><span class="key">admin:</span>
+  <span class="key">username:</span> <span class="str">"admin"</span>
+  <span class="key">password:</span> <span class="str">"your-strong-password-here"</span></pre>
 
       <h3>Restart the server</h3>
-      <p>Once you've saved <code>config.yml</code>, restart the server. You should see PulseConnect come online and confirm the admin account was created:</p>
+      <p>Save the file and restart the server. PulseConnect will come online and confirm everything is ready:</p>
 
-      <pre>[INFO] [PulseConnect] Loading config...
-[INFO] [PulseConnect] Admin account created: your-username
+      <pre>[INFO] [PulseConnect] Generated a unique JWT signing secret on first launch.
+[INFO] [PulseConnect] Created Owner 'admin'.
+[INFO] [PulseConnect] Registered with the relay. Push notifications enabled.
 [INFO] [PulseConnect] API listening on :7070
 [INFO] [PulseConnect] Ready for connections.</pre>
 
+      <div class="callout">
+        <div class="callout-label">what about the rest of the config?</div>
+        <p>The other blocks in <code>config.yml</code> (<code>api</code>, <code>relay</code>, <code>security</code>, <code>logging</code>) are all auto-managed. The plugin generates secrets, registers itself with the push-notification service, and applies sensible defaults on first launch &mdash; you don't need to touch any of it. The comments explain what each value does if you're curious.</p>
+      </div>
+
       <div class="callout warn">
         <div class="callout-label">heads up</div>
-        <p>After your server has started up successfully and the admin account has been created, you can blank out the <code>admin.username</code> and <code>admin.password</code> fields in <code>config.yml</code>. The account already exists in the database &mdash; leaving credentials in plain text in the config is unnecessary.</p>
+        <p>After your server starts up successfully and the admin account has been created, you can blank out the <code>admin.password</code> field in <code>config.yml</code>. The account already exists in the database with a hashed password &mdash; leaving the plain-text password in the config file is unnecessary.</p>
       </div>
+
+      <h3>Want to change the port?</h3>
+      <p>The default API port is <code>7070</code>. If you need to change it &mdash; usually because your host has restrictions on which ports you can open &mdash; find the <code>api.port</code> line near the top of the file and set it to whatever you want. Just remember which value you used; you'll enter it in the app in step 4.</p>
     </div>
 
     <!-- STEP 3 -->
@@ -749,6 +742,14 @@ systemctl restart minecraft
         <h2>Troubleshooting</h2>
       </div>
       <div class="step-est">If something's not working</div>
+
+      <details class="trouble">
+        <summary>The server console says "refusing to start"</summary>
+        <div class="trouble-body">
+          <p>This is by design. On a fresh install, PulseConnect ships with a placeholder admin password and refuses to start until you change it &mdash; otherwise anyone with a copy of the JAR would know your default password.</p>
+          <p>Open <code>plugins/PulseConnect/config.yml</code>, find the <code>admin:</code> block, change <code>password</code> from <code>"CHANGE_ME_BEFORE_FIRST_LAUNCH"</code> to a real password, save, and restart the server.</p>
+        </div>
+      </details>
 
       <details class="trouble">
         <summary>The app says "connection refused"</summary>
